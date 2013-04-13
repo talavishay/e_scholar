@@ -1,0 +1,389 @@
+body.logged-in.page-node-edit.node-type-biblio {
+    direction: ltr !important;
+}
+
+
+.form-item-field-commerce-und-2,
+.form-item.form-type-checkbox.form-item-3-und-2 {
+    display: none;
+}
+
+#edit-top-content{
+    display: inline-block;
+    min-height: 30px;
+    width: 100%;
+
+}
+
+#edit-container-1{
+    float:right;
+}
+
+#edit-container-2{
+    float:left;
+}
+
+.laxo_biblio_solr_node_form_top{
+    float: right;
+    min-width: 41%;
+    max-width:41%
+}
+
+.field-type-taxonomy-term-reference .form-type-checkbox{
+    display: inline-block;
+    margin: 0px 2px;
+
+    text-align: right !important;
+}
+
+.field-type-taxonomy-term-reference {
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+    direction: rtl;
+    padding: 0 10px;
+    position: relative;
+}
+
+div#edit-actions{
+    top: 20px;
+    position: fixed;
+    left: 0px;
+    z-index: 998;
+}
+div#edit-actions input[type=submit]{
+    box-shadow: 1px 1px 24px 10px white;
+    font-weight: bold;
+    color: green;
+}
+fieldset#edit-biblio-abst-e-format.filter-wrapper div.fieldset-wrapper{
+    margin-top: 0px;
+}
+h1#page-title{
+    text-align: center;
+    margin:0px;
+}
+.tabs{
+    margin-bottom: 0px !important;
+
+}
+#block-system-main > .content{
+    margin-top: 0px;
+}
+.form-item-biblio-type{
+
+    float: left;
+
+}
+.field-type-commerce-product-reference{
+
+    float: left;
+    margin-right: 10px;
+
+}
+/*
+.form-text[type=text]:focus, textarea#edit-biblio-abst-e-value:focus{
+    box-shadow: 1px 1px 44px 10px #7894AA;
+}
+
+.form-text[type=text]:focus{
+    width: 176%;
+    
+}
+body.chrome .form-text[type=text]:focus{
+    width: 146% !important;
+    
+}
+input#edit-biblio-keywords:focus, textarea#edit-biblio-abst-e-value:focus{
+
+    position: relative;
+    right: 153%;
+    width: 253%;
+    z-index: 11;
+
+    
+}
+*/
+#biblio-node-form:not(.second_step) .field-type-taxonomy-term-reference {
+
+    display: none;
+}
+.field-type-taxonomy-term-reference > div > label{
+    background: none repeat scroll 0 0 #B7B5B5;
+    border-right: 2px solid white;
+    height: 24px;
+    position: absolute;
+    left: -51px;
+    text-align: center;
+    width: 45px;
+}
+#url_action{
+    width:5px;
+    height:5px;
+    display:inline;
+}
+
+#edit-biblio-custom1-format{
+    display: none;
+}
+
+.form-item.form-type-checkbox.form-item-status{
+
+    border-radius: 11px 11px 11px 11px;
+    padding: 5px 10px;
+    width: 100px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("../images/buttons.png") repeat-x scroll 0 0 #FFFFFF !important;
+    border-color: #E4E4E4 #D2D2D2 #B4B4B4 !important;
+    border-image: none !important;
+    border-radius: 15px 15px 15px 15px !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+
+    margin-bottom: 1em;
+    margin-right: 0.6em;
+
+    box-shadow: 1px 1px 24px 10px white;
+
+}
+.form-item.form-type-checkbox.form-item-status label{ 
+    text-align: center;
+    font-weight: bold !important;
+    font-size: 13px;
+    font-family: "Lucida Grande",​"Lucida Sans Unicode",​Verdana,​sans-serif !important;   
+    color: green !important;
+
+}
+#page-title{
+
+    display: none;
+}
+
+
+#edit-biblio-abst-e-format, .form-item-0-und-2{
+    display: none;
+
+}
+<<<<<<< HEAD
+
+body.chrome .laxo_biblio_solr_node_form_top{
+    min-width: 49%;
+    max-width: 49%;
+}
+.laxo_biblio_solr_node_form_top .form-text {
+    width: 98%;
+}
+.form-item-field-biblio-qualitive-und{
+    margin-bottom: 0px !important;
+}
+=======
+>>>>>>> 12fa35d47b49943c91431dbb161950249f29d116
+.form-item-field-commerce-und-2,
+.form-item.form-type-checkbox.form-item-3-und-2 {
+    display: none;
+}
+
+#edit-top-content{
+    display: inline-block;
+    min-height: 30px;
+    width: 100%;
+
+}
+
+#edit-container-1{
+    float:right;
+}
+
+#edit-container-2{
+    float:left;
+}
+
+.laxo_biblio_solr_node_form_top{
+    float: right;
+    min-width: 41%;
+    max-width:49%
+}
+
+.field-type-taxonomy-term-reference .form-type-checkbox{
+    display: inline-block;
+    margin: 0px 2px;
+
+    text-align: right !important;
+}
+
+.field-type-taxonomy-term-reference {
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+    direction: rtl;
+    padding: 0 10px;
+    position: relative;
+}
+
+div#edit-actions{
+    top: 20px;
+    position: fixed;
+    left: 0px;
+    z-index: 998;
+    width: 200px;
+}
+div#edit-actions input[type=submit]{
+    box-shadow: 1px 1px 24px 10px white;
+    font-weight: bold;
+    color: green;
+}
+fieldset#edit-biblio-abst-e-format.filter-wrapper div.fieldset-wrapper{
+    margin-top: 0px;
+}
+h1#page-title{
+    text-align: center;
+    margin:0px;
+}
+.tabs{
+    margin-bottom: 0px !important;
+
+}
+#block-system-main > .content{
+    margin-top: 0px;
+}
+.form-item-biblio-type{
+
+    float: left;
+
+}
+.field-type-commerce-product-reference{
+
+    float: left;
+    margin-right: 10px;
+
+}
+/*
+.form-text[type=text]:focus, textarea#edit-biblio-abst-e-value:focus{
+    box-shadow: 1px 1px 44px 10px #7894AA;
+}
+
+.form-text[type=text]:focus{
+    width: 176%;
+    
+}
+input#edit-biblio-keywords:focus, textarea#edit-biblio-abst-e-value:focus{
+
+    position: relative;
+    right: 153%;
+    width: 253%;
+    z-index: 11;
+
+    
+}
+*/
+#biblio-node-form:not(.second_step) .field-type-taxonomy-term-reference {
+
+    display: none;
+}
+.field-type-taxonomy-term-reference > div > label{
+    background: none repeat scroll 0 0 #B7B5B5;
+    border-right: 2px solid white;
+    height: 24px;
+    position: absolute;
+    left: -51px;
+    text-align: center;
+    width: 45px;
+}
+#url_action{
+    width:5px;
+    height:5px;
+    display:inline;
+}
+
+#edit-biblio-custom1-format{
+    display: none;
+}
+
+.form-item.form-type-checkbox.form-item-status{
+
+    border-radius: 11px 11px 11px 11px;
+    padding: 5px 10px;
+    width: 100px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("../images/buttons.png") repeat-x scroll 0 0 #FFFFFF !important;
+    border-color: #E4E4E4 #D2D2D2 #B4B4B4 !important;
+    border-image: none !important;
+    border-radius: 15px 15px 15px 15px !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+
+    margin-bottom: 1em;
+    margin-right: 0.6em;
+
+    box-shadow: 1px 1px 24px 10px white;
+
+}
+.form-item.form-type-checkbox.form-item-status label{ 
+    text-align: center;
+    font-weight: bold !important;
+    font-size: 13px;
+    font-family: "Lucida Grande",​"Lucida Sans Unicode",​Verdana,​sans-serif !important;   
+    color: green !important;
+
+}
+#page-title{
+
+    display: none;
+}
+
+
+#edit-biblio-abst-e-format, .form-item-0-und-2{
+    display: none;
+
+}
+
+body.chrome .laxo_biblio_solr_node_form_top{
+    min-width: 49%;
+    max-width: 49%;
+}
+.laxo_biblio_solr_node_form_top .form-text {
+    width: 98%;
+}
+.form-item-field-biblio-qualitive-und{
+    margin-bottom: 0px !important;
+}
+
+.form-item-biblio-custom1-value{
+    margin-bottom: 5px !important;
+}
+
+
+#edit-title-copy{
+
+    width:100%;
+}
+
+.heb{
+    direction: rtl !important;
+    text-align: right;
+}
+#edit-biblio-custom1-value{
+    height: 50px;
+}
+
+#edit-biblio-url{
+    position: absolute;
+    width:1000px;
+    text-align: left;
+
+
+}
+.form-item-biblio-url .field-suffix{
+    left: 209px;
+    position: relative;
+    top: -20px;
+}
+.form-item.form-type-textfield.form-item-title{
+    
+    margin-bottom: 0px;
+}
+#edit-top-content .fieldset-wrapper{
+    margin-top: 0px;
+}

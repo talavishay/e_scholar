@@ -1,0 +1,819 @@
+<?php
+function laxo_biblio_solr_form_alter(&$form, &$form_state){
+    if($form["#id"] === "views-exposed-form-search-api-solr-view-page"){
+//            $form['text']['#attributes']['onfocus'] = "this.value = '';";
+  //          $form['text']['#attributes']['onclick'] = "this.value = '';";
+    }
+}
+function laxo_biblio_solr_commerce_currency_info_alter(&$currencies, $langcode) {
+//    $currencies['ILS']['symbol'] = 'ש"ח';
+//    $currencies['ILS']['symbol_placement'] = 'before';
+    $currencies['ILS']['code_placement'] = 'after';
+    $currencies['ILS']['code'] = 'שח';
+}
+function laxo_biblio_solr_form_user_profile_form_alter(&$form, &$form_state){
+    $f = 0;
+    unset($form["locale"], $form["contact"]);
+}
+function laxo_biblio_solr_preprocess($variables, $hook) {
+    if ($hook === "page") {
+        $path = arg(0);
+        
+        if ($path === "orders_stats" || $path === "editor") {
+
+        }
+    }
+}
+
+function laxo_biblio_solr_init() {
+    if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url"){
+            drupal_add_css('sites/all/themes/omega/omega/css/omega-visuals.css');        
+    } 
+    if (user_is_anonymous()) {
+        drupal_add_js(array('username' => 'Anonymous', 'arg' => arg()), 'setting');
+    }   else {
+        global $user;
+        drupal_add_js(array('username' => $user->mail, 'arg' => arg()), 'setting');
+    }  
+}
+
+//~ /** Custom checkout pane.
+function laxo_biblio_solr_base_checkout_form($form, &$form_state, $checkout_pane, $order) {
+    $data = '';
+    $data .= $order->mail;
+    $user = user_load_by_name($order->mail);
+    $data .= '<h2>'.t('your purchesed itmes').'</h2><ul>';
+    foreach ($order->commerce_line_items['und'] as $v => $k) {
+        $line_item = commerce_line_item_load(intval($k['line_item_id']));
+        if($line_item->line_item_label === "article_pass"){
+            $label = t('article pass');
+        } else {
+            $label = t('citation pass');
+        }
+        $data .= '<li><div class="label">'.$label . ':</div>';
+        $data .= $line_item->field_laxo_name['und'][0]['safe_value'] . '</li>';
+
+        //TODO: is this the right way ???
+        if (user_is_anonymous()) {
+            if ($line_item->line_item_label == 'article_pass') {
+                flag('flag', 'biblio_url', intval($line_item->field_commerce_bibilio_nid['und'][0]['value']), $user);
+            }
+            if ($line_item->line_item_label == 'citation_pass') {
+                flag('flag', 'export', intval($line_item->field_commerce_bibilio_nid['und'][0]['value']), $user);
+            }
+        }
+    }
+    $data .= '</ul>';
+    if (user_is_anonymous()) {
+        $timestamp = REQUEST_TIME;
+        $token = drupal_hash_base64(drupal_random_bytes(55));
+        $_SESSION['pass_reset_' . $user->uid] = $token;
+        $link = 'user/' . $user->uid . '/edit?pass-reset-token=' . $token;
+        $linkTxt = "login_one_time/" . $user->uid . "/" . $timestamp . "/" . user_pass_rehash($user->pass, $timestamp, $user->login);
+        $link = url($linkTxt, array(
+            'query' => array('destination' => $link),
+            'absolute' => TRUE,
+        ));
+
+        $data .= '<a href="' . $link . '">'.t('you can now login').'</a>';
+    }
+    $checkout_form['my_module_pane_field_display'] = array(
+        '#markup' => $data,
+    );
+    return $checkout_form;
+}
+
+function laxo_biblio_solr_commerce_checkout_pane_info_alter(&$panes) {
+    if (!empty($panes['laxo_biblio_solr_base'])) {
+        // Change the title of the "Cart Contents" pane.
+        $panes['laxo_biblio_solr_base']['title'] = t('order completed');
+    }
+}
+
+function laxo_biblio_solr_commerce_checkout_pane_info() {
+    $panes['laxo_biblio_solr_base'] = array(
+        'title' => t('laxo checkout complete info '),
+        'base' => 'laxo_biblio_solr_base',
+        // The checkout page where this should be displayed by default.
+        'page' => 'complete',
+        'weight' => -5,
+            // The form functions could be found in another file...
+            // 'file' => 'includes/pane.inc',
+    );
+
+    return $panes;
+}
+
+function laxo_biblio_solr_commerce_checkout_complete($order) {
+    /* Parameters:
+     * 	$order: The order that just completed checkout.
+     * logic:
+     * 	assign flag per purchsed per node per user item  */
+    //TODO: remove this anon check? this is the commerce_checkout_complete after all ???
+    if (!user_is_anonymous()) {
+        foreach ($order->commerce_line_items['und'] as $k => $v) {
+            $line_item = commerce_line_item_load(intval($v['line_item_id']));
+            if ($line_item->line_item_label == 'article_pass') {
+                flag('flag', 'biblio_url', intval($line_item->field_commerce_bibilio_nid['und'][0]['value']), user_load($order->uid));
+            }
+            if ($line_item->line_item_label == 'citation_pass') {
+                flag('flag', 'export', intval($line_item->field_commerce_bibilio_nid['und'][0]['value']), user_load($order->uid));
+            }
+        }
+    } else {
+        //~ login_one_time_button($username = NULL);
+    }
+}
+
+function laxo_biblio_solr_views_pre_render(&$view) {
+    //~ dpm($view->name);
+    /* the view "free_laxo_biblio_data_output" returns commerce=null nodes...* */
+    if (isset($view) && arg(0) != 'admin') {
+
+        if ($view->name === 'search_api_solr_view'){
+            // adding a total pages amount to our pagers
+            global $pager_total;
+            // adding the product price to the buy link..
+            $product = commerce_product_load(1);    
+            $price = entity_metadata_wrapper('commerce_product', $product)->commerce_price->value();    
+            $url_price_display = commerce_currency_format(round($price['amount']), $price['currency_code'], $product);
+            $product = commerce_product_load(2);    
+            $price = entity_metadata_wrapper('commerce_product', $product)->commerce_price->value();    
+            $citation_price_display = commerce_currency_format(round($price['amount']), $price['currency_code'], $product);
+            drupal_add_js(array('pager_total' => $pager_total[0], "url_price" => $url_price_display, "citaion_price" => $citation_price_display), 'setting');
+        }
+        
+        if ($view->name === 'search_api_solr_view' || $view->name === "commerce_cart_form" ){
+            if (user_is_logged_in()) {
+                _get_user_flags();// helper function to retrive current user flags 
+            }
+            drupal_add_library('system', 'drupal.ajax');            
+            drupal_add_js(drupal_get_path("module", "laxo_biblio_solr") . '/js/search.js');
+            drupal_add_css(drupal_get_path("module", "laxo_biblio_solr") . '/css/search.css');
+            // CHROME BACK btn ISSUE
+//            drupal_add_http_header('Cache-Control', 'no-cache, no-store, must-revalidate', TRUE);
+//            drupal_add_http_header('Pragma', 'no-cache', TRUE); // HTTP 1.0.
+//            drupal_add_http_header('Expires', '0', TRUE); // Proxies.
+                    
+            }
+        //~ Handler for free articles 
+        
+        if ($view->name == 'free_laxo_biblio_data_output_') {
+            if (count($view->result) >= 1) {
+                if ($view->result[0]->biblio_biblio_url == "" || !isset($view->result[0]->biblio_biblio_url)) {
+                    drupal_set_message(t("Sorry the url for this biblio seems to be empty.."));
+                    drupal_goto($_SERVER['HTTP_REFERER']);
+                } else {
+                    drupal_goto($view->result[0]->biblio_biblio_url);
+                }
+            }
+            if (count($view->result) == 0) {
+                // 0 result = no article of this nid / tring to access a paid article with a free "url"
+                //TODO: add a "buy now link" ??
+                drupal_set_message(t("access to the article was denied..  this article requirs an access premission you dont have.. "));
+                drupal_goto($_SERVER['HTTP_REFERER']);
+            }
+        }
+        if ($view->name == 'editor' || $view->name == 'orders_stats' ) {
+            drupal_add_js(drupal_get_path("module", "laxo_biblio_solr") . '/js/orders_state.js');
+            drupal_add_css(drupal_get_path("module", "laxo_biblio_solr") . '/css/tables.css');
+        }
+    }
+}
+
+function _get_user_flags(){
+    
+    global $user;
+    $biblio_biblio_url_nodes = array();
+    $biblio_biblio_export_nodes = array();
+    // retrive current user purchesed url_access data to make
+    $views_get_view_result_flag_bookmarks_embed_1 = views_get_view_result('flag_bookmarks', 'embed_1');
+    if (count($views_get_view_result_flag_bookmarks_embed_1) > 0) {
+        foreach ($views_get_view_result_flag_bookmarks_embed_1 as $key => $val) {
+            $biblio_biblio_url_nodes[] = ($val->biblio_biblio_url != "" || isset($val->biblio_biblio_url)) ? array("nid" => $val->nid, "url" => $val->biblio_biblio_url) : array("nid" => $val->nid, "url" => "/empty_url");
+        }
+    }
+    $views_get_view_result_flag_bookmarks_embed_2 = views_get_view_result('flag_bookmarks', 'embed_2');
+    if (count($views_get_view_result_flag_bookmarks_embed_2) > 0) {
+        foreach ($views_get_view_result_flag_bookmarks_embed_2 as $key => $val) {
+            $biblio_biblio_export_nodes[] = array("nid" => $val->nid);
+        }
+    }
+    drupal_add_js(array('username' => $user->name == "" ? $user->email : $user->name,
+        'uid' => $user->uid,
+        'laxo_biblio_solr' => array("biblio_biblio_url_nodes" => $biblio_biblio_url_nodes,
+            "biblio_biblio_export_nodes" => $biblio_biblio_export_nodes),
+        'arg' => arg()), 'setting');
+
+}
+function laxo_biblio_solr_preprocess_views_view_fields(&$vars) {
+    /*  laxo search bookmarks
+     * replaces the nid field from the "search_api_solr_view" view with a "bookmark" flag for that node..
+     */
+    if ($vars["view"]->name == "search_api_solr_view") {
+        $nid = $vars["row"]->entity;
+        foreach ($vars["fields"] as $k => $v) {
+            if ($k == 'nid') {
+                if (user_is_anonymous()) {
+//                    $vars["fields"]["nid"]->content = '<span class="flag-wrapper flag-bookmarks "><a href="/user" title="login to bookmark" class="flag flag-action flag-link-toggle flag-processed" rel="nofollow">Bookmark this</a><span class="flag-throbber">&nbsp;</span></span>';
+                                        $vars["fields"]["nid"]->content = '<div class="flag_wrap"><input title="הרשם על מנת להשתמש בסימנייה" type="checkbox" /></div>';
+                } else {
+                    $text = 'הוסף או הסר סימנייה';
+                    $bookmark = flag_create_link('bookmarks', intval(preg_replace('/<span(.*)>(.*)<\/span>/', '$2', $v->content)));
+                    $v->content = '<div class="flag_wrap"><input title="' . $text . '" type="checkbox" />' . $bookmark . '</div>';
+
+                }
+            }
+        }
+        $vars["fields"]["mlt"] = clone $vars["fields"]["nid"];
+        $vars["fields"]["mlt"]->content = '<div class="escholar-color-scheme-front-light-blue show_mlt_wrap"><a href="#">מצאתי שגיאה</a><span> | </span><a href="#" nid="' . $nid . '" class="show_mlt mlt_action">מאמרים דומים</a></div>';
+        $vars["fields"]["mlt"]->wrapper_prefix = "";
+        $vars["fields"]["mlt"]->wrapper_suffix = "";
+
+        
+    
+    }
+    
+    
+    
+    if ($vars["view"]->name == "laxo_biblio_data_output" && $vars["view"]->current_display != "page_1" && $vars["view"]->current_display != "page_2") {
+        if (arg(0) == "citation") {
+            // TODO: redundent ???
+            $nid = $vars["view"]->query->where[0]['conditions'][0]['value'][':node_nid'];
+            drupal_add_js(array("citation" => array("styles" => array("apa", "chi", "ama", "ieee"), "output" => "na", "nid" => $nid)), 'setting');
+        }
+    }
+}
+
+/**
+ * Implements hook_search_api_ajax_modules_alter().
+ *
+ * Add custom modules to search api ajax blocks.
+ */
+function laxo_biblio_solr_search_api_ajax_modules_alter(&$modules) {
+    $modules[] = 'facetapi';
+    $modules[] = 'flag';
+    $modules[] = 'views_flag_refresh';
+}
+
+/**
+ * Implements hook_search_api_ajax_settings().
+ */
+function laxo_biblio_solr_search_api_ajax_settings() {
+    $settings = array(
+        // required: CSS ID for the main content (search results html)
+        'content' => '#main #content .content',
+        // required: array of regions with search-related blocks => CSS ID's
+        'regions' => array(
+            'header' => '#header',
+            'above_content' => '#above_content',
+            'sidebar_first' => '#sidebar-first',
+            'sidebar_second' => '#sidebar-second',
+        ),
+        // optional: if you want to show a spinner image on AJAX
+        'spinner' => drupal_get_path('module', 'search_api_ajax') . '/spinner.gif',
+        // optional: if you want to scroll-back-to-top on paging search results
+        'scrolltarget' => '#main-content',
+        'scrollspeed' => 1000,
+        // optional: fade main content on AJAX (fade=1 for true)
+        'fade' => 1,
+        'opacity' => 0.3,
+    );
+
+    return $settings;
+}
+
+function laxo_biblio_solr_entity_property_info_alter(&$info) {
+    /* 	adding fields to be indexd by search_api@solr  */
+    $info['node']['properties']['biblio_custom1'] = array(
+        'type' => 'text',
+        'label' => t('laxo title'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_biblio_custom1_getter_callback',
+    );
+    $info['node']['properties']['biblio_keywords'] = array(
+        'type' => 'list<text>',
+        'label' => t('biblio keywords'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_keywords_getter_callback',
+    );
+    $info['node']['properties']['biblio_contributors'] = array(
+        'type' => 'list<text>',
+        'label' => t('biblio contributors'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_contributors_getter_callback',
+    );
+    $info['node']['properties']['biblio_year'] = array(
+        'label' => t('biblio year'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_year_getter_callback',
+    );
+    $info['node']['properties']['biblio_type'] = array(
+        'label' => t('biblio type'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_type_getter_callback',
+    );
+    $info['node']['properties']['biblio_secondary_title'] = array(
+        'label' => t('biblio secondary title'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_secondary_title_getter_callback',
+    );
+    $info['node']['properties']['biblio_abstract '] = array(
+        'label' => t('biblio abstract'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_abstract_getter_callback',
+    );
+    $info['node']['properties']['biblio_url'] = array(
+        'label' => t('biblio url'),
+        'sanitized' => TRUE,
+        'getter callback' => 'laxo_biblio_solr_url_getter_callback',
+    );
+}
+
+//laxo_biblio_solr_entity_property_info_alter--Getter callbacks # START
+function laxo_biblio_solr_biblio_custom1_getter_callback($item) {
+    return $item->biblio_custom1;
+}
+
+function laxo_biblio_solr_contributors_getter_callback($item) {/** * Getter callbacks for multiple field. */
+    $contributors = array();
+    foreach ($item->biblio_contributors as $k => $v) {
+        $contributors[] = $item->biblio_contributors[$k]["name"];
+    }
+    return $contributors;
+}
+
+function laxo_biblio_solr_keywords_getter_callback($item) {
+    return $item->biblio_keywords;
+}
+
+function laxo_biblio_solr_year_getter_callback($item) {
+    return $item->biblio_year;
+}
+
+function laxo_biblio_solr_type_getter_callback($item) {
+    return $item->biblio_type_name;
+}
+
+function laxo_biblio_solr_secondary_title_getter_callback($item) {
+    return $item->biblio_secondary_title;
+}
+
+function laxo_biblio_abstract_getter_callback($item) {
+
+    return $item->biblio_abst_e;
+}
+
+function laxo_biblio_solr_url_getter_callback($item) {
+    return $item->biblio_url;
+}
+/** * biblio@solr Getter callbacks ## END */
+
+//~ ##########################/* ajax loader - ## START ## *
+function laxo_biblio_solr_menu_alter(&$items){
+  $items['user/%user/view']['access callback'] = FALSE;
+}
+
+function laxo_biblio_solr_menu() {
+    $items['unique_node_autocomplete_callback'] = array(
+        'page callback' => 'laxo_biblio_solr_unique_node_autocomplete_callback',
+        //'file' => 'ajax_example_autocomplete.inc',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+
+    $items['buy_url'] = array(
+        'page callback' => 'ajax_buy_response',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+        'delivery callback' => 'ajax_deliver',
+    );
+    $items['buy_export'] = array(
+        'page callback' => 'ajax_buy_response',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+        'delivery callback' => 'ajax_deliver',
+    );
+    $items['get_export'] = array(
+        'page callback' => 'ajax_get_export',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+            //~ 'delivery callback' => 	'ajax_deliver',
+    );
+    $items['get_checkout'] = array(
+        'page callback' => 'ajax_get_checkout',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+        'delivery callback' => 'ajax_deliver',
+    );
+    $items['get_cart'] = array(
+        'page callback' => 'ajax_get_cart',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+        'delivery callback' => 'ajax_deliver',
+    );
+    
+    return $items;
+}
+
+function ajax_buy_response() {
+    global $user;
+    $nid = trim(strip_tags($_POST["nid"]));
+    $productName = trim(strip_tags($_POST["productName"]));
+    $node = node_load($nid);
+
+    if (intval($nid) != 0 && gettype(intval($nid)) == "integer") {
+        if ($productName == 'buy_url') {
+            $line_item = commerce_cart_product_add_by_id(1, 1, $combine = FALSE, $user->uid);
+            $text = t('המוצר גישה לקישור המאמר "@biblio_custom1" נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
+        }
+        if ($productName == 'buy_export') {  //~ foreach($nids as $k => $nid){
+            $line_item = commerce_cart_product_add_by_id(2, 1, $combine = FALSE, $user->uid);
+            $text = t('המוצר "יצוא ביבליוגרפיה" למאמר "@biblio_custom1"  נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
+        }
+
+        $line_item->field_commerce_bibilio_nid['und'][0]['value'] = $nid;
+        $line_item->field_laxo_name['und'][0]['value'] = $node->biblio_custom1;
+        commerce_line_item_save($line_item);
+        commerce_cart_order_refresh($line_item->order_id);
+
+        $refreshedCart = commerce_cart_block_view('cart');
+
+        return array(
+            '#type' => 'ajax',
+            '#commands' => array(
+                ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
+                ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
+                array('command' => 'ajax_buy_response', 'data' => $text),
+                array('command' => 'ajax_buy_response_shadowbox', 'data' => $nid)
+        ));
+    }
+}
+function ajax_get_cart(){
+        $refreshedCart = commerce_cart_block_view('cart');
+        return array(
+            '#type' => 'ajax',
+            '#commands' => array(
+                ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
+                ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
+                array('command' => 'after_cart_refresh', 'data'=>'none'),
+        ));
+}
+function ajax_get_export() {
+    global $user;
+    $nid = explode(' ', trim(strip_tags($_GET["target"])));
+    $style = trim(strip_tags($_GET["style"]));
+    $flags = flag_get_user_flags('node', NULL, $user->uid);
+
+    foreach ($flags["export"] as $k => $v) {
+        $exports[] = $k;
+    }
+    foreach ($nid as $k => $v) {
+        if (!in_array($v, $exports)) {
+            unset($nid[$k]);
+        }
+    }
+    if($style === "default"){
+        $style = biblio_get_style();
+    }
+    rtf_help($nid, $style);
+
+    die();
+
+//~ $output = views_embed_view("laxo_biblio_data_output",$style,$nid);
+    //TODO:  all other styles
+    return array(
+        '#type' => 'ajax',
+        '#commands' => array(
+            //~ ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
+            //~ ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
+            //~ ajax_command_data('#block-commerce-cart-cart', 'foo', 'bar'),
+            //~ ajax_command_settings(array("post" => $_POST), TRUE),
+            //~ array('command' => 'aajax_custom_response', 'data' => $text)
+            array('command' => 'ajax_get_export_output', 'data' => $output)
+        )
+    );
+}
+
+function ajax_get_checkout() {
+
+
+    //~ $output = drupal_get_form('checkout_form');
+    $output = drupal_get_form('checkout_form');
+    //~ $output = views_embed_view("laxo_biblio_data_output","style_apa",1);
+    //~ $output = commerce_checkout_router($order, $checkout_page = NULL);
+//TODO:  all other styles
+    return array(
+        '#type' => 'ajax',
+        '#commands' => array(
+            //~ ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
+            //~ ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
+            //~ ajax_command_data('#block-commerce-cart-cart', 'foo', 'bar'),
+            //~ ajax_command_settings(array("post" => $_POST), TRUE),
+            //~ array('command' => 'aajax_custom_response', 'data' => $text)
+            array('command' => 'ajax_get_export_output', 'data' => $output)
+        )
+    );
+}
+
+function laxo_biblio_solr_commerce_cart_block() {
+    $output = views_embed_view("commerce_cart_block", "embed_1");
+    return $output;
+}
+
+/*
+  //~ function laxo_biblio_solr_user_access(){
+  //~ if(!user_is_anonymous()){
+  //~ return false;
+  //~ } else {
+  //~ global $user;
+  //~
+  //~ $flag = flag_get_flag('export') or die('no "export" flag defined');
+  //~ if ($flag->is_flagged(arg(1)) ){
+  //~ return TRUE;
+  //~ }
+  //~ }
+  //~ }
+  function ajax_node_response($type = 'ajax', $nid = 0) {
+  $output = laxo_biblio_solr_load_noder($nid);
+  $output = ajax_commerce_cart_block_response();
+  if ($type == 'ajax') {
+  $commands = array();
+  $commands[] = ajax_command_replace('.view-commerce-cart-block,.cart-empty-block', $output);
+  $page = array(
+  '#type' => 'ajax',
+  '#commands' => $commands
+  );
+  ajax_deliver($page);
+  }
+  else {
+  $output = '<div id="content">' . $output . 'aaa</div>';
+  //~ return $output;
+  }
+  }
+ * 
+
+  function ajax_cart_block_response($type = 'ajax', $nid = 0) {
+  $output = _laxo_biblio_solr_load_view($nid);
+  if ($type == 'ajax') {
+  $commands = array();
+  $commands[] = ajax_command_replace('.view-commerce-cart-block', '<div class="view-commerce-cart-block">' . $output . '</div>');
+  $page = array(
+  '#type' => 'ajax',
+  '#commands' => $commands
+  );
+  ajax_deliver($page);
+  }
+  else {
+  $output = '<div id="content">' . $output . '</div>';
+  return $output;
+  }
+  }
+  //~ // helper function: return content by nid
+  function laxo_biblio_solr_load_noder($nid = 0) {
+  $node = node_load($nid, NULL, false);
+  if($node){
+  $vnode = node_view($node);
+  return theme("node", $vnode);
+  }
+  }
+  function laxo_biblio_solr_get_block_cart($name = 'commerce_cart',$display_id = 'Master') {
+
+  $output = views_embed_view("commerce_cart_block");
+  //~ $output = commerce_cart_block_view($block);
+  //~ $block = array();
+
+
+
+  //~ if (user_access('access content')) {
+  //~ $block['subject'] = t('Recent content');
+  //~ if ($nodes = node_get_recent(variable_get('node_recent_block_count', 10))) {
+  //~ $block['content'] = array(
+  //~ '#theme' => 'node_recent_block',
+  //~ '#nodes' => $nodes,
+  //~ );
+  //~ }
+  //~ else {
+  //~ $block['content'] = t('No content available.');
+  //~ }
+  //~ }
+
+  //~ print views_embed_view('forum_comments', 'block_1', $nid);
+  return $output;
+  }
+  //~ ##########################/*      ajax loader - END */
+
+
+function rtf_help($nids, $style) {
+
+    $count = 0;
+    $variables = array(
+        'style_name' => $style,
+    );
+    $nodes = node_load_multiple($nids, array(), TRUE);
+    foreach ($nodes as $node) {
+        if (variable_get('biblio_hide_bibtex_braces', 0)) {
+            $node->title = biblio_remove_brace($node->title);
+        }
+        $count++;
+        $variables['node'] = $node;
+
+        if ($count == 1) {
+            $rtf = new rtf();
+            $rtf->setPaperSize(5);
+            $rtf->setPaperOrientation(1);
+            $rtf->setDefaultFontFace(1);
+            $rtf->setDefaultFontSize(24);
+            $rtf->setAuthor("Biblio 7.x");
+            $rtf->setOperator("");
+            $rtf->setTitle("Biblio RTF Export");
+            $rtf->addColour("#000000");
+        }
+
+        $rtf->addText(filter_xss(theme('biblio_style', $variables) . '<br><br>', array('i', 'b', 'br', 'u', 'p', 'strong', 'em', 'sub', 'sup', 'ul', 'li')));
+    }
+
+    if ($count > 0)
+        $rtf->getDocument();
+}
+
+function laxo_biblio_solr_module_implements_alter(&$implementations, $hook) {
+    //~ dpm($hook);
+    // make this module form alter run last..( after biblio)
+    if ( ($hook == 'css_alter' && isset($implementations['laxo_biblio_solr'])) ||($hook == 'form_alter' && isset($implementations['laxo_biblio_solr'])) || ($hook == 'menu_alter' && isset($implementations['laxo_biblio_solr']))) {
+        $group = $implementations['laxo_biblio_solr'];
+        unset($implementations['laxo_biblio_solr']);
+        $implementations['laxo_biblio_solr'] = $group;
+    }
+}
+
+//  biblio node edit form manipulation - START
+
+function laxo_biblio_solr_form_node_form_alter(&$form, &$form_state, $form_id) {
+//    array_unshift($form['#submit'],  'laxo_biblio_solr_biblio_node_form_validate');
+
+    if( $form_id === "biblio_node_form"){
+        $form['#attached']['css'] = array(
+            drupal_get_path("module", "laxo_biblio_solr") . '/css/biblio_node_form.css'
+        );
+        $form['#attached']['js'] = array(
+            drupal_get_path("module", "laxo_biblio_solr") . '/js/biblio_node_form.js',
+        );
+        $container_2_haystack = array("title", "biblio_url", "biblio_custom1", "field-keywords");
+    //        "field_biblio_qualitive",  "field_biblio_quantitative", "field_biblio_research","field_commerce",
+        $container_1_haystack = array("biblio_abst_e", "biblio_keywords", "biblio_secondary_title");
+
+        if (isset($form_state["biblio_fields"]) && count($form["biblio_tabs"]) != 0) {
+            $form["#attributes"]["class"][] = 'second_step';
+            $form["top_content"] = array(
+                '#type' => 'container',
+                '#attributes' => array('class' => array("top_content")),
+                '#weight' => -100,
+            );
+            $form["top_content"]["container_1"] = array(
+                '#type' => 'fieldset',
+    //            '#title' => t('container_1'),
+                '#attributes' => array('class' => array('laxo_biblio_solr_node_form_top')),
+    //            '#collapsible' => TRUE,
+    //            '#collapsed' => FALSE,
+            );
+            $form["top_content"]["container_2"] = array(
+                '#type' => 'fieldset',
+    //            '#title' => t('container_2'),
+                '#attributes' => array('class' => array('laxo_biblio_solr_node_form_top')),
+    //            '#collapsible' => TRUE,
+    //            '#collapsed' => FALSE,
+            );
+            foreach ($form as $form_key => $form_field) {
+                if (gettype($form_field) === "array" && isset($form_field["#type"])) {
+                    if ($form_field["#type"] === "vertical_tabs") {
+                        foreach ($form_field as $key => $vertical_tab_fieldset) {
+                            if ($vertical_tab_fieldset["#type"] == "fieldset") {
+                                foreach ($vertical_tab_fieldset as $k => $field) {
+                                    if (gettype($field) === "array" && in_array($k, $container_1_haystack)) {
+                                        $form["top_content"]["container_1"][$k] = $field;
+                                        unset($form[$form_key][$key][$k]);
+                                    }
+                                    if (gettype($field) === "array" && in_array($k, $container_2_haystack)) {
+                                        $form["top_content"]["container_2"][$k] = $field;
+                                        unset($form[$form_key][$key][$k]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ($form_field["#type"] == "textfield") {
+                        if (in_array($form_key, $container_2_haystack)) {
+                            $form["top_content"]["container_2"][$form_key] = $form_field;
+                        } elseif (in_array($form_key, $container_1_haystack)) {
+                            $form["top_content"]["container_1"][$form_key] = $form_field;
+                        } else {
+                            continue;
+                        }
+                        unset($form[$form_key]);
+                    }
+
+                    if (isset($form_field["und"])) {
+                        if (in_array($form_field["und"]["#field_name"], $container_1_haystack)) {
+    //                        $form_field["und"]["#title"] .= '@'.$form_field["#weight"];
+    //                        $form["top_content"]["container_1"][$form_field["und"]["#field_name"]] = $form_field;
+                            unset($form[$form_key]);
+                        }
+                        if (in_array($form_field["und"]["#field_name"], $container_2_haystack)) {
+                            $form["top_content"]["container_2"][] = $form_field;
+                            unset($form[$form_key]);
+                        }
+                    }
+                }
+            }
+            $form["top_content"]["container_1"]["#weight"] = -20;
+            $form["top_content"]["container_2"]["#weight"] = -19;
+
+            $form["top_content"]["container_1"]["biblio_keywords"]["#size"] = 40;
+            $form["top_content"]["container_2"]["biblio_custom1"]["#rows"] = 1;
+    //    $form["top_content"]["container_2"]["biblio_custom1"]["#type"] ="textfield";
+    //    $form["top_content"]["container_2"]["biblio_custom1"]["#weight"] = -19;
+            $form["top_content"]["container_2"]["title"]["#size"] = 60;
+            $form["top_content"]["container_2"]["title"]["#weight"] = -17;
+
+            $form["top_content"]["container_2"]["biblio_url"]["#weight"] = -18;
+            $form["top_content"]["container_2"]["biblio_url"]["#field_suffix"] = '<a href="#"id="url_action" class="description" >open link in a new tab</a>  /  <a href="#" id="url_action_pop" class="description" >  open link in a popup</a>';
+
+            $form["top_content"]["container_2"][2]["#weight"] = 25; // taxonomy field
+
+            $form["top_content"]["container_2"]["biblio_type"] = $form["biblio_type"];
+            $form["top_content"]["container_2"]["biblio_type"]["#weight"] = 100;
+
+            unset($form["biblio_type"], $form["biblio_tabs"][1] //biblio_abstrct empty tab
+            );
+        }
+    }
+}
+//   biblio node edit form manipulation - END
+
+function laxo_biblio_solr_node_form_pre_render($form) {
+    //~ dpm($form);    
+    //~ foreach($form as $k => $v){
+    //~ 
+    //~ }
+//	$form['field_biblio_qualitive']['und']['#title'] .= '@21';
+//	$form['field_biblio_qualitive']['#weight'] = 21;
+////~ 
+//	$form['field_biblio_quantitative']['und']['#title'] .= '@22';
+//	$form['field_biblio_quantitative']['#weight'] = 22;
+//
+//	$form['field_biblio_research']['und']['#title'] .= '@23';
+//	$form['field_biblio_research']['#weight'] = 23;
+//	//~ 
+//	//~ $form['body']['#title'] .= '@24';
+//
+//	$form['biblio_tabs']['#weight'] = 24;
+//
+//	$form['biblio_type']['#title'] .= '@30';
+//	$form['biblio_type']['#weight'] = 30;
+//
+//	
+//	//~ $form['title']['#title'] .= '@98';
+//	$form['title']['#weight'] = 98;
+//	
+//~ 
+    if (isset($form["biblio_tabs"]) && count($form["biblio_tabs"]) != 0) {
+        //~ dpm($form["biblio_tabs"]);
+        //~ $form["biblio_tabs_9"] = $form["biblio_tabs"]["9"];
+        //~ unset($form["biblio_tabs"][9],$form['biblio_tabs_9']['#group'],$form['biblio_tabs_9']['#attached']);
+        //~ $form["biblio_tabs"][9]['biblio_custom1']['#type'] = 'contrib_widget';
+        //~ dpm($form);
+    }
+    return $form;
+}
+
+function laxo_biblio_solr_unique_node_autocomplete_callback($string = "") {
+    $matches = array();
+    if ($string) {
+        $result = db_select('node')
+                ->fields('node', array('nid', 'title'))
+                ->condition('title', db_like($string) . '%', 'LIKE')
+                ->range(0, 10)
+                ->execute();
+        foreach ($result as $node) {
+            $matches[$node->title . " [$node->nid]"] = check_plain($node->title);
+        }
+    }
+
+    drupal_json_output($matches);
+}
+//~ function laxo_biblio_solr_flag_flag($flag, $content_id, $account, $flagging){
+//~ // Do something in response to the flagging.
+//~ }
+//*/
+//~ function laxo_biblio_solr_preprocess_views_view_table(&$view){
+//~ if( isset($view)){	
+//~ }
+//~ }
+//~ }
+//~ function laxo_biblio_solr_pane_review($form, $form_state, $checkout_pane, $order) {
+//~ }
+//~ function laxo_biblio_solr_overlay_child_initialize() {
+//~ drupal_add_js(drupal_get_path('module', 'laxo_biblio_solr') . '/js/overlay.js');
+//~ }
+//~ 

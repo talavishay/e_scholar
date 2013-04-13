@@ -1,0 +1,124 @@
+/*
+    Document   : tables
+    Created on : Nov 29, 2012, 10:31:44 AM
+    Author     : user
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.feed-icon {
+    left: 20px;
+    position: fixed;
+    top: 35px;
+}
+.feed-icon img {
+    background: none repeat scroll 0 0 white;
+    border-radius: 10px 10px 10px 10px;
+    padding: 5px;
+    transform: scale(1.6);
+}
+body.page-orders-stats .view-orders-stats .views-field-line-item-label,
+body.page-orders-stats .view-orders-stats .views-field-field-commerce-bibilio-nid-1{
+    cursor:pointer;
+}
+body.page-orders-stats .view-orders-stats .views-field-line-item-label:hover,
+body.page-orders-stats .view-orders-stats .views-field-field-commerce-bibilio-nid-1:hover{
+    font-weight: bold;
+}
+body.page-orders-stats   .form-item .description {
+    font-size: 8px !important;
+}
+body.page-editor .views-exposed-widget.views-widget-per-page{
+    float: right;
+}
+body.page-orders-stats .views-widget-per-page label{
+    display: block;
+    position: absolute;
+    top: 5px;
+
+}
+body.page-orders-stats .form-item-items-per-page{
+    margin-top: 17px;
+}
+
+
+/*
+.views-exposed-widget.views-widget-filter-nid{
+ display: none;
+ }
+*/
+a#export_csv{
+    /*
+            position : absolute;
+            left : 20px;
+            top : 40px;
+    */
+    background: url('../images/buttons.png') repeat-x scroll 0 0 #FFFFFF !important;
+    border-radius: 15px ;
+    padding: 5px 20px;
+    text-align: center;
+    color: black;
+    z-index: 9999;
+}
+.views-reset-export_csv {
+    padding-top: 26px !important;
+}
+
+.page-editor #edit-field-biblio-qualitive-tid-wrapper{
+    clear: left;
+}
+.page-editor .views-widget-sort-by,
+.page-editor .views-widget-sort-order,
+.page-editor .views-reset-button{
+    float: right !important;
+}
+
+body.page-editor div#block-views-exp-editor-page.block h2.element-invisible{
+    position: absolute;
+    height: auto !important;
+    overflow: auto !important;
+
+
+}
+.view-users-stats.view-display-id-embed_1{
+    border-top: dashed 1px gray;
+    padding-top: 20px;
+}
+
+h2.collapsiblock {
+    margin-top: 0px;
+}
+
+#edit-submit-editor {
+    font-weight: bold;
+}
+
+.views-field-biblio-custom1 p,
+#edit-field-biblio-qualitive-tid-wrapper,
+#edit-field-biblio-quantitative-tid-wrapper,
+#edit-field-biblio-research-tid-wrapper{
+      text-align: right;
+    direction: rtl !important;
+}
+
+
+aside .block{
+    margin-bottom: 10px;
+}
+aside .block label{
+    font-size: 12px
+}
+
+aside .block  input.form-text {
+    width: 100%;
+}
+
+
+.block-editor-block-2 {
+    border: 1px solid #6AAAAC;
+    border-radius: 10px 10px 10px 10px;
+    width: 110%;
+}
+.block-editor-block-2 input.form-text {
+    width: 50% !important;
+    margin: 0 auto;
+}

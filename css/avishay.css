@@ -1,0 +1,653 @@
+tr.odd td, tr.even td {
+  padding: 0.3em;
+}
+
+tr.odd {
+background: #FFFACD;
+}
+
+tr.even {
+background: #D9F4F3;
+}
+body.page-editor .views-exposed-widget.views-widget-per-page{
+float: right;
+}
+body.page-orders-stats .views-widget-per-page label{
+    display: block;
+    position: absolute;
+    top: 5px;
+
+}
+body.page-orders-stats .form-item-items-per-page{
+	margin-top: 17px;
+}
+.views-field-field-commerce-bibilio-nid-1:hover{
+font-weight: bold;
+}
+.views-field-field-commerce-bibilio-nid-1{
+cursor:pointer;
+}
+/*
+.views-exposed-widget.views-widget-filter-nid{
+ display: none;
+ }
+*/
+a#export_csv{
+/*
+	position : absolute; 
+	left : 20px; 
+	top : 40px;
+*/
+	background: url('../images/buttons.png') repeat-x scroll 0 0 #FFFFFF !important;
+    border-radius: 15px ;
+    padding: 5px 20px;
+    text-align: center;
+    color: black;
+    z-index: 9999;
+}
+.views-reset-export_csv {
+    padding-top: 26px !important;
+}
+    
+.page-editor #edit-field-biblio-qualitive-tid-wrapper{
+	clear: left;
+}
+.page-editor .views-widget-sort-by,
+.page-editor .views-widget-sort-order,
+.page-editor .views-reset-button{
+    float: right !important;
+}
+.region-header #block-system-user-menu {
+    width: auto !important;
+}
+#block-views-exp-editor-page{
+box-shadow: 0 5px 25px -9px white !important;
+width: 900px;
+font-size:100%;
+} 
+body.admin-menu .breadcrumb,
+body.page-editor .vbo-select-all-markup{
+	display: none !important;
+}
+body.page-editor a.active{
+color: #48A9E4;
+
+}
+#main{
+
+margin-top: 5px !important;
+}
+.breadcrumb {
+padding-bottom: 0px;
+}
+
+.breadcrumb .element-invisible{
+	display:none !important;
+}
+
+#admin-menu * * * *,
+#admin-menu * * *,
+#admin-menu * *,
+#admin-menu *,
+#admin-menu{
+	direction: ltr !important;
+
+}
+.one-sidebar #above_content {
+    width: 720px;
+        display: inline;
+    float: left;
+    position: relative;
+}
+
+
+body.page-editor #header #block-system-user-menu{
+	margin-top: 0px;
+}
+#header #block-system-user-menu{
+	float:right;
+	margin-top:10px;
+	height: 20px;
+}
+#header #block-system-user-menu h2{
+display:none;
+}
+#header #block-system-user-menu * {
+	float:right;
+}
+ .item {
+        position: relative;
+        width: 100px;
+        height: 40px;
+        top: 200px;
+        left: 400px;
+        background: #CCC;
+    }
+
+    .item .tooltip {
+        position: fixed; /** depends on how it handles the e.pageX and e.pageY **/
+        width: 80px;
+        height: 30px;
+        background: #06F;
+        z-index: 10;
+        display: none; /**let the tooltip be not visable, when startup **/
+    }
+
+
+form#user-pass-reset > div > p:nth-child(2){
+	font-size: 121%;
+    font-weight: bold;
+}
+body.page-search-api-solr-view #header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    box-shadow: 0 5px 25px -10px black;
+}
+body.page-search-api-solr-view #header #block-system-user-menu {
+    float: right;
+    height: 20px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+}
+#block-views-flag-bookmarks-block-2 > h2,
+#block-commerce-cart-cart > h2 {
+    margin-bottom: 0px !important;
+    margin-top: 6px !important;
+    font-size: 12px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+#block-views-flag-bookmarks-block-2 ,
+#block-commerce-cart-cart ,
+#block-system-user-menu {
+     box-shadow: -3px 5px 11px -3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.block-facetapi  h2 {
+	  padding-left: 8px;
+	  line-height: 0.6 !important;
+
+}
+.block-facetapi  h2 ,
+.block-facetapi  .content {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+body.admin-menu.page-search-api-solr-view #header{
+    margin-top: 20px;
+}
+/*
+body.page-search-api-solr-view #header,
+*/
+body.page-search-api-solr-view #page > #main-wrapper{
+	padding-top: 30px;
+
+}
+body.page-search-api-solr-view .breadcrumb{
+	padding-bottom: 0px;
+
+}
+
+body.page-search-api-solr-view #header .region-header{
+/*
+	width: 100% !important;
+*/
+/*
+	width: 100%;
+*/
+}
+body.page-search-api-solr-view div#edit-query-wrapper{
+	width: 64%;
+	direction: ltr;
+}
+body.page-search-api-solr-view .views-exposed-widget.views-widget-per-page{
+	float: left !important;
+	
+}
+body.page-search-api-solr-view .form-text.form-autocomplete {
+    width: 100%;
+	text-align: center;
+}
+body.page-search-api-solr-view .region-header,
+.block#block-views-exp-search-api-solr-view-page {
+	margin: 0px;
+}
+body.page-search-api-solr-view #header input#edit-query{
+}
+body.page-search-api-solr-view #header div.form-item-query {
+  text-align: center;
+/*
+    width: 100% !important;
+*/
+}
+body.page-search-api-solr-view #header div.form-item-query .views-widget{
+/*
+	width: inherit !important;
+*/
+}
+
+form#views-exposed-form-search-api-solr-view-page div.views-exposed-widget.views-submit-button{
+/*
+	margin:0xp;
+	padding:0px;
+	position: absolute;
+    right: 0px;
+*/
+	
+}
+label[for=edit-items-per-page]{
+	display: inline;
+}
+input#edit-submit-search-api-solr-view{
+	margin:5px 0 0 0 ;
+}
+
+table.bookmarkExportActionTaken{
+    display: block ;
+}
+body.page-user table.bookmarkExportActionTaken{
+	display: inline-table;
+}
+body.page-user #page-title{
+
+	display:none;
+	
+}
+#header .block.block-commerce-cart{
+/*
+	width: 100%;
+*/
+}
+.block.block-commerce-cart.fixed {
+    background: none repeat scroll 0 0 rgba(0, 0, 255, 0.82) !important;
+    left: 0;
+    position: fixed ;
+    top: 0;
+}
+.block#block-views-flag-bookmarks-block-2 .element-invisible{
+	position: relative;
+}
+.block#block-views-flag-bookmarks-block-2 .content{
+display:block;
+}
+#block-views-flag-bookmarks-block-2 h2.collapsiblock.collapsiblockCollapsed,
+#block-commerce-cart-cart h2.collapsiblock.collapsiblockCollapsed {
+    margin: 4px;
+}
+
+#block-views-flag-bookmarks-block-2 .element-invisible{
+ clip: none !important;
+ position: relative !important;
+}
+#block-views-flag-bookmarks-block-2{
+		  min-width: 100px;
+/*
+		  float: left !important;
+*/
+}
+
+.page-search-api-solr-view .tipsy-inner {
+    min-width: 600px !important;
+    font-size: 152%;
+    background-color: rgba(40, 14, 61, 0.99);
+}
+
+body.chrome .tipsy-inner {
+	position: relative;
+	left:-200px;
+}
+
+html.js input.form-autocomplete{
+/*
+	background: none !important;
+*/
+}
+.avishaycsspurr,
+ #purr-container .notice-body,
+ #purr-container .notice-body *,
+ #purr-container .notice-body * *,
+ #purr-container .notice-body * * *,
+ #purr-container .notice-body * * * *,
+ #purr-container .notice-body * * * * *{
+	direction: rtl;
+	font-family: sans-serif;
+	font-size: 19px !important;
+	line-height: 28px !important;
+}
+#header .view-flag-bookmarks.bookmark-block-view {
+    background: none repeat scroll 0 0 #0779BF;
+    position: relative;
+    z-index: 101;
+}
+img.views_flag_refresh-throbber{
+        top:40px !important;
+/*
+        background-image: url("/sites/all/modules/search_api_ajax/spinner.gif") !important;
+*/
+
+}
+/*
+#sb-player.html #header,
+#sb-player.html #footer-wrapper,
+#sb-player.html #breadcrumb,
+#sb-player.html #cartrefresh,
+#sb-player.html #sidebar-first{
+*/
+#sb-player.html #page > div:not(#main-wrapper),
+#sb-player.html #page > div#main-wrapper > #main > div:not(#content){
+display: none;
+
+}
+#sb-player.html{
+
+overflow-x: hidden;
+}
+/*
+
+#sb-player.html .view-laxo-biblio-data-output {
+positino
+display: block !important;
+
+}
+
+*/
+
+th.views-field.views-field-field-commerce-bibilio-nid,td.views-field.views-field-field-commerce-bibilio-nid {
+    display: none;
+}
+
+.sectionClearWidth{
+width: inherit !important;
+}
+
+.old{
+opacity: 0.6;
+}
+
+.citation_styles div {
+	display:none;
+	position: absolute;
+	top:0px;
+	left:0px;
+}
+.citation_styles label {
+	float: left;
+	width: 10%;
+	text-align: center;
+	border: 1px solid gray;
+	border-radius: 6px;
+	margin-right: 11px;
+}
+.citation_styles.active label {
+	background-color: rgba(0,0,155,0.1);
+}
+.citation_styles div {
+	position: absolute;
+	top: 54px;
+	left: 22px;
+}
+#apa.citation_styles  div{
+/*
+	display:block;
+*/
+}
+
+a.click_overide{
+	background-image: url("/misc/progress.gif") !important;
+	opacity: 0.5;
+}
+
+
+#block-commerce-cart-cart .views-field.views-field-field-laxo-name {
+	max-width: 320px;
+}
+
+
+.hidden{
+	display:none;
+
+}
+.field-name-field-commerce-bibilio-nid ,.field-name-field-commerce-bibilio-custom4{
+/*
+    display: none;
+*/
+}
+.view-search-api-solr-view .views-row-odd {
+background-color: rgba(0, 0, 255, 0.09);
+}
+
+.view-search-api-solr-view .views-row {
+border-bottom: 1px dashed gray;
+display: inline-block;
+
+position: relative;
+width: 100% !important; 
+}
+
+.view-search-api-solr-view .views-field-field-biblio-research,
+.view-search-api-solr-view .views-field-biblio-type,
+.view-search-api-solr-view .views-field-biblio-keywords,
+.view-search-api-solr-view .views-field-field-biblio-qualitive,
+.view-search-api-solr-view .views-field-biblio-custom1,
+.view-search-api-solr-view .views-field-field-biblio-quantitative{
+	float:right;
+	direction: rtl !important;
+	background: rgba(0, 0, 0, 0.11);
+	border-radius: 9px;
+	padding: 2px 9px 1px 10px;
+	border: 2px gray solid;
+	margin-left: 5px;
+    margin-top: 9px;
+}
+.view-search-api-solr-view .views-field.views-field-biblio-custom1 {
+display: block !important;
+
+position: relative;
+clear: both;
+margin: 0px;
+width: 100%;
+padding: 0px;
+border: none;
+border-radius: 0px;
+background: none;
+}
+.view-search-api-solr-view .views-field-biblio-custom4,
+.view-search-api-solr-view .views-field-title{
+	width:100%;
+	float:right;
+	direction: rtl !important;
+}
+.views-field-title span{
+	display: block;
+}
+.view-search-api-solr-view div.actions{
+
+	display: inline-block;
+
+	width: 100%;
+}
+.view-search-api-solr-view .views-field.views-field-nid,
+.view-search-api-solr-view .views-field.views-field-field-commerce{
+	display: inline-block;
+}
+.view-search-api-solr-view .views-field.views-field-nid{
+	min-width: 46%;
+	float: right;
+}
+.view-search-api-solr-view  div.actions div.views-field span.flag-wrapper{
+	float:right;
+}
+.view-search-api-solr-view .views-field.views-field-field-commerce{
+
+	float: left;
+}
+.view-search-api-solr-view .views-field-nid a,
+.view-search-api-solr-view .views-field-field-commerce a{
+	display: inline-block;
+	direction: ltr ;
+	text-align: center;
+	margin-top: 8px ;
+	padding: 0 10px;
+	height: 22px;	
+	border-radius: 8px 8px 8px 8px;
+	box-shadow: 1px 1px 1px;
+}
+
+a.get_url, a.get_export {
+    border-color: green;    
+}
+a.free_url{
+	border-color: purple;
+}
+a.cart_export,a.cart_url{
+	border-color: red ;
+}
+.view-search-api-solr-view a.buy_export,
+.view-search-api-solr-view a.cart_export{
+	display: none;
+}
+a.buy_url:not(.cart_url), a.buy_export:not(.cart_export) {
+	border-color: orange;
+}
+
+.view-search-api-solr-view .views-field-field-commerce a{
+	border-size: 2px;
+	border-style: solid;
+	width:90px;
+}
+
+.view-search-api-solr-view .views-exposed-form .views-exposed-widget .form-submit {
+	margin-top: 0px !important;
+}
+
+.view-search-api-solr-view div.views-row div span a.flag{
+    background: rgba(0, 0, 0, 0.11);
+	border-radius: 9px;
+	padding: 2px 9px 1px 10px;
+}
+
+.view-search-api-solr-view .views-field-contextual-links{
+	position: absolute;
+	left: 40px;
+	  top: 0px;
+}
+
+.view-search-api-solr-view .views-field-tooltip.abstract_tip:hover{
+	background-color: rgba(200,200,255,0.9);
+}
+.view-search-api-solr-view .views-field-tooltip.abstract_tip{
+   font-size: 118%;
+    font-weight: bold;
+    text-align: center;
+
+}
+   
+
+
+div#sb-player.html{
+	background-color: white;
+}
+
+body{
+/*font-size:165%;*/
+}
+/*
+**	views-exposed-widgets
+*******************************/
+#featured {
+ padding: 0px !important; 
+}
+#featured .views-exposed-widgets > div {
+	float: right !important;
+}
+#featured div.views-exposed-widgets div.views-exposed-widget div.form-item label{
+	display: inline-block;
+}
+#views-exposed-form-test2-page .views-exposed-form .views-exposed-widget,
+#views-exposed-form-test2-page .views-exposed-form .views-exposed-widget .form-submit{
+    float: auto;
+    float: none;
+    padding: 10px;
+	margin:0px;
+}
+
+#views-exposed-form-test2-page .views-exposed-widget .views-submit-button,
+form#views-exposed-form-test2-page div div.views-exposed-form div.views-exposed-widgets,
+#edit-search-api-views-fulltext-wrapper { 
+    padding: 0px !important;
+	margin:0px !important;
+}
+
+#featured {
+  padding: 20px 0px 0px;
+}
+/*
+*autocomplete
+*/
+.autocomplete-user-input {
+    background: yellow;
+}
+
+html.js input.form-autocomplete{
+	back
+/*
+	background-size: 31px auto;
+*/
+}
+html.js input.throbbing {
+/*
+    background-position: 100%  -35px !important;
+*/
+}
+/*html[xml-lang=he] */
+body.chrome input.throbbing {
+/*
+    background-position: 4px  -37px !important;
+*/
+}
+/*.facetapi-facetapi-checkbox-links li a{
+ margin: 0 5px;
+}*/
+
+.block:not(#block-system-main){
+background-color: rgba(0, 0, 255, 0.05);
+border-radius: 10px 10px 10px 10px;
+box-shadow: 0 5px 25px -9px rgba(0, 0, 0, 0.8);
+padding: 0 5px !important;
+}
+
+/*
+*  bookmark flat view block
+*/
+
+div#block-views-flag-bookmarks-block-2 .ctools-ajaxing{
+/*
+display:none;
+*/
+}
+div#block-views-flag-bookmarks-block-2.block div.content div.view div.view-content div.item-list ul li.views-row{
+float:right;
+}
+
+#block-views-flag-bookmarks-block-1 {
+position: fixed;
+display: block;
+overflow: hidden;
+left: 0px;
+top: 0px;
+}
+a.get_export{
+	display: none !important;
+}
+
+***
+bookmark actions
+.getme{
+	background: none repeat scroll 0 0 red;
+}

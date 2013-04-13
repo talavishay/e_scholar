@@ -1,0 +1,615 @@
+#section-footer{
+    padding-bottom: 50px;
+}
+
+.view-header div#display_mode {
+    float: left;
+}
+.view-header  #display_mode > * {
+    display: inline-block;
+    margin: 0 8px;
+    cursor: pointer;
+}
+.view-header  #display_mode > span {
+    text-decoration: underline;
+}    
+.view-header div#display_mode {
+    display: inline-block;
+    float: left;
+}
+.view-search-api-solr-view .item-list{
+    padding-top: 11px;
+}
+.view-search-api-solr-view .view-header {
+    padding-bottom: 10px;
+}
+/*  PAGER   */
+.view-search-api-solr-view .item-list ul li *,
+.view-search-api-solr-view .item-list ul li * *,
+.view-search-api-solr-view .item-list ul li * * *{
+    color: #444444;
+    font-size: 14px;
+    display: inline-block;
+    line-height: 16px;
+}
+.view-search-api-solr-view .item-list ul li span,
+.view-search-api-solr-view .item-list ul li {
+     font-size: 14px;
+     line-height: 16px;
+}
+.view-search-api-solr-view .item-list ul li {
+    margin: 0 5px !important;
+    padding: 0 !important;
+}
+.pager-first.first, .pager-previous {
+    float: right;
+}
+.view-search-api-solr-view  .pager-previous > a {
+    
+    background: url("/sites/all/themes/e_scholar/images/arrow-right-single.png") no-repeat scroll 100% 1px transparent;
+    padding-right: 14px;
+}
+.view-search-api-solr-view  .pager-first.first > a {
+    background: url("/sites/all/themes/e_scholar/images/arrow-right.png") no-repeat scroll 100% 1px transparent;
+    padding-right: 22px;
+}
+.view-search-api-solr-view  .pager-next > a {
+    background: url("/sites/all/themes/e_scholar/images/arrow-left.png") no-repeat scroll -10px 0px transparent;
+    padding-left: 15px;
+}
+.view-search-api-solr-view  .pager-last.last > a {
+    background: url("/sites/all/themes/e_scholar/images/arrow-left.png") no-repeat scroll 0% 0px transparent !important;
+    padding-left: 22px !important;
+}
+.view-search-api-solr-view .item-list ul li.pager-current{
+    vertical-align: middle !important;
+}
+
+.view-search-api-solr-view .item-list ul li.pager-current.first {
+    /*padding-right: 240px;*/
+}
+.view-search-api-solr-view  #top_pager  .item-list {
+ border-bottom: 1px solid #B7B7B7;
+    border-top: 1px solid #B7B7B7;
+    height: 20px;
+    line-height: inherit;
+    padding-bottom: 6px;
+    padding-top: 10px;
+}
+
+.view-search-api-solr-view  .view-content {
+    /*padding-right: 10px;*/
+}
+.view-search-api-solr-view .views-row {
+      border-bottom: 1px solid #b7b7b7;
+    margin-bottom: 10px;
+    padding: 30px 10px 0 0;
+    position: relative;
+}
+.view .throbber {
+ 
+    position: absolute;
+    
+}
+.views-field-field-commerce .throbber {
+    position: relative;
+    top:40px;
+}
+.view-search-api-solr-view .flag_wrap input{
+    box-shadow: 0 0 0 1px #f04e22;
+}
+.page-search-api-solr-view  .region-inner.region-sidebar-first-inner {
+    padding-right: 20px;
+    padding-top: 33px;
+}
+
+    
+.views-row h1,
+.views-row h2,
+.views-row h3,
+.views-row h4,
+.views-row h5{
+    display: inline;
+    
+}
+.view .views-field.views-field-biblio-year{
+    font-style: italic;
+}
+
+span#sep {
+    margin: 0 10px;
+}
+
+.views-field-field-biblio-qualitive .research-method-title,
+.views-field-field-biblio-quantitative .research-method-title{
+    font-weight: bold;
+    padding-right: 49px;
+}
+.views-label{
+   color: #6AAAC1;
+    font-size: 15px;
+    font-weight: bold;
+    padding-right: 49px;
+
+    width: 39%;
+}
+.field-content{
+    display: inline-block;
+    width: 60%;
+
+}
+.views-field-biblio-year .field-content,
+.views-field-biblio-custom1 .field-content{
+    width: auto;
+}
+.views-field.views-field-field-biblio-research {
+    margin-top: 23px;
+}
+.views-field.views-field-field-biblio-research,
+.views-field-field-biblio-qualitive,
+.views-field-field-biblio-quantitative,
+.views-field-biblio-type,
+.views-field-biblio-keywords{
+    margin-bottom: 9px;
+    font-size: 14px;
+    color: #575757;
+}
+.views-label-biblio-keywords{
+        vertical-align: top;
+}
+.views-field-biblio-keywords .field-content{
+    line-height: 19px;
+    position: relative;
+    top: -1px;
+}
+.views-field.views-field-biblio-year .field-content, 
+.views-field.views-field-biblio-custom1 .field-content,
+span#sep{
+    color: #6AAAC1 !important;
+    font-size: 18px !important;
+    font-weight: 600;
+    letter-spacing: -0.8px;
+    text-shadow: 1px 0.5px 1px rgba(0, 0, 0, 0.3);
+     filter: progid:DXImageTransform.Microsoft.Shadow(color=#e2e2e2,direction=45);
+     display: inline;
+
+}
+.actions{
+    margin-top: 40px;
+}
+.views-field-field-commerce a.get_url,
+.views-field-field-commerce a.free{
+       background: url("/sites/all/themes/e_scholar/images/url_btn_green.png") no-repeat scroll 0 0 transparent;
+    
+}
+.views-field-field-commerce a.buy_url,
+.views-field-field-commerce .cart_url{
+    background: url("/sites/all/themes/e_scholar/images/url_btn_orange.png") no-repeat scroll 0 0 transparent;
+}
+.views-field-field-commerce a.get_url,
+.views-field-field-commerce a.free,
+.views-field-field-commerce a.buy_url,
+.views-field-field-commerce .cart_url{
+     color: white;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    padding: 31px 5px 16px 53px;
+    text-align: center;
+    text-decoration: none;
+    width: 134px;
+}
+.views-field-field-commerce a.free{
+    padding-top: 28px;
+}
+.views-field-field-commerce a {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.view-search-api-solr-view .mlt_action {
+    display: inline-block;
+    margin: 12px 0 22px;
+    padding: 0 7px;
+}
+#advanced_search_title h2{
+    font-size: 18px;
+    letter-spacing: -0.9px;
+    margin: 0;
+    color:#6AAAC1 ;
+}
+.show_mlt_wrap {
+    position: relative;
+    right: -22px;
+}
+.show_mlt_wrap > a {
+    font-size: 15px;
+    letter-spacing: 0.1px;
+    padding: 0 11px !important;
+    color: inherit;
+}
+.view-search-api-solr-view  div.mlt_arrow{
+    background: url("/sites/all/themes/e_scholar/images/mlt_arrow.png") no-repeat scroll 0 0 transparent;
+    display: inline-block;
+    height: 11px;
+    left: 80px;
+    position: relative;
+    top: 17px;
+    width: 18px;
+}
+.view-search-api-solr-view .mlt_wrap{
+    box-shadow: 1px 21px 35px -15px #B7B7B7;
+    padding: 10px;
+    border-radius: 10px;
+    background: #d9e6eb;
+    position: relative;
+    top: -9px;
+}
+.view-search-api-solr-view .mlt_wrap .views-row{
+    border:  none;
+    margin-right: 2%;
+}
+.view-search-api-solr-view .mlt_wrap .show_mlt_wrap{ 
+     right: 4px;
+    top: 4px;
+}
+    
+.region-inner.region-sidebar-first-inner > div#advanced_search_title {
+    font-size: 18px;
+    height: 20px;
+    margin-bottom: 9px;
+    margin-top: 0;
+    min-width: 190px;
+    padding-right: 22px;
+    right: 0;
+}
+.block.block-facetapi {
+   padding-right: 20px !important;
+    width: 197px;
+}
+
+.block-facetapi .content.clearfix {
+background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    border-radius: 10px 0 10px 0;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 4px;
+    padding: 10px 0;
+}
+.block-facetapi h2 a{
+    color: #666666;
+    font-size: 14px;
+    font-weight: normal;
+    text-decoration: none;
+    text-shadow: none
+    
+}
+.block-facetapi .collapsiblock.collapsiblockCollapsed{
+   background: url("/sites/all/themes/e_scholar/images/block-facet.png") no-repeat scroll 4px 17px transparent;
+    margin: 0 0 3px;
+    overflow: hidden;
+    padding: 2px 0 35px;
+    width: 198px;
+}
+.block-facetapi .collapsiblockCollapsed a,
+.block-facetapi .collapsiblock a{
+    background: none ;
+}
+.block-facetapi ul li.leaf{
+    list-style: none;
+    margin-right: 0px;
+}
+.block-facetapi ul li.leaf a{
+    font-size: 14px;
+    text-decoration: none;
+    color: gray;
+}
+.view-search-api-solr-view .mlt .views-row{
+    border : none;
+}
+
+div.flag_wrap {
+    position: absolute;
+    right: -11px;
+    top: 31px;
+}
+/*##### pager   */ 
+/*OMEGA-VISULAS BYPASS*/
+.pager {
+    -moz-border-bottom-colors: none !important;
+    -moz-border-left-colors: none !important;
+    -moz-border-right-colors: none !important;
+    -moz-border-top-colors: none !important;
+    background: none !important;
+    border-color: none !important;
+    border-image: none !important;
+    border-radius: none !important;
+    border-style: none !important;
+    border-width: none !important;
+    font-size: inherit !important;
+}
+.pager li a {
+    background: none;
+    
+}
+.pager li {
+    border-right: none !important;
+    color: inherit !important;
+    font: inherit !important;
+    outline: 0 none !important;
+}
+.pager li.first, .pager li.first a, .pager li.first a:hover {
+    border-radius: 0px;
+}
+.pager li.pager-current {
+    background: none !important;
+    color: inherit !important;
+    outline: 0 none !important;
+}
+.pager li.pager-current {
+    font-weight: inherit !important;
+    padding: auto !important;
+}
+/*####*/
+#region-preface-third{
+    background: none repeat scroll 0 0 #444444;
+border-radius: 10px 10px 0 0;
+bottom: 0;
+display: block;
+min-height: 38px;
+position: fixed;
+width: 960px;
+z-index: 999;
+
+}
+#cart-toaster:after {
+    border-color: white transparent;
+    border-style: solid;
+    border-width: 8px 8px 0;
+    bottom: -8px;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 15px;
+    width: 0;
+}
+#cart-toaster:before {
+    border-color: #E3E3E3 transparent;
+    border-style: solid;
+    border-width: 8px 8px 0;
+    bottom: -9px;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 15px;
+    width: 0;
+}
+#cart-toaster {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #E3E3E3;
+    border-radius: 5px 5px 5px 5px;
+    bottom: 43px;
+    line-height: 1.2em;
+    padding: 5px 15px;
+    position: absolute;
+    left: 0px;
+    width: 214px;
+    z-index: 0;
+    top: 0;
+    display: none;
+    opacity: 0;
+
+}
+
+#cart-toaster {
+    line-height: 1.2em;
+}
+
+#cart-toaster #toaster-header {
+    border-bottom: 1px dotted #A3A4A7;
+    display: inline-block;
+    margin-bottom: 20px;
+    text-align: right !important;
+    width: 100%;
+}
+#cart-toaster #toaster-header h3 {
+    float: right;
+    line-height: 1.2em;
+    margin: 10px 0 0;
+    padding-bottom: 5px;
+}
+.close-button, #cart-toaster #toaster-header #toaster-remove {
+     background: url("/sites/all/themes/e_scholar/images/btn_close_sprite.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    left: 15px;
+    position: absolute;
+    top: 3px;
+    width: 24px;
+}
+#toaster-content #current_msg {
+    display: inline-block;
+    padding: 0 0 40px;
+}
+#toaster-content > a {
+    bottom: 20px;
+    color: #6AAAC1;
+    left: 20px;
+    position: absolute;
+}
+
+#region-preface-third td, #region-preface-third th {
+    padding: 10px;
+}
+
+/*  block-commerce-cart-cart    */ 
+#block-views-flag-bookmarks-block-2 ,
+#block-commerce-cart-cart  {
+    float: left;
+    max-width: 50%;
+    
+}
+#block-views-flag-bookmarks-block-2 .views-field-field-commerce,
+#block-commerce-cart-cart  .views-field-field-commerce-bibilio-nid{
+    display: none;
+}
+
+#block-commerce-cart-cart  {
+max-width: 50%;
+
+border-radius: 10px 0 0 0;
+}
+#block-views-flag-bookmarks-block-2 .block-title.collapsiblockCollapsed,
+#block-commerce-cart-cart .block-title.collapsiblockCollapsed {
+    margin: auto auto 0px;
+}
+#block-views-flag-bookmarks-block-2 .block-title,
+#block-commerce-cart-cart .block-title {
+    margin: auto auto 5px;
+    cursor: pointer;
+    float: left !important;    
+    font-size: 16px;
+}
+
+#block-views-flag-bookmarks-block-2 .block-title {
+    color: #FFFFFF;
+    float: none;
+    font-size: 16px;
+    font-weight: normal;
+    position: relative;
+    text-align: left;
+    top: 2px;
+    width: 100%;
+}
+#region-preface-third .block-title  a{
+    text-decoration: none;
+    height: 22px;
+    padding: 8px 18px;
+    
+}
+#block-commerce-cart-cart .block-title a{
+    background: url("/sites/all/themes/e_scholar/images/shopping-cart.png") no-repeat scroll 50% 50% #6AAAC1;
+    border-top-left-radius: 10px ; 
+}
+
+#block-views-flag-bookmarks-block-2 .view-empty p,
+#block-commerce-cart-cart .cart-empty-block{
+    color: white;
+    padding: 80px;
+}
+#block-views-flag-bookmarks-block-2 .collapsiblockCollapsed a{
+    background-image: none;
+    color: #fff;
+}
+.view-commerce-cart-block .view-content {
+    float: left;
+    max-height: 200px;
+    overflow-y: scroll;
+    margin: 0 2%;
+    border-radius: 0px 10px 0 0 ;
+    background: none repeat scroll 0 0 white;
+}
+.view-commerce-cart-block .view-footer {
+    background: none repeat scroll 0 0 white;
+    border-radius: 0 0 10px 10px;
+    float: left;
+    margin: 0 2% 2%;
+    overflow: hidden;
+    padding: 15px 10% 0;
+    width: 76%;
+}
+
+
+/*#region-preface-third{ TABELS*/
+#region-preface-third #block-views-flag-bookmarks-block-2 .view-content {
+      border: 1px solid #B7B7B7;
+/*    border-radius: 5px 5px 5px 5px !important;
+    overflow-x: hidden;*/
+    padding: 0;
+}
+#region-preface-third .view table.views-table thead{
+  height: 40px;
+}
+#region-preface-third .view table.views-table  tbody tr {
+    height: 38px !important;
+}
+#region-preface-third #block-views-flag-bookmarks-block-2 .view-content ,
+#region-footer-third #block-commerce-cart-cart  .view-content,
+#region-footer-third #block-commerce-cart-cart .view-footer{
+      margin: 0 2%;
+}
+#region-preface-third .login {
+    border-radius: 0 10px 0 0;
+    float: right;
+    min-height: 38px;
+    margin-right: 10px;
+}
+#region-preface-third .login li {    
+    float: right;
+    height: 16px;
+    margin: 0;
+    padding: 12px 0 10px;
+}
+#region-preface-third .login li a{    
+ border-left: 1px solid;
+    color: white;
+    font-size: 15px;
+    margin: 0;
+    padding: 0 23px !important;
+    text-decoration: none;
+}
+#region-preface-third  li:last-child a {
+    border-left: medium none !important;
+}
+
+.login a#block-login-toggle {
+    background: url("/sites/all/themes/e_scholar/images/arrow-left.png") no-repeat scroll 70px -3px transparent;
+}
+
+#region-preface-third .login form{
+    display: none;
+}
+
+
+/*###  BOOKMARK*/  
+.flag-message{
+    top: -30px;
+    position: relative;
+    background: white;
+    font-size:16px;
+}
+.flag-throbber {
+    position: relative;
+    top: -30px;
+}
+.type_image{
+    height: 85px;
+    position: absolute;
+    right: -10px;
+    top: 70px;
+    width: 60px;
+}
+.journal, .other, .report, .book, .paper, .tiza, .paper_work{
+    background-image: url('/sites/all/themes/e_scholar/images/biblio_type_sprite.png');
+    background-repeat: no-repeat;
+}
+.type_image.other {
+    background-position: 0 -135px;
+}
+.type_image.report {
+    background-position: 0 -276px;
+}
+.type_image.paper {
+    background-position: 0 -552px;
+}
+.type_image.tiza {
+       background-position: 0 -688px;
+}
+
+/*PRICE*/
+.url_price {
+    color: inherit;
+    font-size: 14px;
+    font-style: italic;
+}
+
+

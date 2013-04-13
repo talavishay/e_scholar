@@ -1,0 +1,49 @@
+/*
+.views-row-odd , .views-row-even  {
+  padding-bottom: 0.3em;
+}
+
+.views-row-odd {
+background: #FFFACD;
+}
+
+.views-row-even {
+background: #D9F4F3;
+}
+*/
+body.page-editor{
+	direction: ltr !important;
+}
+body.page-editor .views-widget-filter-status{
+	clear: right;
+	
+}
+.flag-wrapper a.flag{
+/*
+	display: none;
+*/
+}
+div.flag_wrap{
+ position: absolute;
+    right: -20px;
+    top: 0;
+}
+.mlt_action{
+	padding: 0 5px ;
+}
+ 
+body .loading{
+	 background: url("/misc/throbber.gif") no-repeat scroll 3px -19px transparent;
+    padding-left: 20px;
+}
+
+#sb-player.html {
+    background-color: #fff;
+    text-align: right;
+     padding: 10px;
+}
+
+#shadowbox_buy_url_bug{
+	display: none !important;
+
+}
