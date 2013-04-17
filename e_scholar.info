@@ -1,0 +1,11 @@
+name = e_scholar
+description = main e_scholar module..
+core = 7.x
+
+
+;stylesheets[all][] = css/avishay.css
+stylesheets[all][] = css/avishay2.css
+
+scripts[] = js/avishay.js
+
+

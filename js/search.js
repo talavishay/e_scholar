@@ -149,8 +149,8 @@ Drupal.avishay.bookmarkFlag = function(context){
 	});	
 };
 Drupal.avishay.flags = function(){	
-	if(typeof Drupal.settings.laxo_biblio_solr === 'object' ){
-		jQuery(Drupal.settings.laxo_biblio_solr.biblio_biblio_url_nodes).each(function(i,val){
+	if(typeof Drupal.settings.e_scholar === 'object' ){
+		jQuery(Drupal.settings.e_scholar.biblio_biblio_url_nodes).each(function(i,val){
 			var nid = jQuery(val).attr("nid");
 			var buy_url = jQuery(".nid_"+nid+".buy_url").attr({"href":val.url}).removeClass('buy_url').addClass('get_url').text("קבל קישור");
 			if(val.url === ""){
@@ -166,7 +166,7 @@ Drupal.avishay.flags = function(){
 				jQuery(table_row).removeClass('buy_url').addClass('get_url');
 			}
 		});
-		jQuery(Drupal.settings.laxo_biblio_solr.biblio_biblio_export_nodes).each(function(i,val){
+		jQuery(Drupal.settings.e_scholar.biblio_biblio_export_nodes).each(function(i,val){
 			//~ jQuery("a.export.nid_"+val.nid).attr("href",val.url)
 			var val = jQuery(".nid_"+val.nid+".buy_export").removeClass("buy_export").removeClass("cart_export").addClass('get_export').text('קבל ביבליו');
 			var views_row = jQuery(val).parents(".views-row");
