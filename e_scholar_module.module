@@ -1,21 +1,21 @@
 <?php
-function e_scholar_form_alter(&$form, &$form_state){
+function e_scholar_module_form_alter(&$form, &$form_state){
     if($form["#id"] === "views-exposed-form-search-api-solr-view-page"){
 //            $form['text']['#attributes']['onfocus'] = "this.value = '';";
   //          $form['text']['#attributes']['onclick'] = "this.value = '';";
     }
 }
-function e_scholar_commerce_currency_info_alter(&$currencies, $langcode) {
+function e_scholar_module_commerce_currency_info_alter(&$currencies, $langcode) {
 //    $currencies['ILS']['symbol'] = 'ש"ח';
 //    $currencies['ILS']['symbol_placement'] = 'before';
     $currencies['ILS']['code_placement'] = 'after';
     $currencies['ILS']['code'] = 'שח';
 }
-function e_scholar_form_user_profile_form_alter(&$form, &$form_state){
+function e_scholar_module_form_user_profile_form_alter(&$form, &$form_state){
     $f = 0;
     unset($form["locale"], $form["contact"]);
 }
-function e_scholar_preprocess($variables, $hook) {
+function e_scholar_module_preprocess($variables, $hook) {
     if ($hook === "page") {
         $path = arg(0);
         
@@ -25,7 +25,7 @@ function e_scholar_preprocess($variables, $hook) {
     }
 }
 
-function e_scholar_init() {
+function e_scholar_module_init() {
     if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url"){
             drupal_add_css('sites/all/themes/omega/omega/css/omega-visuals.css');        
     } 
@@ -38,7 +38,7 @@ function e_scholar_init() {
 }
 
 //~ /** Custom checkout pane.
-function e_scholar_base_checkout_form($form, &$form_state, $checkout_pane, $order) {
+function e_scholar_module_base_checkout_form($form, &$form_state, $checkout_pane, $order) {
     $data = '';
     $data .= $order->mail;
     $user = user_load_by_name($order->mail);
@@ -83,17 +83,17 @@ function e_scholar_base_checkout_form($form, &$form_state, $checkout_pane, $orde
     return $checkout_form;
 }
 
-function e_scholar_commerce_checkout_pane_info_alter(&$panes) {
-    if (!empty($panes['e_scholar_base'])) {
+function e_scholar_module_commerce_checkout_pane_info_alter(&$panes) {
+    if (!empty($panes['e_scholar_module_base'])) {
         // Change the title of the "Cart Contents" pane.
-        $panes['e_scholar_base']['title'] = t('order completed');
+        $panes['e_scholar_module_base']['title'] = t('order completed');
     }
 }
 
-function e_scholar_commerce_checkout_pane_info() {
-    $panes['e_scholar_base'] = array(
+function e_scholar_module_commerce_checkout_pane_info() {
+    $panes['e_scholar_module_base'] = array(
         'title' => t('laxo checkout complete info '),
-        'base' => 'e_scholar_base',
+        'base' => 'e_scholar_module_base',
         // The checkout page where this should be displayed by default.
         'page' => 'complete',
         'weight' => -5,
@@ -104,7 +104,7 @@ function e_scholar_commerce_checkout_pane_info() {
     return $panes;
 }
 
-function e_scholar_commerce_checkout_complete($order) {
+function e_scholar_module_commerce_checkout_complete($order) {
     /* Parameters:
      * 	$order: The order that just completed checkout.
      * logic:
@@ -125,7 +125,7 @@ function e_scholar_commerce_checkout_complete($order) {
     }
 }
 
-function e_scholar_views_pre_render(&$view) {
+function e_scholar_module_views_pre_render(&$view) {
     //~ dpm($view->name);
     /* the view "free_laxo_biblio_data_output" returns commerce=null nodes...* */
     if (isset($view) && arg(0) != 'admin') {
@@ -148,8 +148,8 @@ function e_scholar_views_pre_render(&$view) {
                 _get_user_flags();// helper function to retrive current user flags 
             }
             drupal_add_library('system', 'drupal.ajax');            
-            drupal_add_js(drupal_get_path("module", "e_scholar") . '/js/search.js');
-            drupal_add_css(drupal_get_path("module", "e_scholar") . '/css/search.css');
+            drupal_add_js(drupal_get_path("module", "e_scholar_module") . '/js/search.js');
+            drupal_add_css(drupal_get_path("module", "e_scholar_module") . '/css/search.css');
             // CHROME BACK btn ISSUE
 //            drupal_add_http_header('Cache-Control', 'no-cache, no-store, must-revalidate', TRUE);
 //            drupal_add_http_header('Pragma', 'no-cache', TRUE); // HTTP 1.0.
@@ -175,8 +175,8 @@ function e_scholar_views_pre_render(&$view) {
             }
         }
         if ($view->name == 'editor' || $view->name == 'orders_stats' ) {
-            drupal_add_js(drupal_get_path("module", "e_scholar") . '/js/orders_state.js');
-            drupal_add_css(drupal_get_path("module", "e_scholar") . '/css/tables.css');
+            drupal_add_js(drupal_get_path("module", "e_scholar_module") . '/js/orders_state.js');
+            drupal_add_css(drupal_get_path("module", "e_scholar_module") . '/css/tables.css');
         }
     }
 }
@@ -201,12 +201,12 @@ function _get_user_flags(){
     }
     drupal_add_js(array('username' => $user->name == "" ? $user->email : $user->name,
         'uid' => $user->uid,
-        'e_scholar' => array("biblio_biblio_url_nodes" => $biblio_biblio_url_nodes,
+        'e_scholar_module' => array("biblio_biblio_url_nodes" => $biblio_biblio_url_nodes,
             "biblio_biblio_export_nodes" => $biblio_biblio_export_nodes),
         'arg' => arg()), 'setting');
 
 }
-function e_scholar_preprocess_views_view_fields(&$vars) {
+function e_scholar_module_preprocess_views_view_fields(&$vars) {
     /*  laxo search bookmarks
      * replaces the nid field from the "search_api_solr_view" view with a "bookmark" flag for that node..
      */
@@ -250,7 +250,7 @@ function e_scholar_preprocess_views_view_fields(&$vars) {
  *
  * Add custom modules to search api ajax blocks.
  */
-function e_scholar_search_api_ajax_modules_alter(&$modules) {
+function e_scholar_module_search_api_ajax_modules_alter(&$modules) {
     $modules[] = 'facetapi';
     $modules[] = 'flag';
     $modules[] = 'views_flag_refresh';
@@ -259,7 +259,7 @@ function e_scholar_search_api_ajax_modules_alter(&$modules) {
 /**
  * Implements hook_search_api_ajax_settings().
  */
-function e_scholar_search_api_ajax_settings() {
+function e_scholar_module_search_api_ajax_settings() {
     $settings = array(
         // required: CSS ID for the main content (search results html)
         'content' => '#main #content .content',
@@ -283,40 +283,40 @@ function e_scholar_search_api_ajax_settings() {
     return $settings;
 }
 
-function e_scholar_entity_property_info_alter(&$info) {
+function e_scholar_module_entity_property_info_alter(&$info) {
     /* 	adding fields to be indexd by search_api@solr  */
     $info['node']['properties']['biblio_custom1'] = array(
         'type' => 'text',
         'label' => t('laxo title'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_biblio_custom1_getter_callback',
+        'getter callback' => 'e_scholar_module_biblio_custom1_getter_callback',
     );
     $info['node']['properties']['biblio_keywords'] = array(
         'type' => 'list<text>',
         'label' => t('biblio keywords'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_keywords_getter_callback',
+        'getter callback' => 'e_scholar_module_keywords_getter_callback',
     );
     $info['node']['properties']['biblio_contributors'] = array(
         'type' => 'list<text>',
         'label' => t('biblio contributors'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_contributors_getter_callback',
+        'getter callback' => 'e_scholar_module_contributors_getter_callback',
     );
     $info['node']['properties']['biblio_year'] = array(
         'label' => t('biblio year'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_year_getter_callback',
+        'getter callback' => 'e_scholar_module_year_getter_callback',
     );
     $info['node']['properties']['biblio_type'] = array(
         'label' => t('biblio type'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_type_getter_callback',
+        'getter callback' => 'e_scholar_module_type_getter_callback',
     );
     $info['node']['properties']['biblio_secondary_title'] = array(
         'label' => t('biblio secondary title'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_secondary_title_getter_callback',
+        'getter callback' => 'e_scholar_module_secondary_title_getter_callback',
     );
     $info['node']['properties']['biblio_abstract '] = array(
         'label' => t('biblio abstract'),
@@ -326,16 +326,16 @@ function e_scholar_entity_property_info_alter(&$info) {
     $info['node']['properties']['biblio_url'] = array(
         'label' => t('biblio url'),
         'sanitized' => TRUE,
-        'getter callback' => 'e_scholar_url_getter_callback',
+        'getter callback' => 'e_scholar_module_url_getter_callback',
     );
 }
 
-//e_scholar_entity_property_info_alter--Getter callbacks # START
-function e_scholar_biblio_custom1_getter_callback($item) {
+//e_scholar_module_entity_property_info_alter--Getter callbacks # START
+function e_scholar_module_biblio_custom1_getter_callback($item) {
     return $item->biblio_custom1;
 }
 
-function e_scholar_contributors_getter_callback($item) {/** * Getter callbacks for multiple field. */
+function e_scholar_module_contributors_getter_callback($item) {/** * Getter callbacks for multiple field. */
     $contributors = array();
     foreach ($item->biblio_contributors as $k => $v) {
         $contributors[] = $item->biblio_contributors[$k]["name"];
@@ -343,19 +343,19 @@ function e_scholar_contributors_getter_callback($item) {/** * Getter callbacks f
     return $contributors;
 }
 
-function e_scholar_keywords_getter_callback($item) {
+function e_scholar_module_keywords_getter_callback($item) {
     return $item->biblio_keywords;
 }
 
-function e_scholar_year_getter_callback($item) {
+function e_scholar_module_year_getter_callback($item) {
     return $item->biblio_year;
 }
 
-function e_scholar_type_getter_callback($item) {
+function e_scholar_module_type_getter_callback($item) {
     return $item->biblio_type_name;
 }
 
-function e_scholar_secondary_title_getter_callback($item) {
+function e_scholar_module_secondary_title_getter_callback($item) {
     return $item->biblio_secondary_title;
 }
 
@@ -364,19 +364,19 @@ function laxo_biblio_abstract_getter_callback($item) {
     return $item->biblio_abst_e;
 }
 
-function e_scholar_url_getter_callback($item) {
+function e_scholar_module_url_getter_callback($item) {
     return $item->biblio_url;
 }
 /** * biblio@solr Getter callbacks ## END */
 
 //~ ##########################/* ajax loader - ## START ## *
-function e_scholar_menu_alter(&$items){
+function e_scholar_module_menu_alter(&$items){
   $items['user/%user/view']['access callback'] = FALSE;
 }
 
-function e_scholar_menu() {
+function e_scholar_module_menu() {
     $items['unique_node_autocomplete_callback'] = array(
-        'page callback' => 'e_scholar_unique_node_autocomplete_callback',
+        'page callback' => 'e_scholar_module_unique_node_autocomplete_callback',
         //'file' => 'ajax_example_autocomplete.inc',
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
@@ -516,13 +516,13 @@ function ajax_get_checkout() {
     );
 }
 
-function e_scholar_commerce_cart_block() {
+function e_scholar_module_commerce_cart_block() {
     $output = views_embed_view("commerce_cart_block", "embed_1");
     return $output;
 }
 
 /*
-  //~ function e_scholar_user_access(){
+  //~ function e_scholar_module_user_access(){
   //~ if(!user_is_anonymous()){
   //~ return false;
   //~ } else {
@@ -535,7 +535,7 @@ function e_scholar_commerce_cart_block() {
   //~ }
   //~ }
   function ajax_node_response($type = 'ajax', $nid = 0) {
-  $output = e_scholar_load_noder($nid);
+  $output = e_scholar_module_load_noder($nid);
   $output = ajax_commerce_cart_block_response();
   if ($type == 'ajax') {
   $commands = array();
@@ -554,7 +554,7 @@ function e_scholar_commerce_cart_block() {
  * 
 
   function ajax_cart_block_response($type = 'ajax', $nid = 0) {
-  $output = _e_scholar_load_view($nid);
+  $output = _e_scholar_module_load_view($nid);
   if ($type == 'ajax') {
   $commands = array();
   $commands[] = ajax_command_replace('.view-commerce-cart-block', '<div class="view-commerce-cart-block">' . $output . '</div>');
@@ -570,14 +570,14 @@ function e_scholar_commerce_cart_block() {
   }
   }
   //~ // helper function: return content by nid
-  function e_scholar_load_noder($nid = 0) {
+  function e_scholar_module_load_noder($nid = 0) {
   $node = node_load($nid, NULL, false);
   if($node){
   $vnode = node_view($node);
   return theme("node", $vnode);
   }
   }
-  function e_scholar_get_block_cart($name = 'commerce_cart',$display_id = 'Master') {
+  function e_scholar_module_get_block_cart($name = 'commerce_cart',$display_id = 'Master') {
 
   $output = views_embed_view("commerce_cart_block");
   //~ $output = commerce_cart_block_view($block);
@@ -637,27 +637,27 @@ function rtf_help($nids, $style) {
         $rtf->getDocument();
 }
 
-function e_scholar_module_implements_alter(&$implementations, $hook) {
+function e_scholar_module_module_implements_alter(&$implementations, $hook) {
     //~ dpm($hook);
     // make this module form alter run last..( after biblio)
-    if ( ($hook == 'css_alter' && isset($implementations['e_scholar'])) ||($hook == 'form_alter' && isset($implementations['e_scholar'])) || ($hook == 'menu_alter' && isset($implementations['e_scholar']))) {
-        $group = $implementations['e_scholar'];
-        unset($implementations['e_scholar']);
-        $implementations['e_scholar'] = $group;
+    if ( ($hook == 'css_alter' && isset($implementations['e_scholar_module'])) ||($hook == 'form_alter' && isset($implementations['e_scholar_module'])) || ($hook == 'menu_alter' && isset($implementations['e_scholar_module']))) {
+        $group = $implementations['e_scholar_module'];
+        unset($implementations['e_scholar_module']);
+        $implementations['e_scholar_module'] = $group;
     }
 }
 
 //  biblio node edit form manipulation - START
 
-function e_scholar_form_node_form_alter(&$form, &$form_state, $form_id) {
-//    array_unshift($form['#submit'],  'e_scholar_biblio_node_form_validate');
+function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
+//    array_unshift($form['#submit'],  'e_scholar_module_biblio_node_form_validate');
 
     if( $form_id === "biblio_node_form"){
         $form['#attached']['css'] = array(
-            drupal_get_path("module", "e_scholar") . '/css/biblio_node_form.css'
+            drupal_get_path("module", "e_scholar_module") . '/css/biblio_node_form.css'
         );
         $form['#attached']['js'] = array(
-            drupal_get_path("module", "e_scholar") . '/js/biblio_node_form.js',
+            drupal_get_path("module", "e_scholar_module") . '/js/biblio_node_form.js',
         );
         $container_2_haystack = array("title", "biblio_url", "biblio_custom1", "field-keywords");
     //        "field_biblio_qualitive",  "field_biblio_quantitative", "field_biblio_research","field_commerce",
@@ -673,14 +673,14 @@ function e_scholar_form_node_form_alter(&$form, &$form_state, $form_id) {
             $form["top_content"]["container_1"] = array(
                 '#type' => 'fieldset',
     //            '#title' => t('container_1'),
-                '#attributes' => array('class' => array('e_scholar_node_form_top')),
+                '#attributes' => array('class' => array('e_scholar_module_node_form_top')),
     //            '#collapsible' => TRUE,
     //            '#collapsed' => FALSE,
             );
             $form["top_content"]["container_2"] = array(
                 '#type' => 'fieldset',
     //            '#title' => t('container_2'),
-                '#attributes' => array('class' => array('e_scholar_node_form_top')),
+                '#attributes' => array('class' => array('e_scholar_module_node_form_top')),
     //            '#collapsible' => TRUE,
     //            '#collapsed' => FALSE,
             );
@@ -751,7 +751,7 @@ function e_scholar_form_node_form_alter(&$form, &$form_state, $form_id) {
 }
 //   biblio node edit form manipulation - END
 
-function e_scholar_node_form_pre_render($form) {
+function e_scholar_module_node_form_pre_render($form) {
     //~ dpm($form);    
     //~ foreach($form as $k => $v){
     //~ 
@@ -787,7 +787,7 @@ function e_scholar_node_form_pre_render($form) {
     return $form;
 }
 
-function e_scholar_unique_node_autocomplete_callback($string = "") {
+function e_scholar_module_unique_node_autocomplete_callback($string = "") {
     $matches = array();
     if ($string) {
         $result = db_select('node')
@@ -802,18 +802,18 @@ function e_scholar_unique_node_autocomplete_callback($string = "") {
 
     drupal_json_output($matches);
 }
-//~ function e_scholar_flag_flag($flag, $content_id, $account, $flagging){
+//~ function e_scholar_module_flag_flag($flag, $content_id, $account, $flagging){
 //~ // Do something in response to the flagging.
 //~ }
 //*/
-//~ function e_scholar_preprocess_views_view_table(&$view){
+//~ function e_scholar_module_preprocess_views_view_table(&$view){
 //~ if( isset($view)){	
 //~ }
 //~ }
 //~ }
-//~ function e_scholar_pane_review($form, $form_state, $checkout_pane, $order) {
+//~ function e_scholar_module_pane_review($form, $form_state, $checkout_pane, $order) {
 //~ }
-//~ function e_scholar_overlay_child_initialize() {
-//~ drupal_add_js(drupal_get_path('module', 'e_scholar') . '/js/overlay.js');
+//~ function e_scholar_module_overlay_child_initialize() {
+//~ drupal_add_js(drupal_get_path('module', 'e_scholar_module') . '/js/overlay.js');
 //~ }
 //~ 
