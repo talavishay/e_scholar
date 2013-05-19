@@ -165,7 +165,6 @@ input#edit-biblio-keywords:focus, textarea#edit-biblio-abst-e-value:focus{
     display: none;
 
 }
-<<<<<<< HEAD
 
 body.chrome .laxo_biblio_solr_node_form_top{
     min-width: 49%;
@@ -177,8 +176,7 @@ body.chrome .laxo_biblio_solr_node_form_top{
 .form-item-field-biblio-qualitive-und{
     margin-bottom: 0px !important;
 }
-=======
->>>>>>> 12fa35d47b49943c91431dbb161950249f29d116
+
 .form-item-field-commerce-und-2,
 .form-item.form-type-checkbox.form-item-3-und-2 {
     display: none;
@@ -370,10 +368,7 @@ body.chrome .laxo_biblio_solr_node_form_top{
 
 #edit-biblio-url{
     position: absolute;
-    width:1000px;
     text-align: left;
-
-
 }
 .form-item-biblio-url .field-suffix{
     left: 209px;
@@ -384,6 +379,21 @@ body.chrome .laxo_biblio_solr_node_form_top{
     
     margin-bottom: 0px;
 }
-#edit-top-content .fieldset-wrapper{
-    margin-top: 0px;
+
+#edit-top-content fieldset {
+    float: right;
+    margin: 0 1%;
+    width: 42%;
+}
+
+#edit-field-biblio-lang{
+
+     float: right;
+}
+#edit-field-biblio-lang label{
+    width: auto;
+    position: static;
+}
+.form-type-textfield > textarea {
+    border: 1px solid gray;
 }

@@ -19,24 +19,24 @@ Drupal.settings.openurl = function(type){
     }
 };
 
-jQuery("#edit-biblio-url").bind("blur", Drupal.settings.openurl).bind("change", function(e){
+jQuery("#edit-biblio-url").bind("blur", Drupal.settings.openurl).bind("change blur", function(e){
         Drupal.settings.url = jQuery(e.currentTarget).val();
     });
 
-jQuery("a#url_action").unbind();
-jQuery("a#url_action").not('#copy_coustom1_to_title').bind("click", function(e){
+
+jQuery("a#url_action").bind("click", function(e){
     e.preventDefault();
     Drupal.settings.openurl("tab");
     return false;
 });
-jQuery("a#url_action_pop").unbind();
-jQuery("a#url_action_pop").not('#copy_coustom1_to_title').bind("click", function(e){
+
+jQuery("a#url_action_pop").bind("click", function(e){
     e.preventDefault();
     Drupal.settings.openurl("popup");
     return false;
 });
 
-if(typeof Drupal.settings.url !== "undefined"){
+if(typeof  Drupal.settings.url !== "undefined"){
     Drupal.settings.openurl();
     
 }
@@ -62,5 +62,18 @@ jQuery("#edit-submit").bind("submit", function(){
 jQuery('#edit-container-1 .fieldset-wrapper').prepend(jQuery(".form-item-biblio-url"));
 jQuery('#edit-biblio-custom1-value').addClass("heb");
 
+
+
+jQuery("a#url_action").bind("click", function(e){
+    e.preventDefault();
+    Drupal.settings.openurl("tab");
+    return false;
+});
+
+jQuery("a#url_action_pop").bind("click", function(e){
+    e.preventDefault();
+    Drupal.settings.openurl("popup");
+    return false;
+});
 
 });

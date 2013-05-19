@@ -29,21 +29,26 @@ div.flag_wrap{
     top: 0;
 }
 .mlt_action{
-	padding: 0 5px ;
-}
- 
+    display: inline-block;
+    padding: 0 5px;
+    text-align: center;
+} 
 body .loading{
 	 background: url("/misc/throbber.gif") no-repeat scroll 3px -19px transparent;
     padding-left: 20px;
 }
-
 #sb-player.html {
     background-color: #fff;
     text-align: right;
      padding: 10px;
 }
-
 #shadowbox_buy_url_bug{
 	display: none !important;
-
+}
+.views-ui-dialog fieldset{
+    direction: ltr;
+}
+#views-ajax-body form {
+    direction: ltr;
+    width: 100%;
 }

@@ -418,11 +418,11 @@ a.click_overide{
     display: none;
 */
 }
-.view-search-api-solr-view .views-row-odd {
+.view-search-api-solr .views-row-odd {
 background-color: rgba(0, 0, 255, 0.09);
 }
 
-.view-search-api-solr-view .views-row {
+.view-search-api-solr .views-row {
 border-bottom: 1px dashed gray;
 display: inline-block;
 
@@ -430,12 +430,12 @@ position: relative;
 width: 100% !important; 
 }
 
-.view-search-api-solr-view .views-field-field-biblio-research,
-.view-search-api-solr-view .views-field-biblio-type,
-.view-search-api-solr-view .views-field-biblio-keywords,
-.view-search-api-solr-view .views-field-field-biblio-qualitive,
-.view-search-api-solr-view .views-field-biblio-custom1,
-.view-search-api-solr-view .views-field-field-biblio-quantitative{
+.view-search-api-solr .views-field-field-biblio-research,
+.view-search-api-solr .views-field-biblio-type,
+.view-search-api-solr .views-field-biblio-keywords,
+.view-search-api-solr .views-field-field-biblio-qualitive,
+.view-search-api-solr .views-field-biblio-custom1,
+.view-search-api-solr .views-field-field-biblio-quantitative{
 	float:right;
 	direction: rtl !important;
 	background: rgba(0, 0, 0, 0.11);
@@ -445,7 +445,7 @@ width: 100% !important;
 	margin-left: 5px;
     margin-top: 9px;
 }
-.view-search-api-solr-view .views-field.views-field-biblio-custom1 {
+.view-search-api-solr .views-field.views-field-biblio-custom1 {
 display: block !important;
 
 position: relative;
@@ -457,8 +457,8 @@ border: none;
 border-radius: 0px;
 background: none;
 }
-.view-search-api-solr-view .views-field-biblio-custom4,
-.view-search-api-solr-view .views-field-title{
+.view-search-api-solr .views-field-biblio-custom4,
+.view-search-api-solr .views-field-title{
 	width:100%;
 	float:right;
 	direction: rtl !important;
@@ -466,29 +466,29 @@ background: none;
 .views-field-title span{
 	display: block;
 }
-.view-search-api-solr-view div.actions{
+.view-search-api-solr div.actions{
 
 	display: inline-block;
 
 	width: 100%;
 }
-.view-search-api-solr-view .views-field.views-field-nid,
-.view-search-api-solr-view .views-field.views-field-field-commerce{
+.view-search-api-solr .views-field.views-field-nid,
+.view-search-api-solr .views-field.views-field-field-commerce{
 	display: inline-block;
 }
-.view-search-api-solr-view .views-field.views-field-nid{
+.view-search-api-solr .views-field.views-field-nid{
 	min-width: 46%;
 	float: right;
 }
-.view-search-api-solr-view  div.actions div.views-field span.flag-wrapper{
+.view-search-api-solr  div.actions div.views-field span.flag-wrapper{
 	float:right;
 }
-.view-search-api-solr-view .views-field.views-field-field-commerce{
+.view-search-api-solr .views-field.views-field-field-commerce{
 
 	float: left;
 }
-.view-search-api-solr-view .views-field-nid a,
-.view-search-api-solr-view .views-field-field-commerce a{
+.view-search-api-solr .views-field-nid a,
+.view-search-api-solr .views-field-field-commerce a{
 	display: inline-block;
 	direction: ltr ;
 	text-align: center;
@@ -508,40 +508,40 @@ a.free_url{
 a.cart_export,a.cart_url{
 	border-color: red ;
 }
-.view-search-api-solr-view a.buy_export,
-.view-search-api-solr-view a.cart_export{
+.view-search-api-solr a.buy_export,
+.view-search-api-solr a.cart_export{
 	display: none;
 }
 a.buy_url:not(.cart_url), a.buy_export:not(.cart_export) {
 	border-color: orange;
 }
 
-.view-search-api-solr-view .views-field-field-commerce a{
+.view-search-api-solr .views-field-field-commerce a{
 	border-size: 2px;
 	border-style: solid;
 	width:90px;
 }
 
-.view-search-api-solr-view .views-exposed-form .views-exposed-widget .form-submit {
+.view-search-api-solr .views-exposed-form .views-exposed-widget .form-submit {
 	margin-top: 0px !important;
 }
 
-.view-search-api-solr-view div.views-row div span a.flag{
+.view-search-api-solr div.views-row div span a.flag{
     background: rgba(0, 0, 0, 0.11);
 	border-radius: 9px;
 	padding: 2px 9px 1px 10px;
 }
 
-.view-search-api-solr-view .views-field-contextual-links{
+.view-search-api-solr .views-field-contextual-links{
 	position: absolute;
 	left: 40px;
 	  top: 0px;
 }
 
-.view-search-api-solr-view .views-field-tooltip.abstract_tip:hover{
+.view-search-api-solr .views-field-tooltip.abstract_tip:hover{
 	background-color: rgba(200,200,255,0.9);
 }
-.view-search-api-solr-view .views-field-tooltip.abstract_tip{
+.view-search-api-solr .views-field-tooltip.abstract_tip{
    font-size: 118%;
     font-weight: bold;
     text-align: center;
