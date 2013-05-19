@@ -1,6 +1,6 @@
 <?php
 function e_scholar_module_init() {
-    if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url" && $_GET["q"] !== "buy_export"){
+    if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url" && $_GET["q"] !== "buy_export" && $_GET["q"] !== "system/ajax"){
             drupal_add_css('sites/all/themes/omega/omega/css/omega-visuals.css');        
     } 
      if (user_is_logged_in()) {
