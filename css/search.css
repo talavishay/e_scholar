@@ -785,7 +785,9 @@ span.price {
     padding: 20px 10%;
     border-radius: 10px;
 }
-
+#block-webform-client-block-456  .links .ajax-processed{
+    display:none;
+}
 span#close {
     background: none repeat scroll 0 0 buttonshadow;
     border-radius: 3px 3px 3px 3px;

@@ -85,7 +85,6 @@ Drupal.avishay.refresh_results = function(view){
 };
 
 jQuery(document).ready(function(){
-
 if(typeof(Drupal.ajax) !== "undefined"){
     Drupal.ajax.prototype.commands.after_cart_refresh  = function (ajax, response, status){
         Drupal.avishay.incart();
@@ -97,7 +96,8 @@ if(typeof(Drupal.ajax) !== "undefined"){
 // ##  webform --  מצאתי שגיאה 
 jQuery("#block-webform-client-block-456 .block-inner").prepend(jQuery('<span id="close">סגור</span>'));
 jQuery("#close").live("click", function(e){
-    jQuery("#block-webform-client-block-456").hide();
+   window.location.reload() ;
+//    jQuery("#block-webform-client-block-456").hide();
 });
 jQuery(".view-search-api-solr .webform").live("click", function(e){
     e.preventDefault();

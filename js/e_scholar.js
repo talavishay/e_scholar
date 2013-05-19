@@ -117,6 +117,7 @@ Drupal.avishay.link_setup_get_productName = function(links){
     });
 };
 Drupal.avishay.my_products = function(){	
+    try{
     if(typeof(Drupal.settings.products.biblio_biblio_export_nodes) === 'object' ){
         jQuery(Drupal.settings.products.biblio_biblio_url_nodes).each(function(i,val){
             var buy_url = jQuery(".buy_url[nid="+val.nid+"]").attr({"href":val.url}).removeClass('buy_url').addClass('get_url').text("קבל קישור");
@@ -128,7 +129,8 @@ Drupal.avishay.my_products = function(){
             var buy_export = jQuery(".buy_export[nid="+val.nid+"]");
             jQuery(buy_export).removeClass("buy_export").removeClass("cart_export").addClass('get_export').text('קבל ביבליו');
         });
-    }
+    };
+    }catch(e){}
 };
 Drupal.avishay.cartLinks = function(context){
     jQuery("a.cart_url,a.cart_export").unbind("click");
@@ -613,7 +615,7 @@ jQuery("form#views-exposed-form-search-api-solr-page input[type=submit]").bind("
     if(typeof(Drupal.avishay.my_products) !== "undefined"){Drupal.avishay.my_products();};
 
     //  ####  TRANSLATION  -- cart summary -- "Order total" on /checkout
-	jQuery('.cart_contents .component-title').text('סה"כ');
+	jQuery('.cart_contents .component-title, .commerce-order-commerce-order  .component-title').text('סה"כ');
     //  ####  citation export feature on page-orders 
     if(jQuery('body.page-user-').length === 1){
         Drupal.avishay.exportControl();
