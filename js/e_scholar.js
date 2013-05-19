@@ -117,14 +117,14 @@ Drupal.avishay.link_setup_get_productName = function(links){
     });
 };
 Drupal.avishay.my_products = function(){	
-    if(typeof(Drupal.settings.e_scholar_module) === 'object' ){
-        jQuery(Drupal.settings.e_scholar_module.biblio_biblio_url_nodes).each(function(i,val){
+    if(typeof(Drupal.settings.products.biblio_biblio_export_nodes) === 'object' ){
+        jQuery(Drupal.settings.products.biblio_biblio_url_nodes).each(function(i,val){
             var buy_url = jQuery(".buy_url[nid="+val.nid+"]").attr({"href":val.url}).removeClass('buy_url').addClass('get_url').text("קבל קישור");
             if(val.url === ""){
                     jQuery(buy_url).addClass('empty').text("קישור חסר!?");
             }
         });
-        jQuery(Drupal.settings.e_scholar_module.biblio_biblio_export_nodes).each(function(i,val){
+        jQuery(Drupal.settings.products.biblio_biblio_export_nodes).each(function(i,val){
             var buy_export = jQuery(".buy_export[nid="+val.nid+"]");
             jQuery(buy_export).removeClass("buy_export").removeClass("cart_export").addClass('get_export').text('קבל ביבליו');
         });

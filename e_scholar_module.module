@@ -73,10 +73,10 @@ function e_scholar_module_base_checkout_form($form, &$form_state, $checkout_pane
 
         //TODO: is this the right way ???
         if (user_is_anonymous()) {
-            if ($line_item->line_item_label == 'article_pass') {
+            if ($line_item->line_item_label == 'url') {
                 flag('flag', 'biblio_url', intval($line_item->field_nid['und'][0]['value']), $user);
             }
-            if ($line_item->line_item_label == 'citation_pass') {
+            if ($line_item->line_item_label == 'export') {
                 flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), $user);
             }
         }
