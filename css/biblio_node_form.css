@@ -1,8 +1,7 @@
+body.logged-in.page-node-add-biblio,
 body.logged-in.page-node-edit.node-type-biblio {
     direction: ltr !important;
 }
-
-
 .form-item-field-commerce-und-2,
 .form-item.form-type-checkbox.form-item-3-und-2 {
     display: none;
