@@ -191,6 +191,8 @@ span#sep {
 .views-field-field-biblio-qualitive,
 .views-field-field-biblio-quantitative,
 .views-field-biblio-type,
+.views-field-field-biblio-lang,
+.views-field-language,
 .views-field-biblio-keywords{
     color: #575757;
 font-size: 14px;
