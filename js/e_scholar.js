@@ -449,14 +449,14 @@ Drupal.avishay.bind_events = function (){
     });
     jQuery('#display_mode #min' ).live("click",  function(e){
         jQuery(".view-search-api-solr .views-row").each(function(i, val){
-            jQuery('.type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).hide(); 
+            jQuery('.views-field-field-biblio-lang, .type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).hide(); 
         }).addClass("min");
         Drupal.settings.display_mode = "min";
         jQuery.cookie('display_mode', "min");
     });
     jQuery('#display_mode #max' ).live("click",  function(e){
         jQuery(".view-search-api-solr .views-row").each(function(i, val){
-            jQuery('.type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).show();  
+            jQuery('.views-field-field-biblio-lang, .type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).show();  
         }).removeClass("min");
         Drupal.settings.display_mode = "max";
         jQuery.cookie('display_mode', "max");
