@@ -610,7 +610,7 @@ jQuery("form#views-exposed-form-search-api-solr-page input[type=submit]").bind("
 		return false;
 	});
     // ####  CITATION EXPORT  - END
-    document.title =  document.title+' | '+Drupal.settings.username;
+//    document.title =  document.title+' | '+Drupal.settings.username;
     jQuery('#header h2.element-invisible').removeClass('element-invisible');
     if(typeof(Drupal.avishay.my_products) !== "undefined"){Drupal.avishay.my_products();};
 
