@@ -640,6 +640,7 @@ function rtf_help($nids, $style) {
         foreach($variables['node']->biblio_contributors as $key => $val){
 //            $variables['node']->biblio_contributors[$key]["name"] = utf8_to_rtf($variables['node']->biblio_contributors[$key]["name"] );
             $variables['node']->biblio_contributors[$key]["lastname"] = utf8_to_rtf($variables['node']->biblio_contributors[$key]["lastname"] );
+            $variables['node']->biblio_contributors[$key]["firstname"] = utf8_to_rtf($variables['node']->biblio_contributors[$key]["firstname"] );
             $variables['node']->biblio_contributors[$key]["initials"] = utf8_to_rtf($variables['node']->biblio_contributors[$key]["initials"] );
         }
 //$variables['node']->biblio_sort_title = utf8_to_rtf($variables['node']->biblio_type_name  );
