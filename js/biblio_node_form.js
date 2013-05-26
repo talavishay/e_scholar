@@ -1,8 +1,8 @@
 jQuery(document).ready(function(){
-
-    
+//
+//    
 jQuery("#edit-actions").append(jQuery(".form-item.form-type-checkbox.form-item-status"));
-
+//
 Drupal.settings.url = jQuery("#edit-biblio-url").val();
 Drupal.settings.openurl = function(type){
     Drupal.settings.url = jQuery("#edit-biblio-url").val();
@@ -18,31 +18,31 @@ Drupal.settings.openurl = function(type){
         }
     }
 };
-
-jQuery("#edit-biblio-url").bind("blur", Drupal.settings.openurl).bind("change blur", function(e){
-        Drupal.settings.url = jQuery(e.currentTarget).val();
-    });
-
-
-jQuery("a#url_action").bind("click", function(e){
-    e.preventDefault();
-    Drupal.settings.openurl("tab");
-    return false;
+//
+jQuery("#edit-biblio-url").bind("change blur", function(e){        
+    Drupal.settings.url = jQuery(e.currentTarget).val();
 });
-
+//
+//
+//jQuery("a#url_action").bind("click", function(e){
+//    e.preventDefault();
+//    Drupal.settings.openurl("tab");
+//    return false;
+//});
+//
 jQuery("a#url_action_pop").bind("click", function(e){
     e.preventDefault();
     Drupal.settings.openurl("popup");
     return false;
 });
-
+//
 if(typeof  Drupal.settings.url !== "undefined"){
     Drupal.settings.openurl();
     
 }
 jQuery(".form-item.form-type-select.form-item-biblio-type").before(jQuery('<div id="term_content"></div>').append(jQuery("#edit-field-commerce, .field-type-taxonomy-term-reference")));
 
-
+//
 
 // make the "title" multiline by using a fake texarea sync'd to the original "title" field...
 var title = jQuery('<textarea id="edit-title-copy" style="width:100%"></textarea>').bind("keydown blur focus change", function(e){
@@ -59,7 +59,7 @@ jQuery('div.form-item.form-type-textarea.form-item-biblio-custom1-value').before
 jQuery("#edit-submit").bind("submit", function(){
     jQuery('#edit-title-copy').remove();
 });
-jQuery('#edit-container-1 .fieldset-wrapper').prepend(jQuery(".form-item-biblio-url"));
+
 jQuery('#edit-biblio-custom1-value').addClass("heb");
 
 
@@ -75,5 +75,5 @@ jQuery("a#url_action_pop").bind("click", function(e){
     Drupal.settings.openurl("popup");
     return false;
 });
-
+//
 });

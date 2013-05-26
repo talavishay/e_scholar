@@ -702,9 +702,9 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
         $form['#attached']['js'] = array(
             drupal_get_path("module", "e_scholar_module") . '/js/biblio_node_form.js',
         );
-        $container_2_haystack = array("title", "biblio_url", "biblio_custom1", "field-keywords");
+        $container_2_haystack = array("title",  "biblio_custom1", "field-keywords");
     //        "field_biblio_qualitive",  "field_biblio_quantitative", "field_biblio_research","field_commerce",
-        $container_1_haystack = array("biblio_abst_e", "biblio_keywords", "biblio_secondary_title");
+        $container_1_haystack = array("biblio_url","biblio_abst_e", "biblio_keywords", "biblio_secondary_title");
 
         if (isset($form_state["biblio_fields"]) && count($form["biblio_tabs"]) != 0) {
             $form["#attributes"]["class"][] = 'second_step';
@@ -779,8 +779,8 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
             $form["top_content"]["container_2"]["title"]["#size"] = 60;
             $form["top_content"]["container_2"]["title"]["#weight"] = -17;
 
-            $form["top_content"]["container_2"]["biblio_url"]["#weight"] = -18;
-            $form["top_content"]["container_2"]["biblio_url"]["#field_suffix"] = '<a href="#"id="url_action" class="description" >open link in a new tab</a>  /  <a href="#" id="url_action_pop" class="description" >  open link in a popup</a>';
+            $form["top_content"]["container_1"]["biblio_url"]["#weight"] = -18;
+            $form["top_content"]["container_1"]["biblio_url"]["#field_suffix"] = '<a href="#"id="url_action" class="description" >open link in a new tab</a>  /  <a href="#" id="url_action_pop" class="description" >  open link in a popup</a>';
 
             $form["top_content"]["container_2"][2]["#weight"] = 25; // taxonomy field
 
