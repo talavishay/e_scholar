@@ -53,7 +53,7 @@ function e_scholar_module_commerce_currency_info_alter(&$currencies, $langcode) 
 }
 // user profile edit : hiding stuff..
 function e_scholar_module_form_user_profile_form_alter(&$form, &$form_state){
-    unset($form["locale"], $form["contact"]);
+    unset($form["locale"], $form["contact"], $form["biblio_fieldset"]);
 }
 // Checkout confirmation: Custom checkout pane.
 function e_scholar_module_base_checkout_form($form, &$form_state, $checkout_pane, $order) {
