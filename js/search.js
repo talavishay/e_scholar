@@ -174,8 +174,8 @@ jQuery('a.show_mlt').live("click", function(e){
     var mlt_search_page = jQuery(e.currentTarget).parents(".view-search-api-solr").length;
     var nid = jQuery(e.currentTarget).attr("nid").trim();
     var mlt_box = jQuery('<div class="mlt_wrap" id="mlt_'+nid+'" ></div>');
-    var url = 'http://avishay.tk:8080/solr/prod/mlt?q=item_id:'+nid+'&mlt.fl=id,t_title&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
-//    var url = 'http://'+window.location.hostname+':8080/solr/prod/mlt?q=item_id:'+nid+'&mlt.fl=id,t_title&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
+    var url = 'http://scholare.co.il:8080/solr/scholare/mlt?q=item_id:'+nid+'&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
+//    var url = 'http://'+window.location.hostname+':8080/solr/scholare/mlt?q=item_id:'+nid+'&mlt.fl=id,t_title&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
     
     if(!mlt_cart_page){ url = url + '&rows=5';  }else{  url = url + '&rows=2';}
    
@@ -200,10 +200,10 @@ jQuery('a.show_mlt').live("click", function(e){
             var keywords = "", sep = ', ';
 
             //make sure we have our title field and genrate a new row for the item
-            if(typeof(val.t_biblio_custom1) !== "undefined"){
+            if(typeof(val.tm_biblio_custom1) !== "undefined"){
                 var mltRow = jQuery(originalRow).clone().css({"direction" : "rtl"}).addClass("mlt");
                 // BIBLIO CUSTOM1
-                jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.t_biblio_custom1[0] );	
+                jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.tm_biblio_custom1[0] );	
                 // TYPE
                  jQuery(".views-field-biblio-type .field-content", mltRow).text( val.f_ss_biblio_type) ;	
                 // YEAR
