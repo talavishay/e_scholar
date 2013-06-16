@@ -80,8 +80,8 @@ Drupal.avishay.incart = function(contexts){
                 jQuery(val).removeClass('cart_url').addClass('buy_url').text('רכוש קישור');
         }
     });
-    // ittarte over line item rows from the cart 
-    jQuery('.commerce-line-item-views-form .views-row').each(function(i, row){
+    // ittarte over line item rows from the cart
+	    jQuery('.commerce-line-item-views-form .views-row').each(function(i, row){
          var productName = jQuery(".views-field-sku", row).text().trim();
          var nid = jQuery(".views-field-field-nid-1", row).text().trim();
          var link = jQuery('.buy_'+productName+'[nid='+nid+']').not('cart_export');

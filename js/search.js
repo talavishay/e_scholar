@@ -205,12 +205,12 @@ jQuery('a.show_mlt').live("click", function(e){
                 // BIBLIO CUSTOM1
                 jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.tm_biblio_custom1[0] );	
                 // TYPE
-                 jQuery(".views-field-biblio-type .field-content", mltRow).text( val.f_ss_biblio_type) ;	
+                 jQuery(".views-field-biblio-type .field-content", mltRow).text( val.ss_biblio_type) ;	
                 // YEAR
                 jQuery(".views-field-biblio-year .field-content", mltRow).text( val.is_biblio_year) ;	
                 // RESEARCH field
-                jQuery(val.f_sm_field_biblio_researchname).each(function(i,keyword){        
-                    if(jQuery(val.f_sm_field_biblio_researchname).length === i+1  ){
+                jQuery(val.sm_field_biblio_researchname).each(function(i,keyword){        
+                    if(jQuery(val.sm_field_biblio_researchname).length === i+1  ){
                         keywords = keywords + keyword ;
                     }else {
                         keywords = keywords+ keyword + sep; 		
@@ -222,9 +222,9 @@ jQuery('a.show_mlt').live("click", function(e){
                 // catalog TYPE -- qualitive /quantitive
                 keywords = "";
                     // qualitivename
-                jQuery(val.f_sm_field_biblio_qualitivename).each(function(i,keyword){        
+                jQuery(val.sm_field_biblio_qualitivename).each(function(i,keyword){        
 
-                if(jQuery(val.f_sm_field_biblio_qualitivename).length === i+1  ){
+                if(jQuery(val.sm_field_biblio_qualitivename).length === i+1  ){
                                 keywords = keywords + keyword ;
 
                         }else {
@@ -238,9 +238,9 @@ jQuery('a.show_mlt').live("click", function(e){
                 }
                 keywords = "";
                     // quantitative:name
-                jQuery(val.f_sm_field_biblio_quantitativename).each(function(i,keyword){        
+                jQuery(val.sm_field_biblio_quantitativename).each(function(i,keyword){        
 
-                if(jQuery(val.f_sm_field_biblio_quantitativename).length === i+1  ){
+                if(jQuery(val.sm_field_biblio_quantitativename).length === i+1  ){
                                 keywords = keywords + keyword ;
                         }else {
                                 keywords = keywords+ keyword + sep; 		
@@ -253,8 +253,8 @@ jQuery('a.show_mlt').live("click", function(e){
                 }
                 // KEYWORDS
                 keywords = "";
-                jQuery(val.f_sm_biblio_keywords).each(function(i,keyword){
-                        if(jQuery(val.f_sm_biblio_keywords).length === i+1){
+                jQuery(val.sm_biblio_keywords).each(function(i,keyword){
+                        if(jQuery(val.sm_biblio_keywords).length === i+1){
                                 keywords = keywords + keyword ;
                         }else {
                                 keywords = keywords+ keyword + sep; 		

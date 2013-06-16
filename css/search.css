@@ -187,6 +187,10 @@ span#sep {
     margin-bottom: 23px;
     margin-right: 25px;
 }
+.title_wrap .views-tooltip span{
+display:inline-block;
+}
+
 .views-field.views-field-field-biblio-research,
 .views-field-field-biblio-qualitive,
 .views-field-field-biblio-quantitative,
