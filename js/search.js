@@ -174,7 +174,7 @@ jQuery('a.show_mlt').live("click", function(e){
     var mlt_search_page = jQuery(e.currentTarget).parents(".view-search-api-solr").length;
     var nid = jQuery(e.currentTarget).attr("nid").trim();
     var mlt_box = jQuery('<div class="mlt_wrap" id="mlt_'+nid+'" ></div>');
-    var url = 'http://scholare.co.il:8080/solr/scholare/mlt?q=item_id:'+nid+'&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
+    var url = Drupal.settings.solr_server+'/mlt?q=item_id:'+nid+'&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
 //    var url = 'http://'+window.location.hostname+':8080/solr/scholare/mlt?q=item_id:'+nid+'&mlt.fl=id,t_title&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
     
     if(!mlt_cart_page){ url = url + '&rows=5';  }else{  url = url + '&rows=2';}

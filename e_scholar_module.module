@@ -1,4 +1,5 @@
 <?php
+
 function e_scholar_module_init() {
     if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url" && $_GET["q"] !== "buy_export" && $_GET["q"] !== "system/ajax"){
             drupal_add_css('sites/all/themes/omega/omega/css/omega-visuals.css');        
@@ -10,7 +11,10 @@ function e_scholar_module_init() {
         $e_scholar_settings['products'] = _get_product_flags();
     };
     $e_scholar_settings['bookmarks'] =  _get_bookmark_flags();
-    $settings = array('arg' => arg());
+    $server = search_api_server_load(1);
+    $server_url = 'http://'.$server->options["host"].':'.$server->options["port"].$server->options["path"];
+
+    $settings = array('arg' => arg(),"solr_server" =>   $server_url );
 //    drupal_add_js($e_scholar_settings, 'e_scholar'); 
     drupal_add_js($e_scholar_settings, 'setting'); 
     drupal_add_js($settings, 'setting'); 
@@ -19,9 +23,26 @@ function e_scholar_module_init() {
 // node form : biblio->keywords vonvert ";" to "," 
 function e_scholar_module_node_presave($node){
     if($node->type === "biblio"){
-    if(count($node->biblio_keywords) === 1 ){
+        $node->biblio_url =  trim($node->biblio_url);
+        if($node->biblio_custom7 === "" ){
+            $node->biblio_custom7 = null;
+        } elseif( $node->biblio_custom7 === "broken" && $node->status === 1 ){
+            $node->biblio_custom7 = date('c');
+        }
+        // remove duplicate urls
+        if(preg_match('/internal-pdf/i',  $node->biblio_url) !== 0){
+            $node->biblio_url = preg_replace('/^internal-pdf:\/\/(.*)https?:\/\/(.*)/i',"http://$2",  $node->biblio_url);
+        } else {
+            $node->biblio_url = preg_replace('/^https?:\/\/(.*)http:\/\/(.*)/i',"http://$1",  $node->biblio_url);
+        }
+        // suport ";" for the keywords field
+        if(count($node->biblio_keywords) === 1 & isset($node->biblio_keywords[0])){
         if( gettype($node->biblio_keywords[0]) === "string"){
+            if(preg_match('/;/i', $node->biblio_keywords[0])){;
             $keywords = explode(';', $node->biblio_keywords[0]);
+            } elseif (preg_match('/,/i', $node->biblio_keywords[0])) {
+            $keywords = explode(',', $node->biblio_keywords[0]);
+            }
             foreach($keywords as $k => $v){
                 $keywords[$k] = trim($v);
             }
@@ -191,11 +212,12 @@ function e_scholar_module_views_pre_render(&$view) {
                 drupal_goto($_SERVER['HTTP_REFERER']);
             }
         }
-        if ($view->name == 'editor' || $view->name == 'orders_stats' ) {
+        if ($view->name == 'orders_stats' ) {
             drupal_add_js(drupal_get_path("module", "e_scholar_module") . '/js/orders_state.js');
             drupal_add_css(drupal_get_path("module", "e_scholar_module") . '/css/tables.css');
         }
     }
+     
 }
 
 function _get_bookmark_flags(){
@@ -384,13 +406,6 @@ function e_scholar_module_menu_alter(&$items){
 }
 
 function e_scholar_module_menu() {
-//    $items['unique_node_autocomplete_callback'] = array(
-//        'page callback' => 'e_scholar_module_unique_node_autocomplete_callback',
-//        //'file' => 'ajax_example_autocomplete.inc',
-//        'type' => MENU_CALLBACK,
-//        'access arguments' => array('access content'),
-//    );
-
     $items['buy_url'] = array(
         'page callback' => 'ajax_buy_response',
         'access callback' => TRUE,
@@ -450,7 +465,7 @@ function ajax_buy_response() {
         $line_item->field_nid['und'][0]['value'] = $nid;
         $line_item->field_laxo_name['und'][0]['value'] = $node->biblio_custom1;
         commerce_line_item_save($line_item);
-        commerce_cart_order_refresh($line_item->order_id);
+        $cart =  commerce_cart_order_refresh($line_item->order_id);
 
         $refreshedCart = commerce_cart_block_view('cart');
 

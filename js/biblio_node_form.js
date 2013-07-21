@@ -49,7 +49,7 @@ var title = jQuery('<textarea id="edit-title-copy" style="width:100%"></textarea
                     jQuery('#edit-title').val(jQuery(e.currentTarget).val());
             }).val(jQuery('#edit-title').val());
 jQuery('#edit-title').after(title).css("display","none");
-jQuery('div.form-item.form-type-textarea.form-item-biblio-custom1-value').before(jQuery('<a href="#" id="copy_coustom1_to_title" style="float: right">copy Title to Custom1</a>').click(function(e){
+jQuery('div.form-item.form-type-textarea.form-item-biblio-custom1-value').before(jQuery('<a href="#" id="copy_coustom1_to_title" >copy Title to Custom1</a>').click(function(e){
 					e.preventDefault();
 					//~ console.log(e);
 				jQuery('#edit-biblio-custom1-value').text(jQuery('#edit-title-copy').val());
@@ -75,5 +75,6 @@ jQuery("a#url_action_pop").bind("click", function(e){
     Drupal.settings.openurl("popup");
     return false;
 });
+
 //
 });

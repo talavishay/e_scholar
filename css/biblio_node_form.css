@@ -272,6 +272,9 @@ input#edit-biblio-keywords:focus, textarea#edit-biblio-abst-e-value:focus{
     
 }
 */
+#edit-biblio-keywords{
+    width: 100%;
+}
 #biblio-node-form:not(.second_step) .field-type-taxonomy-term-reference {
 
     display: none;
@@ -366,13 +369,12 @@ body.chrome .laxo_biblio_solr_node_form_top{
 }
 
 #edit-biblio-url{
-    position: absolute;
     text-align: left;
 }
-.form-item-biblio-url .field-suffix{
-    left: 209px;
-    position: relative;
-    top: -20px;
+.form-item-biblio-url .field-suffix {
+  left: 240px;
+  position: relative;
+  top: -45px;
 }
 .form-item.form-type-textfield.form-item-title{
     
@@ -380,11 +382,15 @@ body.chrome .laxo_biblio_solr_node_form_top{
 }
 
 #edit-top-content fieldset {
-    float: right;
-    margin: 0 1%;
+  float: right;
+    margin: 0 1% !important;
+    padding-top: 10px;
     width: 42%;
 }
-
+#copy_coustom1_to_title{
+    display: block;
+text-align: right;
+}
 #edit-field-biblio-lang{
 
      float: right;
@@ -395,4 +401,17 @@ body.chrome .laxo_biblio_solr_node_form_top{
 }
 .form-type-textfield > textarea {
     border: 1px solid gray;
+}
+#edit-container-2 .form-item-title {
+  padding-top: 0;
+}
+#edit-container-2{
+    padding-top: 0px !important;
+}
+#edit-container-2 .form-item-title, .form-item-biblio-custom1-value {
+  padding: 0 !important;
+}
+#admin-menu-wrapper {
+    direction: rtl;
+    overflow: hidden;
 }
