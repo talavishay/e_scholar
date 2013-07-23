@@ -45,11 +45,13 @@ function e_scholar_module_node_presave($node){
             } elseif (preg_match('/,/i', $node->biblio_keywords[0])) {
             $keywords = explode(',', $node->biblio_keywords[0]);
             }
-            if(gettype($keywords) === "array"){
-                foreach($keywords as $k => $v){
-                    $keywords[$k] = trim($v);
+            if(isset($keywords)){
+                if(gettype($keywords) === "array"){
+                    foreach($keywords as $k => $v){
+                        $keywords[$k] = trim($v);
+                    }
+                    $node->biblio_keywords = $keywords;
                 }
-                $node->biblio_keywords = $keywords;
             }
         }
     }
