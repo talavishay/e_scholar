@@ -228,6 +228,13 @@ div#edit-actions input[type=submit]{
     font-weight: bold;
     color: green;
 }
+#edit-submit {
+  color: white !important;
+  background: green;
+  padding: 6px 32px;
+  position: relative;
+  left: -10px;
+}
 fieldset#edit-biblio-abst-e-format.filter-wrapper div.fieldset-wrapper{
     margin-top: 0px;
 }

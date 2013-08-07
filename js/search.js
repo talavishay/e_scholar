@@ -83,7 +83,44 @@ Drupal.avishay.refresh_results = function(view){
         });
     });
 };
+Drupal.avishay.tipsy = function(){
+(function($) {
+      if (Drupal.settings.tipsy.custom_selectors) {
+        var selectors = Drupal.settings.tipsy.custom_selectors;
+        $(selectors).each(function(){
+          var selector = $(this)[0].selector;
+          var options = $(this)[0].options;
+          var tooltipElement = $(selector);
 
+          if (options.tooltip_content.source == 'attribute') {
+            var title = options.tooltip_content.selector;
+          }
+          else {
+            var title = function() {
+              return $(options.tooltip_content.selector, tooltipElement).html();
+            }
+          }
+          tooltipElement.tipsy({
+            title: title,
+            html: parseInt(options.html),
+            delayIn: parseInt(options.delayIn),
+              delayOut: parseInt(options.delayOut),
+              fade: parseInt(options.fade),
+              gravity: tipsy_determine_gravity(options.gravity),
+              offset: parseInt(options.offset),
+              opacity: parseFloat(options.opacity),
+              trigger: options.trigger
+          });
+        });
+      }
+
+  function tipsy_determine_gravity(g) {
+    if (g == 'autoWE') { return $.fn.tipsy.autoWE; }
+    else if (g == 'autoNS') { return $.fn.tipsy.autoNS; }
+    else { return g; }
+  }
+})(jQuery);
+}
 jQuery(document).ready(function(){
 if(typeof(Drupal.ajax) !== "undefined"){
     Drupal.ajax.prototype.commands.after_cart_refresh  = function (ajax, response, status){
@@ -203,7 +240,11 @@ jQuery('a.show_mlt').live("click", function(e){
             if(typeof(val.tm_biblio_custom1) !== "undefined"){
                 var mltRow = jQuery(originalRow).clone().css({"direction" : "rtl"}).addClass("mlt");
                 // BIBLIO CUSTOM1
-                jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.tm_biblio_custom1[0] );	
+                jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.tm_biblio_custom1[0] );
+                if(typeof(val["tm_biblio_abstract "]) !== "undefined"){
+                	// BIBLIO ABSTRACT
+                	jQuery(".views-field-biblio-custom1 .field-content", mltRow).addClass("views-tooltip").attr("tooltip-content", val["tm_biblio_abstract "][0] );
+                }
                 // TYPE
                  jQuery(".views-field-biblio-type .field-content", mltRow).text( val.ss_biblio_type) ;	
                 // YEAR
@@ -303,6 +344,7 @@ jQuery('a.show_mlt').live("click", function(e){
             var settings = {"content": jQuery(mlt_box).css("background-color", "#fff").html()  ,"title" : "", "height" : 450, "width"	:650, "animate" : false};
             Drupal.avishay.shadowbox(settings);
     }
+    Drupal.avishay.tipsy();
     }
     });
     
