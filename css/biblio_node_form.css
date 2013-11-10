@@ -228,6 +228,10 @@ div#edit-actions input[type=submit]{
     font-weight: bold;
     color: green;
 }
+#edit-delete{
+	background: red;
+color:white !important;
+}
 #edit-submit {
   color: white !important;
   background: green;
