@@ -435,7 +435,8 @@ Drupal.avishay.bind_events = function (){
         e.preventDefault();
         jQuery.getJSON(jQuery(e.currentTarget).attr("href"), function(data){
            jQuery(data.nodes).each(function(i, val){
-               window.open(val.node.URL) ;
+		var url = val.node.URL ? val.node.URL : val.node.biblio_url;
+               window.open(url) ;
                ;
            });
 
@@ -475,12 +476,28 @@ Drupal.avishay.bind_events = function (){
     });
     jQuery("#sb-player .buy_url").live("click", function(){
             jQuery("body").css("background","red").children().hide();
-            console.log("xxxx");
             jQuery.cookie("refresh", "true");
     });
 };
-
+Drupal.avishay.recent = function(){
+var recent = jQuery(".view-recent-articles");
+jQuery(recent).bind("mouseover", function(e){
+	jQuery(e.currentTarget).addClass("pause");
+}).bind("mouseout", function(e){
+	jQuery(e.currentTarget).removeClass("pause");
+});
+if(recent.length){	
+	setInterval(function(){  
+	if(!recent.hasClass("pause")){
+	    	jQuery('.view-content > div:first', recent).slideUp( function () {
+	       		jQuery(this).appendTo(jQuery('.view-content', recent)).slideDown(); 
+    		});
+	}
+	}, 3000);
+}
+};
 jQuery(document).ready(function(){
+//	Drupal.avishay.recent();
     Drupal.avishay.bind_events();
     // checkout page -- "term of service"
     jQuery("#edit-buttons").prepend(jQuery(".form-item-extra-pane--node--446-termsofservice"));
@@ -681,3 +698,4 @@ jQuery(document).ajaxStart(function () {
         }).ajaxComplete(function (e, xhr, opts) {
     window.setTimeout(function(){jQuery('img.views_flag_refresh-throbber').remove();},1000);
 });
+

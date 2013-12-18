@@ -11,10 +11,10 @@ background: #FFFACD;
 background: #D9F4F3;
 }
 */
-body.page-editor{
+body[class*=editor]{
 	direction: ltr !important;
 }
-body.page-editor .views-widget-filter-status{
+body[class*=editor] .views-widget-filter-status{
 	clear: right;
 	
 }

@@ -724,7 +724,7 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
         $form['#attached']['js'] = array(
             drupal_get_path("module", "e_scholar_module") . '/js/biblio_node_form.js',
         );
-        $container_2_haystack = array("title",  "biblio_custom1", "field-keywords");
+        $container_2_haystack = array("title",  "biblio_custom1", "field-keywords","field_library");
     //        "field_biblio_qualitive",  "field_biblio_quantitative", "field_biblio_research","field_commerce",
         $container_1_haystack = array("biblio_url","biblio_abst_e", "biblio_keywords", "biblio_secondary_title");
 
@@ -807,7 +807,9 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
             $form["top_content"]["container_2"][2]["#weight"] = 25; // taxonomy field
 
             $form["top_content"]["container_2"]["biblio_type"] = $form["biblio_type"];
-            $form["top_content"]["container_2"]["biblio_type"]["#weight"] = 100;
+            $form["top_content"]["container_2"]["biblio_type"]["#weight"] = 99;
+
+            $form["top_content"]["container_1"]["field_library"]["#weight"] = 100;
 
             unset($form["biblio_type"], $form["biblio_tabs"][1] //biblio_abstrct empty tab
             );

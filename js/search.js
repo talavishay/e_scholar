@@ -66,6 +66,7 @@ Drupal.avishay.refresh_results = function(view){
             jQuery("span", val).last().remove();
         });
         // wrap title & year in a div
+	
     });
     Drupal.avishay.incart();
     Drupal.avishay.cartLinks();
@@ -82,6 +83,9 @@ Drupal.avishay.refresh_results = function(view){
                     jQuery("input", flag_wrap).attr("checked","checked");
         });
     });
+	jQuery('.not-logged-in .view-field-bookmark [title]').each(function(i, val){
+		jQuery(val).tipsy();
+	});
 };
 Drupal.avishay.tipsy = function(){
 (function($) {
@@ -379,4 +383,8 @@ jQuery('a.show_mlt').live("click", function(e){
 //});
 // ie fixes..
 jQuery(".block-commerce-cart h2").css("float","none");
+ jQuery('.not-logged-in .view-field-bookmark [title]').each(function(i, val){
+                jQuery(val).tipsy();
+        });
+
 });

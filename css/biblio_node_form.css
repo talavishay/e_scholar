@@ -1,3 +1,6 @@
+.field-name-field-library{
+display: none;
+}
 body.logged-in.page-node-add-biblio,
 body.logged-in.page-node-edit.node-type-biblio {
     direction: ltr !important;
