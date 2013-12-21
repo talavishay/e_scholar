@@ -1,6 +1,46 @@
 Drupal.avishay = {};
 Drupal.avishay.biblio_types  = {"journal" : "מאמר מכתב עת","other" : 'שונות', "report" : 'דו"ח ממשלתי',"report" : 'דו"ח', "book" :'ספר', "book" :'פרק מתוך ספר' , "paper" : 'אוסף מאמרים לאחר וועידה', "tiza" : 'עבודת תיזה' };
-Drupal.avishay.row = '<div class="views-row "><div class="title_wrap"><span class="views-field views-field-biblio-custom1"><span class="field-content"></span></span><span id="sep">|</span><span class="views-field views-field-biblio-year"><span class="field-content"></span></span></div><div class="type_image journal"></div><div class="views-field views-field-field-biblio-research"><span class="views-label views-label-field-biblio-research">תחום: </span><span class="field-content"></span></div><div class="views-field views-field-field-biblio-qualitive">        <span class="field-content">   <span class="views-label views-label-field-biblio-research">שיטת מחקר: </span>    <span class="field-content">איכותני (ניתוח מקרה)</span></span></div><div class="views-field views-field-biblio-type"><span class="views-label views-label-biblio-type">סוג: </span><span class="field-content"></span></div><div class="views-field views-field-biblio-keywords">    <span class="views-label views-label-biblio-keywords">מילות מפתח: </span>    <span class="field-content"></span>  </div><div></div><div class="actions"><div class="views-field views-field-field-commerce">        <span class="field-content"><a href="" id="" class="free">קרא חינם</a></span>  </div><div class="escholar-color-scheme-front-light-blue show_mlt_wrap"><a class="webform" href="#">מצאתי שגיאה</a></div></div></div>';
+Drupal.avishay.row = "<div class=\"views-row \"><div class=\"title_wrap\"><span class=\"views-field views-field-biblio-custom1\"><span class=\"field-content\"></span></span><span id=\"sep\">|</span><span class=\"views-field views-field-biblio-year\"><span class=\"field-content\"></span></span></div><div class=\"views-field views-field-field-biblio-research\"><span class=\"views-label views-label-field-biblio-research\">תחום: </span><span class=\"field-content\"></span></div><div class=\"views-field views-field-field-biblio-qualitive\">        <span class=\"field-content\">   <span class=\"views-label views-label-field-biblio-research\">שיטת מחקר: </span>    <span class=\"field-content\">איכותני (ניתוח מקרה)</span></span></div><div class=\"views-field views-field-biblio-type\"><span class=\"views-label views-label-biblio-type\">סוג: </span><span class=\"field-content\"></span></div><div class=\"views-field views-field-biblio-keywords\">    <span class=\"views-label views-label-biblio-keywords\">מילות מפתח: </span>    <span class=\"field-content\"></span>  </div><div></div><div class=\"actions\"><div class=\"views-field views-field-field-commerce\">        <span class=\"field-content\"><a href=\"\" id=\"\" class=\"free\">קרא חינם</a></span>  </div><div class=\"escholar-color-scheme-front-light-blue show_mlt_wrap\"><a class=\"webform\" href=\"#\">מצאתי שגיאה</a></div></div></div>"
+//'<div class="views-row "><div class="title_wrap"><span class="views-field views-field-biblio-custom1"><span class="field-content"></span></span><span id="sep">|</span><span class="views-field views-field-biblio-year"><span class="field-content"></span></span></div><div class="type_image journal"></div><div class="views-field views-field-field-biblio-research"><span class="views-label views-label-field-biblio-research">תחום: </span><span class="field-content"></span></div><div class="views-field views-field-field-biblio-qualitive">        <span class="field-content">   <span class="views-label views-label-field-biblio-research">שיטת מחקר: </span>    <span class="field-content">איכותני (ניתוח מקרה)</span></span></div><div class="views-field views-field-biblio-type"><span class="views-label views-label-biblio-type">סוג: </span><span class="field-content"></span></div><div class="views-field views-field-biblio-keywords">    <span class="views-label views-label-biblio-keywords">מילות מפתח: </span>    <span class="field-content"></span>  </div><div></div><div class="actions"><div class="views-field views-field-field-commerce">        <span class="field-content"><a href="" id="" class="free">קרא חינם</a></span>  </div><div class="escholar-color-scheme-front-light-blue show_mlt_wrap"><a class="webform" href="#">מצאתי שגיאה</a></div></div></div>';
+Drupal.avishay.tipsy = function(){
+(function($) {
+      if (Drupal.settings.tipsy.custom_selectors) {
+        var selectors = Drupal.settings.tipsy.custom_selectors;
+        $(selectors).each(function(){
+          var selector = $(this)[0].selector;
+          var options = $(this)[0].options;
+          var tooltipElement = $(selector);
+
+          if (options.tooltip_content.source == 'attribute') {
+            var title = options.tooltip_content.selector;
+          }
+          else {
+            var title = function() {
+              return $(options.tooltip_content.selector, tooltipElement).html();
+            }
+          }
+          tooltipElement.tipsy({
+            title: title,
+            html: parseInt(options.html),
+            delayIn: parseInt(options.delayIn),
+              delayOut: parseInt(options.delayOut),
+              fade: parseInt(options.fade),
+              gravity: tipsy_determine_gravity(options.gravity),
+              offset: parseInt(options.offset),
+              opacity: parseFloat(options.opacity),
+              trigger: options.trigger
+          });
+        });
+      }
+
+})(jQuery);
+}
+  function tipsy_determine_gravity(g) {
+    if (g == 'autoWE') { return jQuery.fn.tipsy.autoWE; }
+    else if (g == 'autoNS') { return jQuery.fn.tipsy.autoNS; }
+    else { return g; }
+  }
+
 Drupal.avishay.link_setup_get_export = function(context){
 	jQuery('a#bookmarkActionSubmit', context).each(function(i,val) {
 		var element_settings = {};
@@ -451,14 +491,14 @@ Drupal.avishay.bind_events = function (){
     jQuery('#display_mode #min' ).live("click",  function(e){
         jQuery(".view-search-api-solr .views-row").each(function(i, val){
             jQuery('.views-field-field-biblio-lang, .type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).hide(); 
-        }).addClass("min");
+        }).addClass("min").removeClass("full");
         Drupal.settings.display_mode = "min";
         jQuery.cookie('display_mode', "min");
     });
     jQuery('#display_mode #max' ).live("click",  function(e){
         jQuery(".view-search-api-solr .views-row").each(function(i, val){
             jQuery('.views-field-field-biblio-lang, .type_image,.views-field-field-biblio-research, .views-field-field-biblio-qualitive, .views-field-biblio-type, .views-field-biblio-keywords, .views-field-field-biblio-quantitative', val).show();  
-        }).removeClass("min");
+        }).removeClass("min").addClass("full");
         Drupal.settings.display_mode = "max";
         jQuery.cookie('display_mode', "max");
     });
@@ -689,6 +729,28 @@ Drupal.settings.display_mode = jQuery.cookie("display_mode");
                 jQuery('#display_mode #min').click();
         }
 }
+	jQuery('.view-flags [title]').each(function(i, val){
+//		jQuery(val).tipsy();
+	});
+
+ jQuery('.library-מאגר .views-field-field-libraries a').each(function(i, val){
+            jQuery(val).attr({
+                "title": Drupal.settings.libraries_tooltip,
+                "href": Drupal.settings.libraries_link
+                });
+                jQuery(val).tipsy({
+                  html: 0,
+                  delayIn: 0,
+              delayOut: 0,
+              fade: 1,
+              gravity: tipsy_determine_gravity("w"),
+              offset: 0,
+              opacity: 1,
+                 trigger: "hover"
+                });
+        }).addClass("qtiped");
+
+
 });
 jQuery(document).ajaxStart(function () {
 /* * 		setup global ajax event listeners*/

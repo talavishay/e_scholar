@@ -1,5 +1,53 @@
 <?php
+function e_scholar_module_admin() {
+	$form = array();
+	$form['library'] = array(
+			'#type' => 'fieldset',
+			'#title' => "מאגר",
+			'#weight' => 0,
+// 			'#collapsible' => TRUE,
+// 			'#collapsed' => FALSE,
+	);
+	$form['library']['e_scholar_module_library_hover'] = array(
+			'#type' => 'textfield',
+			'#title' => 'הסבר לסמל המאגר',
+			'#default_value' => variable_get('libraries_tooltip'),
+			// 			'#size' => 2,
+	// 			'#maxlength' => 2,
+			'#description' => 'טקסט למעבר עכבר על סמל ה"מאגר" ',
+			'#required' => TRUE,
+	);
+	$form['library']['e_scholar_module_library_link'] = array(
+			'#type' => 'textfield',
+			'#title' => 'קישור לסמל המאגר',
+			'#default_value' => variable_get('libraries_link'),
+			// 			'#size' => 2,
+			// 			'#maxlength' => 2,
+			'#description' => 'הדף אליו יעבור המשתמש בעת לחיצה על סמל המאגר',
+			'#required' => TRUE,
+	);
+	$form['#attached']['css'] = array(
+			drupal_get_path('module', 'e_scholar_module') . '/css/form.css',
+	);
+	$form['#submit'] = array('e_scholar_module_admin_submit');
+	return system_settings_form($form);
+}
+function e_scholar_module_admin_validate($form, &$form_state) {
+	
+	if ($form_state['values']['e_scholar_module_library_hover'] === "") {
+		form_set_error('e_scholar_module_library_hover', 'הסבר לסמל המאגר');
+	}
+	if ($form_state['values']['e_scholar_module_library_link'] === "") {
+		form_set_error('e_scholar_module_library_link', 'קישור לסמל המאגר');
+	}
 
+}
+		 
+function e_scholar_module_admin_submit($form, &$form_state) {
+	variable_set('libraries_tooltip', $form_state['values']['e_scholar_module_library_hover']);
+	variable_set('libraries_link', $form_state['values']['e_scholar_module_library_link']);
+	
+}
 function e_scholar_module_init() {
     if($_GET["q"] !== "search" && $_GET["q"] !== "views/ajax" && $_GET["q"] !== "buy_url" && $_GET["q"] !== "buy_export" && $_GET["q"] !== "system/ajax"){
             drupal_add_css('sites/all/themes/omega/omega/css/omega-visuals.css');        
@@ -185,7 +233,8 @@ function e_scholar_module_views_pre_render(&$view) {
             $product = commerce_product_load(2);    
             $price = entity_metadata_wrapper('commerce_product', $product)->commerce_price->value();    
             $citation_price_display = commerce_currency_format(round($price['amount']), $price['currency_code'], $product);
-            drupal_add_js(array('pager_total' => $pager_total[0], "url_price" => $url_price_display, "citaion_price" => $citation_price_display), 'setting');
+            drupal_add_js(array('pager_total' => $pager_total[0], "url_price" => $url_price_display, "citaion_price" => $citation_price_display, "libraries_tooltip" => variable_get("libraries_tooltip"),"libraries_link" => variable_get("libraries_link")), 'setting');
+            
         }
         
         if ($view->name === 'search_api_solr' || $view->name === "commerce_cart_form" ){
@@ -222,6 +271,10 @@ function e_scholar_module_views_pre_render(&$view) {
         if ($view->name == 'orders_stats' ) {
             drupal_add_js(drupal_get_path("module", "e_scholar_module") . '/js/orders_state.js');
             drupal_add_css(drupal_get_path("module", "e_scholar_module") . '/css/tables.css');
+        }
+        if ($view->name == 'commerce_user_orders' ) {
+			drupal_add_js( array("libraries_tooltip" => variable_get("libraries_tooltip"),"libraries_link" => variable_get("libraries_link")), 'setting');
+// 			drupal_add_js("//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js", array("footer"));
         }
     }
      
@@ -448,6 +501,15 @@ function e_scholar_module_menu() {
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
 //        'delivery callback' => 'ajax_deliver',
+    );
+    
+    $items['admin/scholare-settings'] = array(
+    		'title' => 'הגדרות\הודעות',
+    		'description' => 'שליטה על הגדרות והודעות יחודיות למערכת סקולרי',
+    		'page callback' => 'drupal_get_form',
+    		'page arguments' => array('e_scholar_module_admin'),
+    		'access arguments' => array('access administration pages'),
+    		'type' => MENU_NORMAL_ITEM,
     );
     
     return $items;

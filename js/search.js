@@ -1,3 +1,4 @@
+window.alert = function(){};
 Drupal.avishay.webform = function(e, form){
     var settings = {"content": form  ,"title" : "", "height" : 600, "width"	:800, "animate" : false};
     Drupal.avishay.shadowbox(settings);
@@ -83,48 +84,15 @@ Drupal.avishay.refresh_results = function(view){
                     jQuery("input", flag_wrap).attr("checked","checked");
         });
     });
-	jQuery('.not-logged-in .view-field-bookmark [title]').each(function(i, val){
+//	jQuery('.not-logged-in .view-field-bookmark [title]').tipsy();
+	jQuery('.library-מאגר .views-field-field-libraries a').each(function(i, val){
+            jQuery(val).attr({
+            	"title": Drupal.settings.libraries_tooltip,
+                "href": Drupal.settings.libraries_link
+                });
 		jQuery(val).tipsy();
-	});
+	}).addClass("qtipedddd");
 };
-Drupal.avishay.tipsy = function(){
-(function($) {
-      if (Drupal.settings.tipsy.custom_selectors) {
-        var selectors = Drupal.settings.tipsy.custom_selectors;
-        $(selectors).each(function(){
-          var selector = $(this)[0].selector;
-          var options = $(this)[0].options;
-          var tooltipElement = $(selector);
-
-          if (options.tooltip_content.source == 'attribute') {
-            var title = options.tooltip_content.selector;
-          }
-          else {
-            var title = function() {
-              return $(options.tooltip_content.selector, tooltipElement).html();
-            }
-          }
-          tooltipElement.tipsy({
-            title: title,
-            html: parseInt(options.html),
-            delayIn: parseInt(options.delayIn),
-              delayOut: parseInt(options.delayOut),
-              fade: parseInt(options.fade),
-              gravity: tipsy_determine_gravity(options.gravity),
-              offset: parseInt(options.offset),
-              opacity: parseFloat(options.opacity),
-              trigger: options.trigger
-          });
-        });
-      }
-
-  function tipsy_determine_gravity(g) {
-    if (g == 'autoWE') { return $.fn.tipsy.autoWE; }
-    else if (g == 'autoNS') { return $.fn.tipsy.autoNS; }
-    else { return g; }
-  }
-})(jQuery);
-}
 jQuery(document).ready(function(){
 if(typeof(Drupal.ajax) !== "undefined"){
     Drupal.ajax.prototype.commands.after_cart_refresh  = function (ajax, response, status){
@@ -199,7 +167,7 @@ jQuery('a.close_mlt').live("click", function(e){
         jQuery( ".mlt_arrow",jQuery(e.currentTarget).parent()).remove();
         //var nid = jQuery(e.currentTarget).attr("nid");
         //jQuery('#mlt_'+nid).remove();
-        var views_row = jQuery(e.currentTarget).parents(".views-row");    
+        var views_row = jQuery(e.currentTarget).parents(".views-row").removeClass("mlt-open");    
         jQuery(".mlt_wrap,.mlt_arrow", views_row).css("overflow","hidden").hide(500, function () {
 //                                jQuery(".mlt_arrow",views_row).remove();
         });
@@ -243,6 +211,7 @@ jQuery('a.show_mlt').live("click", function(e){
             //make sure we have our title field and genrate a new row for the item
             if(typeof(val.tm_biblio_custom1) !== "undefined"){
                 var mltRow = jQuery(originalRow).clone().css({"direction" : "rtl"}).addClass("mlt");
+                
                 // BIBLIO CUSTOM1
                 jQuery(".views-field-biblio-custom1 .field-content", mltRow).text( val.tm_biblio_custom1[0] );
                 if(typeof(val["tm_biblio_abstract "]) !== "undefined"){
@@ -306,7 +275,12 @@ jQuery('a.show_mlt').live("click", function(e){
                         }
                 });
                 jQuery(".views-field-biblio-keywords .field-content", mltRow).text( keywords );	
-
+                if(typeof(val.is_field_libraries) !== "undefined"){
+                	if(parseInt(val.is_field_libraries) === 1){
+                		mltRow.addClass("library-מאגר");
+            	       jQuery(".views-field-field-commerce", mltRow).before(jQuery('<div class="views-field views-field-field-libraries"><a target="_blank" href="'+Drupal.settings.libraries_link+'" class="ajax-processed" title="'+Drupal.settings.libraries_tooltip+'"><img src="/sites/all/themes/e_scholar/images/libraries.gif"/></a></div>'));
+                	}
+                }
                 // COMMERCE
                 if(	parseInt(val.im_field_commerce) === 1 ) {
                         jQuery(".views-field-field-commerce .field-content a", mltRow).attr({
@@ -325,6 +299,7 @@ jQuery('a.show_mlt').live("click", function(e){
                 if( mlt_search_page ){
                     jQuery(e.currentTarget).not(".mlt").addClass("mlt").removeClass("loading").text("סגור מאמרים דומים").after(jQuery('<div class="mlt_arrow"></div>'));
                 }
+                jQuery("[title]",mltRow).tipsy();
                 jQuery(mlt_box).append(mltRow);
 //               var refreshTimer = window.setTimeout(function(){
                 Drupal.avishay.refresh_results(mlt_box);  
@@ -334,7 +309,7 @@ jQuery('a.show_mlt').live("click", function(e){
     
     if(mlt_search_page ){
             Drupal.avishay.link_setup_get_productName(jQuery('.buy_url[id]:not(.ajax-processed)', mlt_box));		
-            jQuery(e.currentTarget).parents('.views-row').append(mlt_box);		
+            jQuery(e.currentTarget).parents('.views-row').addClass("mlt-open").append(mlt_box);		
             jQuery('html, body').animate({
                 scrollTop: jQuery(mlt_box).offset().top-40
             }, 1000);
@@ -383,8 +358,10 @@ jQuery('a.show_mlt').live("click", function(e){
 //});
 // ie fixes..
 jQuery(".block-commerce-cart h2").css("float","none");
- jQuery('.not-logged-in .view-field-bookmark [title]').each(function(i, val){
-                jQuery(val).tipsy();
-        });
+// jQuery('.not-logged-in .view-field-bookmark [title]').each(function(i, val){
+	 
+//	jQuery(val).tipsy();
+
+  //      });
 
 });

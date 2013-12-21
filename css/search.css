@@ -1,3 +1,124 @@
+/**	MLT -	MIN	*/
+.views-row.mlt.min {
+padding-bottom: 5px !important;
+
+}
+.mlt.min .views-field-field-commerce{
+	margin-right:0px;
+}
+.mlt.min .title_wrap{
+	margin-right: 0px;
+}
+
+/* MLT - MIN - library-מאגר */
+.mlt.min .views-field-field-libraries {
+  right: 5px;
+}
+.mlt.min.library-מאגר {
+padding-right: 60px;
+width: 91%;
+}
+
+.mlt.min .show_mlt_wrap a{
+   bottom: 10px;
+    left: 0;
+    margin: 0 !important;
+    position: absolute;
+}
+.mlt.min .actions {
+  max-height: 50px;
+}
+/* MLt FULL  - library-מאגר */
+.full .library-מאגר.mlt .views-field-field-libraries {
+    display: block;
+}
+.full .mlt .actions {
+display: inline-block;
+width: 100%;
+}
+.full .mlt.library-מאגר .actions {
+min-height:90px;
+}
+.full .mlt .views-field-field-libraries a {
+  top: 12px;
+}
+.full .mlt.library-מאגר .views-field-field-commerce {
+  margin-right: 70px;
+}
+.full .mlt.library-מאגר .views-field-field-commerce * {
+  margin-right: 0;
+}
+/*	MLT  -- FULL	*/
+.full .mlt_wrap {
+  margin-top: 14px !important	;
+}
+.views-row.mlt.full {
+  padding-top: 10px;
+}
+.full .mlt .views-field-field-libraries a {
+  right: 5px;
+  top: 1px;
+}
+.full .mlt .title_wrap{
+margin-right:0px;
+}
+.full .mlt.views-row {
+  padding-right: 15px;
+  width: 97%;
+}
+/* MLT --  END -- */
+.full .mlt .show_mlt_wrap {
+  bottom: 5px;
+  left: 0;
+  position: absolute;
+}
+/* FULL -- library-מאגר */
+.full .views-field-field-libraries {
+  position: relative;
+}
+.full .views-field-field-libraries a {
+position: absolute;
+right: 9px;
+top: -57px;
+}
+.full .views-field-field-libraries img {
+  height: auto;
+  width: 50px;
+}
+/* MIN -- library-מאגר */
+.min .views-field-field-libraries {
+    position: absolute;
+    right: -45px;
+    top: 0;
+}
+.min .views-field-field-libraries a {
+  top: 0;
+}
+.min .views-field-field-libraries img {
+    height: auto;
+    width: 39px;
+}
+/* library-מאגר */
+.views-field-field-libraries {
+	display: inline;
+}
+
+.min .views-field-field-commerce {
+  transform-origin: right center 0;
+  transform: scale(0.8);
+  -webkit-transform-origin: right center 0;
+  -webkit-transform: scale(0.8);
+  display: block;
+margin-right: 20px;	
+}
+.min .views-field-field-commerce a{
+margin-right: 0px !important;
+}
+.view-search-api-solr .mlt_action {
+    display: inline-block;
+/*    margin: 12px 0 22px;	*/
+    padding: 0 7px;
+}
 
 #region-preface-third .login label {
     color: #455E70;
@@ -101,15 +222,17 @@ div#display_mode ,
 .view-search-api-solr  .view-content {
     /*padding-right: 10px;*/
 }
-.view-search-api-solr   .views-field-contextual-links {
-    display: inline;
+.logged-in:not(.admin-menu)  .views-field-contextual-links ,
+.not-logged-in  .views-field-contextual-links {
+    display: none;
 }
 .view-search-api-solr .views-row.min {
+ margin-bottom: 5px;
+    padding-bottom: 0;
     padding-top: 0;
 }
 .min .title_wrap {
-  margin-bottom: 11px;
-  margin-top: 0;
+  margin-bottom: 0px;
 }
 .min .flag_wrap {
   top: 4px;
@@ -117,10 +240,10 @@ div#display_mode ,
 
 .view-search-api-solr .views-row {
       border-bottom: 1px solid #B7B7B7;
-    clear: both;
-    float: right;
+/*    clear: both;
+    float: right; */
     margin-bottom: 10px;
-    padding: 30px 0 0;
+    padding: 30px 0 10px;
     position: relative;
      width: 100%;
 }
@@ -233,39 +356,25 @@ margin-right: 65px;
 .journal_filter:after{
     content: ")";
 }
-.actions{
-    margin-top: 40px;
+/*
+.min.mlt .actions{
+height: 75px;
 }
+
+.actions{
+position: relative;
+}
+*/
 .views-field-field-commerce{
-   display: inline-block;
+ display: inline-block;
+    margin-right: 35px;
+/*
     width: 100%;
-/*    
+    
 clear: both;
     display: block;
     float: right;
 */
-}
-.min .views-field-field-commerce {
-  bottom: 4px;
-  float: left;
-  left: -76px;
-  position: absolute;
-  transform: scale(0.8);
-  -webkit-transform: scale(0.8);
-  width: 515px;
-}
-.mlt .views-field-field-commerce {
- bottom: -10px;
-left: 0;
-position: absolute;
-transform: scale(0.8);
--webkit-transform: scale(0.8);
-}
-
-.view-search-api-solr .mlt_action {
-    display: inline-block;
-    margin: 12px 0 22px;
-    padding: 0 7px;
 }
 #advanced_search_title h2{
     font-size: 18px;
@@ -273,15 +382,17 @@ transform: scale(0.8);
     margin: 0;
     color:#6AAAC1 ;
 }
-.show_mlt_wrap {
+/*.show_mlt_wrap {
   clear: both;
     float: right;
-}
+}*/
 .show_mlt_wrap > a {
-    font-size: 15px;
-    letter-spacing: 0.1px;
-    padding: 0 11px !important;
     color: inherit;
+display: block;
+font-size: 15px;
+letter-spacing: 0.1px;
+margin-bottom: 7px;
+padding: 0 11px !important;
 }
 .view-search-api-solr  div.mlt_arrow{
     background: url("/sites/all/themes/e_scholar/images/mlt_arrow.png") no-repeat scroll 0 0 transparent;
@@ -296,8 +407,8 @@ transform: scale(0.8);
     background: none repeat scroll 0 0 #D9E6EB;
    border-radius: 10px 10px 10px 10px;
    box-shadow: 1px 21px 35px -15px #B7B7B7;
-   clear: both;
-   float: right;
+/*   clear: both;
+   float: right; */
    margin-bottom: 30px;
    margin-right: 25px;
    margin-top: -10px;
@@ -305,10 +416,6 @@ transform: scale(0.8);
    padding: 10px;
    position: relative;
    z-index: 2;
-}
-.mlt.min .title_wrap{
-    margin-bottom: -16px;
-    margin-right: 10px;
 }
 .mlt_action.close_mlt > span {
   bottom: 0;
@@ -325,14 +432,6 @@ transform: scale(0.8);
 }
 .view-search-api-solr .mlt_wrap .views-row:last-child{
     border: none;
-}
-.view-search-api-solr .mlt_wrap .show_mlt_wrap{ 
-     right: 4px;
-    top: 4px;
-}
-.mlt.min {
-  padding-bottom: 5px;
-  padding-top: 0;
 }
     
 .region-inner.region-sidebar-first-inner > div#advanced_search_title {
@@ -729,7 +828,7 @@ overflow: hidden;
 }
 .type_image{
     float: right;
-    height: 76px;
+    height: 77px;
     width: 60px;
 }
 .journal, .other, .report, .book, .paper, .tiza, .paper_work{
@@ -744,7 +843,7 @@ background-position: 0px -8px;
     background-position: 0 -276px;
 }
 .type_image.paper {
-    background-position: 0 -540px;
+    background-position: 0 -544px;
 }
 .type_image.tiza {
        background-position: 0 -688px;
@@ -812,10 +911,22 @@ span#close {
     float: right;
     width: 50%;
 }
-.views-field-error-mlt {
-    float: right;
+.views-field-error-mlt, .show_mlt_wrap{
+ text-align: left;
+ margin-top: 10px;
 }
-
+.min .views-field-error-mlt {
+  bottom: 8px;
+    left: 0;
+    position: absolute;
+    text-align: left;
+	padding:  0px;
+}
+.min.mlt-open .views-field-error-mlt {
+  left: -20px;
+    position: relative;
+    top: -23px;
+}
 .view-field-bookmark,
 .view-flag-bookmarks {
     float: right;
@@ -827,4 +938,3 @@ span#close {
 	text-shadow:none !important;
 filter: none !important;
 }
-
