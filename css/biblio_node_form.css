@@ -1,5 +1,8 @@
-.field-name-field-library{
-display: none;
+.field-name-field-libraries{
+
+position: absolute;
+bottom: 0px;
+
 }
 body.logged-in.page-node-add-biblio,
 body.logged-in.page-node-edit.node-type-biblio {

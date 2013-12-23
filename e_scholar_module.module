@@ -786,7 +786,7 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
         $form['#attached']['js'] = array(
             drupal_get_path("module", "e_scholar_module") . '/js/biblio_node_form.js',
         );
-        $container_2_haystack = array("title",  "biblio_custom1", "field-keywords","field_library");
+        $container_2_haystack = array("title",  "biblio_custom1", "field-keywords");//,"field_libraries"
     //        "field_biblio_qualitive",  "field_biblio_quantitative", "field_biblio_research","field_commerce",
         $container_1_haystack = array("biblio_url","biblio_abst_e", "biblio_keywords", "biblio_secondary_title");
 
@@ -815,18 +815,20 @@ function e_scholar_module_form_node_form_alter(&$form, &$form_state, $form_id) {
                 if (gettype($form_field) === "array" && isset($form_field["#type"])) {
                     if ($form_field["#type"] === "vertical_tabs") {
                         foreach ($form_field as $key => $vertical_tab_fieldset) {
-                            if ($vertical_tab_fieldset["#type"] == "fieldset") {
-                                foreach ($vertical_tab_fieldset as $k => $field) {
-                                    if (gettype($field) === "array" && in_array($k, $container_1_haystack)) {
-                                        $form["top_content"]["container_1"][$k] = $field;
-                                        unset($form[$form_key][$key][$k]);
-                                    }
-                                    if (gettype($field) === "array" && in_array($k, $container_2_haystack)) {
-                                        $form["top_content"]["container_2"][$k] = $field;
-                                        unset($form[$form_key][$key][$k]);
-                                    }
-                                }
-                            }
+                        	if(isset($vertical_tab_fieldset["#type"])){
+	                            if ($vertical_tab_fieldset["#type"] == "fieldset") {
+	                                foreach ($vertical_tab_fieldset as $k => $field) {
+	                                    if (gettype($field) === "array" && in_array($k, $container_1_haystack)) {
+	                                        $form["top_content"]["container_1"][$k] = $field;
+	                                        unset($form[$form_key][$key][$k]);
+	                                    }
+	                                    if (gettype($field) === "array" && in_array($k, $container_2_haystack)) {
+	                                        $form["top_content"]["container_2"][$k] = $field;
+	                                        unset($form[$form_key][$key][$k]);
+	                                    }
+	                                }
+	                            }
+                        	}
                         }
                     }
                     if ($form_field["#type"] == "textfield") {

@@ -293,10 +293,10 @@ span#sep {
     font-size: 15px;
     font-weight: bold;
     padding-right: 8px;
-
+    vertical-align: top;
     width: 39%;
 }
-.field-content{
+.views-field > .field-content{
     display: inline-block;
     width: 60%;
 

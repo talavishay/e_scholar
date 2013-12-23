@@ -40,7 +40,10 @@ if(typeof  Drupal.settings.url !== "undefined"){
     Drupal.settings.openurl();
     
 }
-jQuery(".form-item.form-type-select.form-item-biblio-type").before(jQuery('<div id="term_content"></div>').append(jQuery("#edit-field-commerce, .field-type-taxonomy-term-reference")));
+jQuery(".form-item.form-type-select.form-item-biblio-type").before(
+	jQuery('<div id="term_content"></div>').append(
+		jQuery("#edit-field-commerce, .field-type-taxonomy-term-reference"))).after(
+		jQuery(".field-name-field-libraries"));
 
 //
 

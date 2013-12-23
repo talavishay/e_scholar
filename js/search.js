@@ -27,7 +27,8 @@ Drupal.avishay.refresh_results = function(view){
                     jQuery(".title_wrap", row).after(jQuery('<div class="type_image"></div>').addClass(name));
                     if(name === "journal"){
                         var journal = jQuery(".views-field-biblio-secondary-title", row);
-                        var journal_name = jQuery(journal).text().trim();
+                        var journal_name = jQuery(journal).text()
+                        journal_name = jQuery.trim(journal_name);
                         var link = window.location.hostname+window.location.pathname+"?&f[91]=biblio_secondary_title:"+journal_name ;
                         var journal_filter = jQuery('<div class="journal_filter"><a title="'+journal_name+'" href="http://'+link+'">'+journal_name.substr(0,45)+'...</a></div>');
                         jQuery(field_type).append(journal_filter);
@@ -44,13 +45,15 @@ Drupal.avishay.refresh_results = function(view){
         }
         // Adding a price to the urllink
         if(typeof(Drupal.settings.url_price) !== "undefined"){
-          var price = Drupal.settings.url_price.replace(/.00/i," ").trim();
-          jQuery(".buy_url:not(.priceFix)", row).append('<span class="price">'+price+'</span>' ).addClass("priceFix");
+          var price = Drupal.settings.url_price.replace(/.00/i," ")
+          price = jQuery.trim(price);
+          jQuery(".buy_url .content:not(.priceFix)", row).append('<span class="price">'+price+'</span>' ).addClass("priceFix");
         }
         // Adding a price to the export link
         if(typeof(Drupal.settings.citaion_price) !== "undefined"){
-          var price = Drupal.settings.citaion_price.replace(/.00/i," ").trim();
-          jQuery(".buy_export:not(.priceFix)", row).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
+          var price = Drupal.settings.citaion_price.replace(/.00/i," ");
+          price = jQuery.trim(price);
+          jQuery(".buy_export .content:not(.priceFix)", row).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
         }
         // keywords link
         jQuery('.views-field-biblio-keywords .field-content', row).each(function(i, val){
@@ -59,9 +62,9 @@ Drupal.avishay.refresh_results = function(view){
             var keywords = "";
             jQuery.each(keys, function(ii, vv){
 
-                                //vv = jQuery(vv).trim();
+                                vv = jQuery.trim(vv);
 
-                                var link = window.location.hostname+window.location.pathname+"?f[90]=biblio_keywords:"+vv.trim();
+                                var link = window.location.hostname+window.location.pathname+"?f[90]=biblio_keywords:"+vv;
                                 jQuery(val).append(jQuery('<a href="http://'+link+'">'+vv+'</a><span>, </span>'));
                             });
             jQuery("span", val).last().remove();
@@ -111,7 +114,8 @@ jQuery("#close").live("click", function(e){
 jQuery(".view-search-api-solr .webform").live("click", function(e){
     e.preventDefault();
     var row = jQuery(e.currentTarget).parents(".views-row");
-    var details = jQuery(".title_wrap", row).text().trim();
+    var details = jQuery(".title_wrap", row).text()
+    details = jQuery.trim(details);
     var nid = jQuery(".mlt_action", row).attr("nid");
 
     jQuery("#edit-submitted-details").val(details );
@@ -181,7 +185,8 @@ jQuery('a.show_mlt').live("click", function(e){
     var mlt_cart_block = jQuery(e.currentTarget).parents("#block-commerce-cart-cart").length;
     var mlt_cart_page = jQuery(e.currentTarget).parents(".view-commerce-cart-form").length;
     var mlt_search_page = jQuery(e.currentTarget).parents(".view-search-api-solr").length;
-    var nid = jQuery(e.currentTarget).attr("nid").trim();
+    var nid = jQuery(e.currentTarget).attr("nid")
+    nid = jQuery.trim(nid);
     var mlt_box = jQuery('<div class="mlt_wrap" id="mlt_'+nid+'" ></div>');
     var url = Drupal.settings.solr_server+'/mlt?q=item_id:'+nid+'&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
 //    var url = 'http://'+window.location.hostname+':8080/solr/scholare/mlt?q=item_id:'+nid+'&mlt.fl=id,t_title&mlt.mindf=1&mlt.mintf=1&fl=*&wt=json&json.wrf=?';
@@ -288,7 +293,7 @@ jQuery('a.show_mlt').live("click", function(e){
                                                                 "product":	"buy_url",
                                                                 "nid":		val.is_nid, 
                                                                 "id":		"buy_url_"+val.is_nid,
-                                                                "href":		"#"}).text("רכוש קישור").removeClass("ajax-processed");
+                                                                "href":		"#"}).removeClass("ajax-processed").html('<div class="content">רכוש קישור</div>');
                 } else {
                         jQuery(".views-field-field-commerce .field-content a", mltRow).attr({
                                 "href":	"/free/url/" + val.is_nid,
@@ -300,9 +305,11 @@ jQuery('a.show_mlt').live("click", function(e){
                     jQuery(e.currentTarget).not(".mlt").addClass("mlt").removeClass("loading").text("סגור מאמרים דומים").after(jQuery('<div class="mlt_arrow"></div>'));
                 }
                 jQuery("[title]",mltRow).tipsy();
+                Drupal.avishay.refresh_results(mlt_box);  
+                
                 jQuery(mlt_box).append(mltRow);
 //               var refreshTimer = window.setTimeout(function(){
-                Drupal.avishay.refresh_results(mlt_box);  
+                
 //               }, 100);
             }	
     });
@@ -310,6 +317,8 @@ jQuery('a.show_mlt').live("click", function(e){
     if(mlt_search_page ){
             Drupal.avishay.link_setup_get_productName(jQuery('.buy_url[id]:not(.ajax-processed)', mlt_box));		
             jQuery(e.currentTarget).parents('.views-row').addClass("mlt-open").append(mlt_box);		
+            Drupal.avishay.incart();
+            Drupal.avishay.my_products();
             jQuery('html, body').animate({
                 scrollTop: jQuery(mlt_box).offset().top-40
             }, 1000);

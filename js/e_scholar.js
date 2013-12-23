@@ -112,8 +112,9 @@ Drupal.avishay.incart = function(contexts){
             jQuery(val).removeClass('cart_export').addClass('buy_export').text('רכוש ציטוט');
             // Adding a price to the export link
             if(typeof(Drupal.settings.citaion_price) !== "undefined"){
-              var price = Drupal.settings.citaion_price.replace(/00.00/i,"").replace(/שח/i,"").trim();
-             jQuery(val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
+              var price = Drupal.settings.citaion_price.replace(/00.00/i,"").replace(/שח/i,"");
+              price = jQuery.trim(price);
+             jQuery(".content",val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
             }
         }
         if(jQuery(val).hasClass('cart_url')){
@@ -122,14 +123,18 @@ Drupal.avishay.incart = function(contexts){
     });
     // ittarte over line item rows from the cart
 	    jQuery('.commerce-line-item-views-form .views-row').each(function(i, row){
-         var productName = jQuery(".views-field-sku", row).text().trim();
-         var nid = jQuery(".views-field-field-nid-1", row).text().trim();
-         var link = jQuery('.buy_'+productName+'[nid='+nid+']').not('cart_export');
+         var productName = jQuery(".views-field-sku", row).text();
+         productName = jQuery.trim(productName);
+         var nid = jQuery(".views-field-field-nid-1", row).text();
+         nid = jQuery.trim(nid);
+         var link = jQuery('.buy_'+productName+'[nid='+nid+']');
          
          jQuery(link).each(function(i, val){
              jQuery("span.price", val).remove();
              var text = jQuery(val).text().replace(/(.*)רכוש(.*)/i,"$1$2 בעגלה");
-             jQuery(val).text(text).addClass('cart_'+productName).removeClass('buy_'+productName);
+             text = jQuery.trim(text);
+             jQuery(val).addClass('cart_'+productName).removeClass('buy_'+productName);
+             jQuery(val).html('<div class="content">'+text+'</div>');
          });
       
     });
@@ -385,7 +390,8 @@ Drupal.behaviors.e_scholar = {
             });
             // cart more like this 
             jQuery('td.views-field-field-nid', commerce_line_item_views_form).each(function(i, val){
-                var nid = jQuery(val).text().trim();
+                var nid = jQuery(val).text()
+                nid = jQuery.trim(nid);
                 jQuery(val).text("").append(jQuery('<a href="#" nid="'+nid+'" class="show_mlt mlt_action">מאמרים דומים</a>'));
             });
             // purches links setup
@@ -519,6 +525,22 @@ Drupal.avishay.bind_events = function (){
             jQuery.cookie("refresh", "true");
     });
 };
+Drupal.avishay.cart_price_fix = function(){
+jQuery(".views-field-nothing").each(function(i, val){	
+		// Adding a price to the urllink
+       if(typeof(Drupal.settings.url_price) !== "undefined"){
+         var price = Drupal.settings.url_price.replace(/.00/i," ");
+         price = jQuery.trim(price);
+         jQuery(".buy_url .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");
+       }
+       // Adding a price to the export link
+       if(typeof(Drupal.settings.citaion_price) !== "undefined"){
+         var price = Drupal.settings.citaion_price.replace(/.00/i," ");
+         price = jQuery.trim(price);
+         jQuery(".buy_export .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
+       }	
+});
+}
 Drupal.avishay.recent = function(){
 var recent = jQuery(".view-recent-articles");
 jQuery(recent).bind("mouseover", function(e){
@@ -537,6 +559,7 @@ if(recent.length){
 }
 };
 jQuery(document).ready(function(){
+	
 //	Drupal.avishay.recent();
     Drupal.avishay.bind_events();
     // checkout page -- "term of service"
@@ -569,7 +592,7 @@ jQuery(document).ready(function(){
             });},5000);//    console.log(cartTimer);
         };
         Drupal.ajax.prototype.commands.ajax_buy_response_shadowbox = function (ajax, response, status) {
-                        jQuery("#buy_url_" + response.data +':not(.priceFix)').replaceWith(jQuery('<a class="cart_url" href="#">בעגלה</a>'));
+                        jQuery("#buy_url_" + response.data +':not(.priceFix)').replaceWith(jQuery('<a class="cart_url" href="#"><div class="content">קישור בעגלה</div></a>'));
                 };
         Drupal.ajax.prototype.commands.ajax_get_export_output = function (ajax, response, status) {
                         var settings = {"content":response.data,
@@ -750,7 +773,9 @@ Drupal.settings.display_mode = jQuery.cookie("display_mode");
                 });
         }).addClass("qtiped");
 
-
+if(window.location.pathname == "/cart"){
+Drupal.avishay.cart_price_fix();
+}
 });
 jQuery(document).ajaxStart(function () {
 /* * 		setup global ajax event listeners*/
