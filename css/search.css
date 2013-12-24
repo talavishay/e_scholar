@@ -309,6 +309,8 @@ span#sep {
 .title_wrap {
     margin-bottom: 23px;
     margin-right: 25px;
+position:relative;
+z-index:0;
 }
 /*
 .title_wrap .views-tooltip span{
@@ -368,13 +370,8 @@ position: relative;
 .views-field-field-commerce{
  display: inline-block;
     margin-right: 35px;
-/*
-    width: 100%;
-    
-clear: both;
-    display: block;
-    float: right;
-*/
+position: relative;
+z-index:1;
 }
 #advanced_search_title h2{
     font-size: 18px;
@@ -529,6 +526,7 @@ div.flag_wrap {
 .pager li.pager-current {
     font-weight: inherit !important;
     padding: auto !important;
+float: none !important;
 }
 .pager li.last,
 .pager li.pager-next{
@@ -904,9 +902,6 @@ span#close {
   line-height: 55px;
   text-align: center;
 }
-.views-field-field-commerce .ajax-progress {
-   width: 50px;
-}
 #block-views-flag-bookmarks-block-2 {
     float: right;
     width: 50%;
@@ -921,6 +916,9 @@ span#close {
     position: absolute;
     text-align: left;
 	padding:  0px;
+}
+.ie .min .views-field-error-mlt {
+position: static !important;
 }
 .min.mlt-open .views-field-error-mlt {
   left: -20px;

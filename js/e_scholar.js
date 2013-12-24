@@ -773,8 +773,16 @@ Drupal.settings.display_mode = jQuery.cookie("display_mode");
                 });
         }).addClass("qtiped");
 
+
 if(window.location.pathname == "/cart"){
 Drupal.avishay.cart_price_fix();
+}
+if(window.location.pathname == "/"){
+	jQuery("#views_slideshow_cycle_main_recent_articles-block a").bind("click", function(e){
+		var href = jQuery(e.currentTarget).attr("href").replace(/-/i, " ");
+		jQuery(e.currentTarget).attr("href", href);
+		//console.log(href);
+	});
 }
 });
 jQuery(document).ajaxStart(function () {

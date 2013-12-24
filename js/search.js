@@ -118,8 +118,8 @@ jQuery(".view-search-api-solr .webform").live("click", function(e){
     details = jQuery.trim(details);
     var nid = jQuery(".mlt_action", row).attr("nid");
 
+jQuery('#edit-submitted-msg').val('');
     jQuery("#edit-submitted-details").val(details );
-    jQuery("#edit-submitted-user").val(Drupal.settings.username );
     jQuery("input#edit-submitted-link").val(nid);
     jQuery("#block-webform-client-block-456").show();
     return false;
