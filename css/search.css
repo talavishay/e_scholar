@@ -298,7 +298,7 @@ span#sep {
 }
 .views-field > .field-content{
     display: inline-block;
-    width: 60%;
+/*    width: 60%; */
 
 }
 .views-field-biblio-year .field-content,
