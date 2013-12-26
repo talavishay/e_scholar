@@ -3,7 +3,7 @@
 padding-bottom: 5px !important;
 
 }
-.mlt.min .views-field-field-commerce{
+.mlt.min .views-field-field-commerce-sku{
 	margin-right:0px;
 }
 .mlt.min .title_wrap{
@@ -42,10 +42,10 @@ min-height:90px;
 .full .mlt .views-field-field-libraries a {
   top: 12px;
 }
-.full .mlt.library-מאגר .views-field-field-commerce {
+.full .mlt.library-מאגר .views-field-field-commerce-sku {
   margin-right: 70px;
 }
-.full .mlt.library-מאגר .views-field-field-commerce * {
+.full .mlt.library-מאגר .views-field-field-commerce-sku * {
   margin-right: 0;
 }
 /*	MLT  -- FULL	*/
@@ -103,7 +103,7 @@ top: -57px;
 	display: inline;
 }
 
-.min .views-field-field-commerce {
+.min .views-field-field-commerce-sku {
   transform-origin: right center 0;
   transform: scale(0.8);
   -webkit-transform-origin: right center 0;
@@ -111,7 +111,7 @@ top: -57px;
   display: block;
 margin-right: 20px;	
 }
-.min .views-field-field-commerce a{
+.min .views-field-field-commerce-sku a{
 margin-right: 0px !important;
 }
 .view-search-api-solr .mlt_action {
@@ -252,7 +252,7 @@ div#display_mode ,
     /*position: absolute;*/
     
 }
-.views-field-field-commerce .throbber {
+.views-field-field-commerce-sku .throbber {
 /*    position: relative;
     top:40px;*/
 }
@@ -293,7 +293,8 @@ span#sep {
     font-size: 15px;
     font-weight: bold;
     padding-right: 8px;
-    vertical-align: top;
+/*    vertical-align: top;*/
+    vertical-align: baseline;
     width: 39%;
 }
 .views-field > .field-content{
@@ -336,6 +337,7 @@ margin-right: 65px;
     line-height: 19px;
     position: relative;
     top: -1px;
+width:60%;
 }
 .views-field-tooltip .field-content{
     width: auto;
@@ -367,7 +369,7 @@ height: 75px;
 position: relative;
 }
 */
-.views-field-field-commerce{
+.views-field-field-commerce-sku{
  display: inline-block;
     margin-right: 35px;
 position: relative;
@@ -644,8 +646,8 @@ section#block-commerce-cart-cart .contextual-links-wrapper {
        max-width: 49%;
 }
 .view-search-api-solr .views-field-nid,
-.view-flag-bookmarks  .views-field-field-commerce,
-#block-commerce-cart-cart  .views-field-field-commerce-bibilio-nid{
+.view-flag-bookmarks  .views-field-field-commerce-sku,
+#block-commerce-cart-cart  .views-field-field-commerce-sku-bibilio-nid{
     /*display: none;*/
 }
 .line-item-summary {

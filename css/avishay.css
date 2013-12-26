@@ -473,7 +473,7 @@ background: none;
 	width: 100%;
 }
 .view-search-api-solr .views-field.views-field-nid,
-.view-search-api-solr .views-field.views-field-field-commerce{
+.view-search-api-solr .views-field.views-field-field-commerce-sku{
 	display: inline-block;
 }
 .view-search-api-solr .views-field.views-field-nid{
@@ -483,12 +483,12 @@ background: none;
 .view-search-api-solr  div.actions div.views-field span.flag-wrapper{
 	float:right;
 }
-.view-search-api-solr .views-field.views-field-field-commerce{
+.view-search-api-solr .views-field.views-field-field-commerce-sku{
 
 	float: left;
 }
 .view-search-api-solr .views-field-nid a,
-.view-search-api-solr .views-field-field-commerce a{
+.view-search-api-solr .views-field-field-commerce-sku a{
 	display: inline-block;
 	direction: ltr ;
 	text-align: center;
@@ -516,7 +516,7 @@ a.buy_url:not(.cart_url), a.buy_export:not(.cart_export) {
 	border-color: orange;
 }
 
-.view-search-api-solr .views-field-field-commerce a{
+.view-search-api-solr .views-field-field-commerce-sku a{
 	border-size: 2px;
 	border-style: solid;
 	width:90px;

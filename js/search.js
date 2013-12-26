@@ -228,8 +228,8 @@ jQuery('a.show_mlt').live("click", function(e){
                 // YEAR
                 jQuery(".views-field-biblio-year .field-content", mltRow).text( val.is_biblio_year) ;	
                 // RESEARCH field
-                jQuery(val.sm_field_biblio_researchname).each(function(i,keyword){        
-                    if(jQuery(val.sm_field_biblio_researchname).length === i+1  ){
+                jQuery(val.sm_field_biblio_research$name).each(function(i,keyword){        
+                    if(jQuery(val.sm_field_biblio_research$name).length === i+1  ){
                         keywords = keywords + keyword ;
                     }else {
                         keywords = keywords+ keyword + sep; 		
@@ -241,9 +241,9 @@ jQuery('a.show_mlt').live("click", function(e){
                 // catalog TYPE -- qualitive /quantitive
                 keywords = "";
                     // qualitivename
-                jQuery(val.sm_field_biblio_qualitivename).each(function(i,keyword){        
+                jQuery(val.sm_field_biblio_qualitive$name).each(function(i,keyword){        
 
-                if(jQuery(val.sm_field_biblio_qualitivename).length === i+1  ){
+                if(jQuery(val.sm_field_biblio_qualitive$name).length === i+1  ){
                                 keywords = keywords + keyword ;
 
                         }else {
@@ -257,9 +257,9 @@ jQuery('a.show_mlt').live("click", function(e){
                 }
                 keywords = "";
                     // quantitative:name
-                jQuery(val.sm_field_biblio_quantitativename).each(function(i,keyword){        
+                jQuery(val.sm_field_biblio_qualitive$name).each(function(i,keyword){        
 
-                if(jQuery(val.sm_field_biblio_quantitativename).length === i+1  ){
+                if(jQuery(val.sm_field_biblio_qualitive$name).length === i+1  ){
                                 keywords = keywords + keyword ;
                         }else {
                                 keywords = keywords+ keyword + sep; 		
@@ -283,19 +283,19 @@ jQuery('a.show_mlt').live("click", function(e){
                 if(typeof(val.is_field_libraries) !== "undefined"){
                 	if(parseInt(val.is_field_libraries) === 1){
                 		mltRow.addClass("library-מאגר");
-            	       jQuery(".views-field-field-commerce", mltRow).before(jQuery('<div class="views-field views-field-field-libraries"><a target="_blank" href="'+Drupal.settings.libraries_link+'" class="ajax-processed" title="'+Drupal.settings.libraries_tooltip+'"><img src="/sites/all/themes/e_scholar/images/libraries.gif"/></a></div>'));
+            	       jQuery(".views-field-field-commerce-sku", mltRow).before(jQuery('<div class="views-field views-field-field-libraries"><a target="_blank" href="'+Drupal.settings.libraries_link+'" class="ajax-processed" title="'+Drupal.settings.libraries_tooltip+'"><img src="/sites/all/themes/e_scholar/images/libraries.gif"/></a></div>'));
                 	}
                 }
                 // COMMERCE
-                if(	parseInt(val.im_field_commerce) === 1 ) {
-                        jQuery(".views-field-field-commerce .field-content a", mltRow).attr({
+                if(	typeof(val.sm_field_commerce$sku) !== "undefined" ) {
+                        jQuery(".views-field-field-commerce-sku .field-content a", mltRow).attr({
                                                                 "class":	"nid_"+val.is_nid+" buy_url",
                                                                 "product":	"buy_url",
                                                                 "nid":		val.is_nid, 
                                                                 "id":		"buy_url_"+val.is_nid,
                                                                 "href":		"#"}).removeClass("ajax-processed").html('<div class="content">רכוש קישור</div>');
                 } else {
-                        jQuery(".views-field-field-commerce .field-content a", mltRow).attr({
+                        jQuery(".views-field-field-commerce-sku .field-content a", mltRow).attr({
                                 "href":	"/free/url/" + val.is_nid,
                                 "id":		"nid_" + val.is_nid,
                                 "class":"free"
