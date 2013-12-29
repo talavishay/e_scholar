@@ -114,6 +114,7 @@ margin-right: 20px;
 .min .views-field-field-commerce-sku a{
 margin-right: 0px !important;
 }
+
 .view-search-api-solr .mlt_action {
     display: inline-block;
 /*    margin: 12px 0 22px;	*/
@@ -538,6 +539,9 @@ float: left;
   margin-bottom: 10px;
 }
 /*####*/
+.view-search-api-solr .views-field-field-commerce-sku a:last-child {
+  margin-left: 0;
+}
 #region-preface-third{
     background: none repeat scroll 0 0 #444444;
 border-radius: 10px 10px 0 0;

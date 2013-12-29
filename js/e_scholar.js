@@ -96,8 +96,9 @@ try{Drupal.avishay.my_products();
     Drupal.avishay.incart();
     Drupal.avishay.cartLinks();
 //    Drupal.avishay.free_url();
-    Drupal.avishay.link_setup_get_productName(jQuery('.buy_url:not(.ajax-processed)'));
-    Drupal.avishay.link_setup_get_productName(jQuery('.buy_export:not(.ajax-processed)'));
+	jQuery('.buy_url, .buy_export').removeClass("ajax-processed");
+    Drupal.avishay.link_setup_get_productName(jQuery('.buy_url'));
+    Drupal.avishay.link_setup_get_productName(jQuery('.buy_export'));
 //    Drupal.avishay.combineActionFields(view);
 //    Drupal.avishay.bookmarkExportActionClick();
 //    Drupal.avishay.refresh(view);
@@ -107,19 +108,15 @@ try{Drupal.avishay.my_products();
 };
 Drupal.avishay.incart = function(contexts){
     //  reset links in case  we are running after a cart refresh...
-    jQuery('a.cart_export,a.url_export').each(function(i,val){
+    jQuery('a.cart_export,a.cart_url').each(function(i,val){
         if(jQuery(val).hasClass('cart_export')){
-            jQuery(val).removeClass('cart_export').addClass('buy_export').text('רכוש ציטוט');
-            // Adding a price to the export link
-            if(typeof(Drupal.settings.citaion_price) !== "undefined"){
-              var price = Drupal.settings.citaion_price.replace(/00.00/i,"").replace(/שח/i,"");
-              price = jQuery.trim(price);
-             jQuery(".content",val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
-            }
+            jQuery(val).removeClass('cart_export').addClass('buy_export')
+				.children(".content").text('רכוש ציטוט');            
         }
         if(jQuery(val).hasClass('cart_url')){
-                jQuery(val).removeClass('cart_url').addClass('buy_url').text('רכוש קישור');
+                jQuery(val).removeClass('cart_url').addClass('buy_url').children(".content").text('רכוש קישור');
         }
+         Drupal.avishay.cart_price_fix(jQuery(val).parent());
     });
     // ittarte over line item rows from the cart
 	    jQuery('.commerce-line-item-views-form .views-row').each(function(i, row){
@@ -137,12 +134,12 @@ Drupal.avishay.incart = function(contexts){
              jQuery(val).html('<div class="content">'+text+'</div>');
          });
       
-    });
-    
-    
+    });    	
+    Drupal.avishay.link_setup_get_productName(jQuery(".buy_export, .buy_url").not(".ajax-processed"));   
 };
 Drupal.avishay.link_setup_get_productName = function(links){	
-    jQuery(links).addClass('ajax-processed').each(function (i,val) {
+    jQuery(links).not("ajax-processed").each(function (i,val) {
+		
 		var element_settings = {};
 		var base = jQuery(val).attr('id');
 		var productName =  jQuery(val).attr('product');
@@ -154,12 +151,13 @@ Drupal.avishay.link_setup_get_productName = function(links){
                                             "nid": jQuery(val).attr("nid") };      // ::::: Here we add a query parameter.
 		var ajax = new Drupal.ajax(base, val, element_settings);
 		Drupal.ajax[base] = ajax;
-                if(jQuery(val).parents("#sb-player").length){
-                    jQuery(val).bind("click", function(){
-                        jQuery.cookie("refresh", "true");
-                    });
-                }
-    });
+                //~ if(jQuery(val).parents("#sb-player").length){
+                    //~ jQuery(val).bind("click", function(){
+                        //~ jQuery.cookie("refresh", "true");
+                    //~ });
+                //~ }
+		
+    }).addClass('ajax-processed');
 };
 Drupal.avishay.my_products = function(){	
     try{
@@ -353,17 +351,18 @@ Drupal.avishay.shadowbox = function(settings){
             {onClose : function() {
                 if(jQuery("body.page-cart")){
                     jQuery('a.close_mlt').text("מאמרים דומים").removeClass("close_mlt loading").addClass("show_mlt");
-                    if(jQuery.cookie("refresh")){
-                        jQuery.removeCookie("refresh");
-                        var cart_form = jQuery("#views-form-commerce-cart-form-default");
-                        if(cart_form.length){
-                            cart_form.html('<h2>מעדכן עגלת קניות . . </h2>') ;
-                            var timer = window.setInterval(function(){
-                                jQuery("h2", cart_form).append(" . ") ;
-                            }, 100);
-                            window.location.reload();
-                        }
-                    }
+                    //~ if(jQuery.cookie("refresh")){
+                        //~ jQuery.removeCookie("refresh");
+                        //~ var cart_form = jQuery("#views-form-commerce-cart-form-default");
+                        //~ if(cart_form.length){
+                            //~ cart_form.html('<h2>מעדכן עגלת קניות . . </h2>') ;
+                            //~ var timer = window.setInterval(function(){
+                                //~ jQuery("h2", cart_form).append(" . ") ;
+                            //~ }, 100);
+                            //~ window.location.reload();
+                        //~ }
+                    //~ }
+                    Drupal.avishay.refreshCartPage();
                }
             },
             onFinish: function(elm){
@@ -379,21 +378,27 @@ Drupal.avishay.shadowbox = function(settings){
 Drupal.behaviors.e_scholar = {
     attach: function(context, settings){
          
-        var view_commerce_cart_block = jQuery('.view-commerce-cart-block');
+        //var view_commerce_cart_block = jQuery('.view-commerce-cart-block');
+        var view_commerce_cart_block = jQuery(context).hasClass("view-commerce-cart-form") ? context : jQuery('.view-commerce-cart-block');
+        
         var commerce_line_item_views_form = jQuery(".commerce-line-item-views-form", context);
         var flag = jQuery(context).hasClass("flag-wrapper");
         var view_search_api_solr = jQuery(".view-search-api-solr .view-content", context);
         var view_flag_bookmarks  = jQuery(".view-flag-bookmarks .view-content", context);
         if(commerce_line_item_views_form.length){
-            jQuery(".delete-line-item.form-submit", context).attr("title", "  הסר מהעגלה  ").val("x").bind("click", function(e){
-                jQuery(e.currentTarget).addClass("loading");
-            });
+      //      jQuery(".delete-line-item.form-submit", context).attr("title", "  הסר מהעגלה  ").bind("click", function(e){
+//                e.preventDefault();
+  //              jQuery(e.currentTarget).addClass("loading");
+    //            return false;
+        //    });
             // cart more like this 
-            jQuery('td.views-field-field-nid', commerce_line_item_views_form).each(function(i, val){
+            //~ jQuery('td.views-field-field-nid:not(.mlt)', commerce_line_item_views_form).each(function(i, val){
+			jQuery('td.views-field-field-nid:not(.mlt)', context).each(function(i, val){
+				
                 var nid = jQuery(val).text()
                 nid = jQuery.trim(nid);
                 jQuery(val).text("").append(jQuery('<a href="#" nid="'+nid+'" class="show_mlt mlt_action">מאמרים דומים</a>'));
-            });
+            }).addClass("mlt");
             // purches links setup
             Drupal.avishay.link_setup_get_productName(jQuery('.buy_url:not(.ajax-processed)', commerce_line_item_views_form));
             Drupal.avishay.link_setup_get_productName(jQuery('.buy_export:not(.ajax-processed)', commerce_line_item_views_form));  
@@ -442,18 +447,24 @@ Drupal.behaviors.e_scholar = {
 
     }
 };
+Drupal.avishay.dup = function(text){
+	if (typeof(text) == "undefined"){
+	text ="";
+	}
+	var settings = {
+		"content"   :  '<div id="in_cart">המאמר '+text+' כבר נמצא בעגלה.. <br/>'+
+						'להשלמת הרכישה וקבלת הקישור  <a id="checkoutNow" href="/checkout">לחץ כאן</a></div>',
+		"title"     : "",
+		"height"    : 350,
+		"width"     :350,
+		"animate" : false};
+	Drupal.avishay.shadowbox(settings);	
+}
 Drupal.avishay.bind_events = function (){
     // Cart links -- purches link allready in cart ...
     jQuery("a.cart_url,a.cart_export").live("click.cart", function(e){
                     e.preventDefault();
-                    var settings = {
-                        "content"   :  '<div id="in_cart">המוצר כבר נמצא בעגלה.. <br/>'+
-                                        'להשלמת הרכישה וקבלת הקישור  <a id="checkoutNow" href="/checkout">לחץ כאן</a></div>',
-                        "title"     : "",
-                        "height"    : 350,
-                        "width"     :350,
-                        "animate" : false};
-                    Drupal.avishay.shadowbox(settings);
+					Drupal.avishay.dup();
                     jQuery(e.currentTarget).addClass('disabled').unbind("click.cart");
                     return false;
     });
@@ -508,8 +519,9 @@ Drupal.avishay.bind_events = function (){
         Drupal.settings.display_mode = "max";
         jQuery.cookie('display_mode', "max");
     });
-    jQuery("#block-views-flag-bookmarks-block-2 .views-field-nothing span ").live("click", function(e){
-        
+    //jQuery("#block-views-flag-bookmarks-block-2 .views-field-nothing span ").live("click", function(e){
+	jQuery(".view-flag-bookmarks .views-field-nothing span ").live("click", function(e){
+    
         jQuery(e.currentTarget).addClass("flag-throbber");
         var row = jQuery(e.currentTarget).parents(".views-row").addClass("flag-waiting ");
         var nid = jQuery(".views-field-nothing span", row).attr("nid");
@@ -522,24 +534,25 @@ Drupal.avishay.bind_events = function (){
     });
     jQuery("#sb-player .buy_url").live("click", function(){
             jQuery("body").css("background","red").children().hide();
-            jQuery.cookie("refresh", "true");
+           // jQuery.cookie("refresh", "true");
     });
 };
-Drupal.avishay.cart_price_fix = function(){
-jQuery(".views-field-nothing").each(function(i, val){	
-		// Adding a price to the urllink
-       if(typeof(Drupal.settings.url_price) !== "undefined"){
-         var price = Drupal.settings.url_price.replace(/.00/i," ");
-         price = jQuery.trim(price);
-         jQuery(".buy_url .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");
-       }
-       // Adding a price to the export link
-       if(typeof(Drupal.settings.citaion_price) !== "undefined"){
-         var price = Drupal.settings.citaion_price.replace(/.00/i," ");
-         price = jQuery.trim(price);
-         jQuery(".buy_export .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
-       }	
-});
+Drupal.avishay.cart_price_fix = function(selector){
+if(typeof selector === "undefined"){	selector = ".views-field-nothing";	} 	
+	jQuery(selector).each(function(i, val){	
+			// Adding a price to the urllink
+		   if(typeof(Drupal.settings.url_price) !== "undefined"){
+			 var price = Drupal.settings.url_price.replace(/.00/i," ");
+			 price = jQuery.trim(price);
+			 jQuery(".buy_url .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");
+		   }
+		   // Adding a price to the export link
+		   if(typeof(Drupal.settings.citaion_price) !== "undefined"){
+			 var price = Drupal.settings.citaion_price.replace(/.00/i," ");
+			 price = jQuery.trim(price);
+			 jQuery(".buy_export .content:not(.priceFix)", val).append('<span class="price">'+price+'</span>' ).addClass("priceFix");;
+		   }	
+	});
 }
 Drupal.avishay.recent = function(){
 var recent = jQuery(".view-recent-articles");
@@ -558,6 +571,33 @@ if(recent.length){
 	}, 3000);
 }
 };
+
+Drupal.avishay.fixAjax = function(){
+jQuery.each(Drupal.settings.ajax, function(key, val){ 	
+	if(val.callback == "e_scholar_module_form_views_form_commerce_cart_form_ajax_submit"){ 		
+		jQuery("[name="+val.submit._triggering_element_name+"]").attr("id", val.selector.replace(/#/i, "")); 		
+	}
+}); 
+}
+
+Drupal.avishay.refreshCart = function(){
+	
+if(!Drupal.avishay.ajaxInProgress || (Drupal.avishay.ajaxInProgress && Drupal.avishay.ajaxInProgressData[2].url.match(/get_cart_block/i) == null) ){
+var cart = jQuery('.cart-contents');
+cart.parent().load('/get_cart_block',function(d){
+			Drupal.avishay.incart();
+			Drupal.avishay.link_setup_get_productName(jQuery(".buy_export, .buy_url").not(".ajax-processed"));
+			//~ Drupal.behaviors.AJAX.attach(jQuery('.cart-contents'),Drupal.settings);
+			//~ Drupal.behaviors.e_scholar.attach(jQuery('.cart-contents'),Drupal.settings);
+			//Drupal.behaviors.AJAX.attach(jQuery('.cart-contents'),Drupal.settings);
+			//Drupal.attachBehaviors(cart, Drupal.settings);
+			Drupal.attachBehaviors(jQuery('#block-commerce-cart-cart'), Drupal.settings);
+			Drupal.avishay.incart();
+			});
+} else {
+	console.log("cant refresh cart ");
+	}
+}
 jQuery(document).ready(function(){
 	
 //	Drupal.avishay.recent();
@@ -566,39 +606,98 @@ jQuery(document).ready(function(){
     jQuery("#edit-buttons").prepend(jQuery(".form-item-extra-pane--node--446-termsofservice"));
     if(typeof(Drupal.ajax) !== "undefined"){
         Drupal.ajax.prototype.commands.ajax_buy_response = function (ajax, response, status) {
+			//  Cart page 
             var cart_form = jQuery(ajax.element).parents("#views-form-commerce-cart-form-default");
             if(cart_form.length){
-                cart_form.html('<h2>מעדכן עגלת קניות..</h2>') ;
-                var timer = window.setInterval(function(){
-                    jQuery("h2", cart_form).append(" . ") ;
-                }, 100);
-                window.location.reload();
+                //~ cart_form.html('<h2>מעדכן עגלת קניות..</h2>') ;
+                //~ var timer = window.setInterval(function(){
+                    //~ jQuery("h2", cart_form).append(" . ") ;
+                //~ }, 100);
+                //~ window.location.reload();
+                Drupal.avishay.refreshCartPage();
             }
-            jQuery('#toaster-content #current_msg').html(response.data);
-            var toaster = jQuery('#cart-toaster').show().css("display","block");
-            var height = 200;
+            // search page
+            // msg
+            jQuery('#toaster-content #current_msg').html(response["data"].msg);
+            var toaster = jQuery('#cart-toaster').show().css("display","block"), height = 200;
             var top = (height+12) *-1;
+            
+            // replace cart content
+            jQuery('#block-commerce-cart-cart > div > .content').html(response["data"].cart);
+            Drupal.attachBehaviors(jQuery('.cart-contents'), Drupal.settings);            
             Drupal.avishay.incart();
             if(typeof(Drupal.settings.cartTimer ) !== "undefined"){
                 jQuery('#cart-toaster').stop(true, true);
             }
 
-            jQuery('#cart-toaster').css("display","block").animate({"opacity":"1","top":top,"height":height}, 700);
-                Drupal.settings.cartTimer = window.setTimeout(function(){
-            //            console.log(cartTimer);
-                jQuery('#cart-toaster').css("display","block").animate({"opacity":"0","top":0}, 500,function(){
-                    jQuery('#cart-toaster').css("display","none");
-                    delete  Drupal.settings.cartTimer ;
-            });},5000);//    console.log(cartTimer);
-        };
-        Drupal.ajax.prototype.commands.ajax_buy_response_shadowbox = function (ajax, response, status) {
-                        jQuery("#buy_url_" + response.data +':not(.priceFix)').replaceWith(jQuery('<a class="cart_url" href="#"><div class="content">קישור בעגלה</div></a>'));
-                };
+            jQuery('#cart-toaster').css("display","block")
+				.animate({"opacity":"1","top":top,"height":height}, 700 ,function(){
+					Drupal.settings.cartTimer = window.setTimeout(function(){
+						jQuery('#cart-toaster').css("display","block").animate({"opacity":"0","top":0}, 500,function(){
+							jQuery('#cart-toaster').css("display","none");
+							delete  Drupal.settings.cartTimer ;
+						});
+					},5000);
+				});
+                
+        
+        jQuery("#buy_url_" + response["data"].nid ).removeClass("ajax-processed");
+        jQuery("#buy_export_" + response["data"].nid ).removeClass("ajax-processed");
+       };
         Drupal.ajax.prototype.commands.ajax_get_export_output = function (ajax, response, status) {
-                        var settings = {"content":response.data,
-                                    "title" : "", "height" : 600, "width"	:800, "animate" : false};
+                        var settings = {
+							"content":response.data,
+                            "title" : "",
+                            "height" : 600, 
+                            "width"	:800, 
+                            "animate" : false
+						};
                         Drupal.avishay.shadowbox(settings);
-    };
+		};
+		Drupal.ajax.prototype.commands.dc_cart_ajax = function(ajax, response, status) {
+			
+			$wrapper = jQuery('#dc-cart-ajax-form-wrapper');
+			$wrapper.parent()
+			  .find('div.messages').remove().end()
+			  .prepend(response['message']);
+
+			if (typeof(response.output) != "undefined" ){
+				jQuery(response.output).css("background-color","red");
+				$wrapper.html(response.output);
+				Drupal.avishay.fixAjax();
+				Drupal.attachBehaviors(jQuery('#dc-cart-ajax-form-wrapper'), Drupal.settings);
+				//~ Drupal.behaviors.AJAX.attach($wrapper, Drupal.settings);
+				//~ Drupal.behaviors.e_scholar.attach($wrapper, Drupal.settings);
+				//~ jQuery('input,form', $wrapper).bind("click submit", function(e){ 
+					//~ e.preventDefault(); 
+						//~ console.log("XX"); 
+				//~ 
+					//~ return false; 
+				//~ }).addClass("dis"); 
+				//Drupal.avishay.refreshCart();
+			  return;
+			} 
+			Drupal.avishay.incart();
+			Drupal.avishay.link_setup_get_productName(jQuery(".buy_export, .buy_url").not(".ajax-processed"));
+			
+		//~ };
+		//~ 
+			
+			 //Drupal.avishay.cart_price_fix(jQuery(val).parents());
+		}
+		Drupal.ajax.prototype.commands.after_lineitem_delete = function(ajax, response, status) {
+				jQuery("[name="+response.element+"]").parents("tr").hide();
+				Drupal.avishay.refreshCart();
+		}
+		Drupal.ajax.prototype.commands.ajax_buy_response_dup = function(ajax, response, status) {
+			Drupal.avishay.dup(response.data.title);
+			Drupal.avishay.refreshCart();
+			//console.log(response.data.title);
+		}
+		Drupal.ajax.prototype.commands.views_form_commerce_cart_reload = function(ajax, response, status) {
+			 Drupal.avishay.refreshCartPage();
+		}
+
 }
 // #####    main search input behaviour
 Drupal.settings.search_text = "הקלד מילה או ביטוי";
@@ -788,9 +887,38 @@ if(window.location.pathname == "/"){
 jQuery(document).ajaxStart(function () {
 /* * 		setup global ajax event listeners*/
         }).ajaxSend(function (e, xhr, opts) {
+			
+			Drupal.avishay.ajaxInProgress = true;
+			Drupal.avishay.ajaxInProgressData = Array(e, xhr, opts);
         }).ajaxError(function (e, xhr, opts) {
+			Drupal.avishay.ajaxInProgress = false;
         }).ajaxSuccess(function (e, xhr, opts) {
         }).ajaxComplete(function (e, xhr, opts) {
+			if(window.location.pathname == "/cart" && typeof e.result == "undefined" && opts.url.match(/ajax/i)){
+				if(!Drupal.avishay.refreshCartPageActive){
+					Drupal.avishay.refreshCartPage();
+				}
+			}
+			Drupal.avishay.ajaxInProgress = false;
+			Drupal.avishay.incart();
+			
     window.setTimeout(function(){jQuery('img.views_flag_refresh-throbber').remove();},1000);
 });
 
+Drupal.avishay.refreshCartPage = function(){
+	Drupal.avishay.refreshCartPageActive = true;
+	var cart_form = jQuery("#views-form-commerce-cart-form-default");
+	cart_form.empty();
+	var title = jQuery("#page-title").text('מעדכן עגלת קניות . .') ;
+	cartPageTimer = setInterval(function(){
+		jQuery("#page-title").append(" . ") ;
+	}, 100);
+//~ //		window.location.reload();
+	jQuery("#block-system-main").load("/cart #block-system-main", function(){					
+		//Drupal.avishay.cartPageTimer;
+		clearInterval(cartPageTimer);
+		Drupal.avishay.refreshCartPageActive = false;
+		jQuery("#page-title").text('סל קניות') ;
+		Drupal.attachBehaviors(jQuery("#block-system-main"))	;
+	});	
+}

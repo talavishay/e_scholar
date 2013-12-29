@@ -203,7 +203,7 @@ function e_scholar_module_commerce_checkout_complete($order) {
      * logic:
      * 	assign flag per purchsed per node per user item  */
     //TODO: remove this anon check? this is the commerce_checkout_complete after all ???
-    if (!user_is_anonymous()) {
+    //if (!user_is_anonymous()) {
         foreach ($order->commerce_line_items['und'] as $k => $v) {
             $line_item = commerce_line_item_load(intval($v['line_item_id']));
             if ($line_item->line_item_label == 'url') {
@@ -213,9 +213,9 @@ function e_scholar_module_commerce_checkout_complete($order) {
                 flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
             }
         }
-    } else {
+    //} else {
         //~ login_one_time_button($username = NULL);
-    }
+    //}
 }
 
 function e_scholar_module_views_pre_render(&$view) {
@@ -466,6 +466,7 @@ function e_scholar_module_menu_alter(&$items){
 }
 
 function e_scholar_module_menu() {
+	
     $items['buy_url'] = array(
         'page callback' => 'ajax_buy_response',
         'access callback' => TRUE,
@@ -514,41 +515,95 @@ function e_scholar_module_menu() {
     
     return $items;
 }
-
+function e_scholar_module_get_line_items(){
+    $lineItames = array();
+	$order = commerce_cart_order_load($GLOBALS['user']->uid);
+    foreach($order->commerce_line_items["und"]  as $k => $v ){
+    	$lineItames[] = $v["line_item_id"];
+    }
+    return $lineItames;
+}
+function e_scholar_module_find_duplicates($lineItames ,$productName, $nid){
+	$dup = false;
+	$line_items = commerce_line_item_load_multiple($lineItames, array("line_item_label" => preg_replace("/buy_(.*)/i", "$1", $productName)) );
+	 foreach($line_items  as $k => $v ){
+	 	if(empty($v->field_nid)){
+	 		commerce_line_item_delete($v->line_item_id);
+	 	}
+ 		if($v->field_nid["und"][0]["value"] == $nid ){
+ 			$dup = true;
+        
+ 		}
+	 }
+	 return $dup;
+}
+function e_scholar_module_broken_line_items($lineItames ){
+	$line_items = commerce_line_item_load_multiple($lineItames);
+	 foreach($line_items  as $k => $v ){	 	
+	 	if(empty($v->field_nid)){
+	 		commerce_line_item_delete($v->line_item_id);
+	 	} 		
+	 }	 
+}
 function ajax_buy_response() {
+	
     global $user;
     $nid = trim(strip_tags($_POST["nid"]));
+    if(gettype(intval($nid)) != "integer" || gettype(intval($nid)) != "integer" || gettype($nid) == "undefined"){
+    	// no nid , no point in adding to cart ... 
+    	die();
+    	exit();
+    }
     $productName = trim(strip_tags($_POST["productName"]));
     $node = node_load($nid);
-
-    if (intval($nid) != 0 && gettype(intval($nid)) == "integer") {
-        if ($productName == 'buy_url') {
-            $line_item = commerce_cart_product_add_by_id(1, 1, $combine = FALSE, $user->uid);
-            $text = t('המוצר גישה לקישור המאמר "@biblio_custom1" נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
-        }
-        if ($productName == 'buy_export') {  //~ foreach($nids as $k => $nid){
-            $line_item = commerce_cart_product_add_by_id(2, 1, $combine = FALSE, $user->uid);
-            $text = t('המוצר "יצוא ביבליוגרפיה" למאמר "@biblio_custom1"  נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
-        }
-
-        $line_item->field_nid['und'][0]['value'] = $nid;
-        $line_item->field_laxo_name['und'][0]['value'] = $node->biblio_custom1;
-        commerce_line_item_save($line_item);
-        $cart =  commerce_cart_order_refresh($line_item->order_id);
-
-        $refreshedCart = commerce_cart_block_view('cart');
-
-        return array(
+	$dup = false;
+    $lineItames = e_scholar_module_get_line_items();
+    if(!empty($lineItames)){
+		$dup = e_scholar_module_find_duplicates($lineItames, $productName, $nid ); 
+    }
+	if(!$dup){
+	    if (intval($nid) != 0 && gettype(intval($nid)) == "integer") {
+	        if ($productName == 'buy_url') {
+	            $line_item = commerce_cart_product_add_by_id(1, 1, $combine = FALSE, $user->uid);
+	            $text = t('המוצר גישה לקישור המאמר "@biblio_custom1" נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
+	        }
+	        if ($productName == 'buy_export') {  //~ foreach($nids as $k => $nid){
+	            $line_item = commerce_cart_product_add_by_id(2, 1, $combine = FALSE, $user->uid);
+	            $text = t('המוצר "יצוא ביבליוגרפיה" למאמר "@biblio_custom1"  נוסף לעגלה..', array('@biblio_custom1' => $node->biblio_custom1));
+	        }
+	
+	        $line_item->field_nid['und'][0]['value'] = $nid;
+	        $line_item->field_laxo_name['und'][0]['value'] = $node->biblio_custom1;
+	        commerce_line_item_save($line_item);
+	        $cart =  commerce_cart_order_refresh($line_item->order_id);
+			$lineItames = e_scholar_module_get_line_items();
+			if(!empty($lineItames)){
+				$dup = e_scholar_module_broken_line_items($lineItames); 
+			}
+	        $refreshedCart = commerce_cart_block_view('cart');
+	        return array(
+	            '#type' => 'ajax',
+	            '#commands' => array(
+	                //ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
+	                //ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
+	                array('command' => 'ajax_buy_response', 'data' => array('nid' => $nid, 'msg' => $text, 'cart' => $refreshedCart["content"]))
+	        ));
+    	}
+    } else {
+    	return array(
             '#type' => 'ajax',
-            '#commands' => array(
-                ajax_command_replace('.view-commerce-cart-block', $refreshedCart["content"]),
-                ajax_command_replace('.cart-empty-block', $refreshedCart["content"]),
-                array('command' => 'ajax_buy_response', 'data' => $text),
-                array('command' => 'ajax_buy_response_shadowbox', 'data' => $nid)
-        ));
+            '#commands' => array(      
+                array('command' => 'ajax_buy_response_dup', 'data' => array('title' => $node->title))
+        ));       
     }
 }
 function ajax_get_cart_block(){
+	
+ 	$lineItames = e_scholar_module_get_line_items();
+ 	
+    if(!empty($lineItames)){
+		$dup = e_scholar_module_broken_line_items($lineItames ); 
+    }
         $refreshedCart = commerce_cart_block_view('cart');
         echo $refreshedCart["content"] ;
 //        return array(
@@ -925,4 +980,103 @@ function e_scholar_module_form_alter(&$form, &$form_state){
     if($form["form_id"]["#value"] === "commerce_checkout_form_checkout"){
         $form["extra_pane__node__446"]["#weight"] = 100;
     }
+}
+// ##############3   Ajax cart ##############
+function e_scholar_module_form_views_form_commerce_cart_form_default_alter(&$form, $form_state, $form_id){
+  $form_state["cache"] = false;
+  $form_state['no_cache'] = TRUE;
+}
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * Alter to cart form to add #ajax properties.
+ */
+function e_scholar_module_form_views_form_alter(&$form, $form_state, $form_id) {
+	$form_state['no_cache'] = TRUE;
+	$form_state["cache"] = false;
+  $alter = $form_id === 'views_form_commerce_cart_block_default';
+  $alter = $alter || ($form_id === 'views_form_commerce_cart_form_default');
+  if ($alter) {
+    _e_scholar_module_form_views_form_alter($form, $form_state, $form_id);
+  }
+}
+
+function _e_scholar_module_form_views_form_alter(&$form, $form_state, $form_id) {
+  $view = &$form_state['build_info']['args'][0];
+  $form_state["cache"] = false;
+  $form_state['no_cache'] = TRUE;
+  
+  if ($view->use_ajax) {
+//     $fake_link = 'dc-cart-ajax-' . str_replace('_', '-', $form_id);
+//     $fake_link = '<a href="#" id="'. $fake_link .'">&nbsp;</a>';
+    $form['#prefix']  = $form['#prefix'] . '<div id="dc-cart-ajax-form-wrapper">';
+    $form['#suffix']  = '</div>' . $form['#suffix'];
+//     $form['#suffix'] .= '<div class="attachment"><div class="views-summary">'. $fake_link .'</div></div>';
+    
+
+    $ajax = array(
+      'callback' => 'e_scholar_module_form_views_form_commerce_cart_form_ajax_submit',
+      'wrapper' => 'dc-cart-ajax-form-wrapper',
+      'method' => 'replace',
+      'progress' => array('type' => 'throbber', 'message' => ''),
+    
+    );
+
+    $form['actions']['submit']['#ajax'] = $ajax;
+    if (!empty($form['edit_delete'])) {
+      foreach (element_children($form['edit_delete']) as $k) {
+        $form['edit_delete'][$k]['#ajax'] = $ajax;
+      }
+    }
+  }
+}
+/**
+ * Ajax callback for cart form.
+ */
+function e_scholar_module_form_views_form_commerce_cart_form_ajax_submit(&$form, &$form_state) {
+	$form_state["cache"] = false;
+	$order = commerce_cart_order_load($GLOBALS['user']->uid);
+	$is_empty = empty($order->commerce_line_items);
+	e_scholar_module_broken_line_items(e_scholar_module_get_line_items());
+  //$output = '';
+  if ($is_empty) {
+     $output = menu_execute_active_handler('cart', FALSE);
+	} else {
+		
+	       	$view = views_get_view("commerce_cart_block", TRUE);
+	       	$view->set_use_ajax(TRUE);
+	       	$output = $view->preview("embed_1", array($order->order_number));
+		
+  }
+
+  $commands   = array();
+  $commands[] = array(
+    'command' => 'dc_cart_ajax',
+    'output'  => $output ,
+    'message' => theme('status_messages'),
+    'form-id' => str_replace('_', '-', $form['#form_id']),
+  );
+  
+//   $commands[] = array(
+//   		'command' => 'after_lineitem_delete'
+//   );
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+function e_scholar_module_ajax_render_alter(&$commands){
+	if($_REQUEST["form_id"] == "views_form_commerce_cart_form_default"){
+		/*$order = commerce_cart_order_load($GLOBALS['user']->uid);
+		$view = views_get_view("commerce_cart_block", TRUE);
+       	$view->set_use_ajax(TRUE);
+       	$output = $view->preview("embed_1", array($order->order_number));*/
+       	$commands[] = array(
+		    'command' => 'views_form_commerce_cart_reload',		    
+		);
+		
+	}
+	if($_REQUEST["form_id"] == "views_form_commerce_cart_block_embed_1"){
+	  	$commands[] = array(
+		    'command' => 'after_lineitem_delete',
+	  		//'element' => ''	    
+		);
+	}
+	
 }
