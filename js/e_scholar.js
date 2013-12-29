@@ -377,7 +377,7 @@ Drupal.avishay.shadowbox = function(settings){
 };
 Drupal.behaviors.e_scholar = {
     attach: function(context, settings){
-         
+         Drupal.avishay.my_products();
         //var view_commerce_cart_block = jQuery('.view-commerce-cart-block');
         var view_commerce_cart_block = jQuery(context).hasClass("view-commerce-cart-form") ? context : jQuery('.view-commerce-cart-block');
         
