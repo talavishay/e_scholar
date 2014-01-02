@@ -695,7 +695,9 @@ jQuery(document).ready(function(){
 			//console.log(response.data.title);
 		}
 		Drupal.ajax.prototype.commands.views_form_commerce_cart_reload = function(ajax, response, status) {
+			if(window.loaction.path == "/cart"){
 			 Drupal.avishay.refreshCartPage();
+			}
 		}
 
 }
@@ -913,7 +915,6 @@ Drupal.avishay.refreshCartPage = function(){
 	cartPageTimer = setInterval(function(){
 		jQuery("#page-title").append(" . ") ;
 	}, 100);
-//~ //		window.location.reload();
 	jQuery("#block-system-main").load("/cart #block-system-main", function(){					
 		//Drupal.avishay.cartPageTimer;
 		clearInterval(cartPageTimer);

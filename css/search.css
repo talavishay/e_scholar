@@ -1,3 +1,7 @@
+.views-field-field-libraries img {
+	position:relative;
+	z-index:2;
+}
 /**	MLT -	MIN	*/
 .views-row.mlt.min {
 padding-bottom: 5px !important;
