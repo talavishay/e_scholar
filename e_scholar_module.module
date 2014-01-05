@@ -146,15 +146,6 @@ function e_scholar_module_base_checkout_form($form, &$form_state, $checkout_pane
         $data .= '<li><div class="label">'.$label. ':</div>';
         $data .= $line_item->field_laxo_name['und'][0]['safe_value'] . '</li>';
 
-        //TODO: is this the right way ???
-        if (user_is_anonymous()) {
-            if ($line_item->line_item_label == 'url') {
-                flag('flag', 'biblio_url', intval($line_item->field_nid['und'][0]['value']), $user);
-            }
-            if ($line_item->line_item_label == 'export') {
-                flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), $user);
-            }
-        }
     }
     $data .= '</ul>';
     if (user_is_anonymous()) {
@@ -197,13 +188,13 @@ function e_scholar_module_commerce_checkout_pane_info() {
     return $panes;
 }
 
-function e_scholar_module_commerce_checkout_complete($order) {
+function e_scholar_module_commerce_order_presave($order) {
     /* Parameters:
      * 	$order: The order that just completed checkout.
      * logic:
      * 	assign flag per purchsed per node per user item  */
     //TODO: remove this anon check? this is the commerce_checkout_complete after all ???
-    //if (!user_is_anonymous()) {
+    if($order->status == "completed" && $order->uid != "0") {
         foreach ($order->commerce_line_items['und'] as $k => $v) {
             $line_item = commerce_line_item_load(intval($v['line_item_id']));
             if ($line_item->line_item_label == 'url') {
@@ -213,9 +204,7 @@ function e_scholar_module_commerce_checkout_complete($order) {
                 flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
             }
         }
-    //} else {
-        //~ login_one_time_button($username = NULL);
-    //}
+    } 
 }
 
 function e_scholar_module_views_pre_render(&$view) {
