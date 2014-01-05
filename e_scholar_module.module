@@ -145,16 +145,6 @@ function e_scholar_module_base_checkout_form($form, &$form_state, $checkout_pane
         }
         $data .= '<li><div class="label">'.$label. ':</div>';
         $data .= $line_item->field_laxo_name['und'][0]['safe_value'] . '</li>';
-
-        //TODO: is this the right way ???
-        if (user_is_anonymous()) {
-            if ($line_item->line_item_label == 'url') {
-                flag('flag', 'biblio_url', intval($line_item->field_nid['und'][0]['value']), $user);
-            }
-            if ($line_item->line_item_label == 'export') {
-                flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), $user);
-            }
-        }
     }
     $data .= '</ul>';
     if (user_is_anonymous()) {
@@ -198,24 +188,34 @@ function e_scholar_module_commerce_checkout_pane_info() {
 }
 
 function e_scholar_module_commerce_checkout_complete($order) {
-    /* Parameters:
-     * 	$order: The order that just completed checkout.
+   /* Parameters:
+    * 	$order: The order that just completed checkout.
      * logic:
-     * 	assign flag per purchsed per node per user item  */
-    //TODO: remove this anon check? this is the commerce_checkout_complete after all ???
-    //if (!user_is_anonymous()) {
-        foreach ($order->commerce_line_items['und'] as $k => $v) {
-            $line_item = commerce_line_item_load(intval($v['line_item_id']));
-            if ($line_item->line_item_label == 'url') {
-                flag('flag', 'biblio_url', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
-            }
-            if ($line_item->line_item_label == 'export') {
-                flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
-            }
-        }
-    //} else {
-        //~ login_one_time_button($username = NULL);
-    //}
+     * 	assign flag per purchsed per node per user item*/  
+if( $order->uid != "0"){
+	$products = _get_product_flags($order->uid);
+	$url_nids = array();
+	$export_nids = array();
+	foreach($product["biblio_biblio_url_nodes"] as $k => $v){
+		$url_nids[] = $v["nid"] ;
+	}
+	foreach($product["biblio_biblio_export_nodes"] as $k => $v){
+		$export_nids[] = $v["nid"] ;
+	}
+	foreach ($order->commerce_line_items['und'] as $k => $v) {
+        $line_item = commerce_line_item_load(intval($v['line_item_id']));
+        if ($line_item->line_item_label == 'url') {
+			if( !in_array($line_item->line_item_nid, $url_nids) ){
+				flag('flag', 'biblio_url', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
+			}
+		}
+		if ($line_item->line_item_label == 'export') {
+			if( !in_array($line_item->line_item_nid, $export_nids) ){
+				flag('flag', 'export', intval($line_item->field_nid['und'][0]['value']), user_load($order->uid));
+			}
+		}
+	}
+}
 }
 
 function e_scholar_module_views_pre_render(&$view) {
@@ -290,9 +290,10 @@ function _get_bookmark_flags(){
     }
     return $bookmark_nodes;
 }
-function _get_product_flags(){
+function _get_product_flags($uid){
+	global $user ;
+    $user = (!is_integer($uid)) ?  user_load($uid, TRUE) : $user ;
     
-    global $user;
     $biblio_biblio_export_nodes = array();
     $biblio_biblio_url_nodes = array();
 //    $biblio_biblio_url_nodes = ;//    $biblio_biblio_export_nodes = array();
