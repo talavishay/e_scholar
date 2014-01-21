@@ -691,11 +691,14 @@ jQuery(document).ready(function(){
 		}
 		Drupal.ajax.prototype.commands.ajax_buy_response_dup = function(ajax, response, status) {
 			Drupal.avishay.dup(response.data.title);
+			if(window.location.pathname == "/cart"){
 			Drupal.avishay.refreshCart();
-			//console.log(response.data.title);
+			}
+			
+//console.log(response.data.title);
 		}
 		Drupal.ajax.prototype.commands.views_form_commerce_cart_reload = function(ajax, response, status) {
-			if(window.loaction.path == "/cart"){
+			if(window.location.pathname == "/cart"){
 			 Drupal.avishay.refreshCartPage();
 			}
 		}
@@ -908,6 +911,7 @@ jQuery(document).ajaxStart(function () {
 });
 
 Drupal.avishay.refreshCartPage = function(){
+if(window.location.pathname == "/cart"){
 	Drupal.avishay.refreshCartPageActive = true;
 	var cart_form = jQuery("#views-form-commerce-cart-form-default");
 	cart_form.empty();
@@ -922,4 +926,5 @@ Drupal.avishay.refreshCartPage = function(){
 		jQuery("#page-title").text('סל קניות') ;
 		Drupal.attachBehaviors(jQuery("#block-system-main"))	;
 	});	
+}
 }
