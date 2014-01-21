@@ -1051,21 +1051,22 @@ function e_scholar_module_form_views_form_commerce_cart_form_ajax_submit(&$form,
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 function e_scholar_module_ajax_render_alter(&$commands){
-	if($_REQUEST["form_id"] == "views_form_commerce_cart_form_default"){
-		/*$order = commerce_cart_order_load($GLOBALS['user']->uid);
-		$view = views_get_view("commerce_cart_block", TRUE);
-       	$view->set_use_ajax(TRUE);
-       	$output = $view->preview("embed_1", array($order->order_number));*/
-       	$commands[] = array(
-		    'command' => 'views_form_commerce_cart_reload',		    
-		);
-		
+	if( isset($_REQUEST["form_id"]) ){ 
+		if($_REQUEST["form_id"] == "views_form_commerce_cart_form_default"){
+			/*$order = commerce_cart_order_load($GLOBALS['user']->uid);
+			$view = views_get_view("commerce_cart_block", TRUE);
+	       	$view->set_use_ajax(TRUE);
+	       	$output = $view->preview("embed_1", array($order->order_number));*/
+	       	$commands[] = array(
+			    'command' => 'views_form_commerce_cart_reload',		    
+			);
+			
+		}
+		if($_REQUEST["form_id"] == "views_form_commerce_cart_block_embed_1"){
+		  	$commands[] = array(
+			    'command' => 'after_lineitem_delete',
+		  		//'element' => ''	    
+			);
+		}
 	}
-	if($_REQUEST["form_id"] == "views_form_commerce_cart_block_embed_1"){
-	  	$commands[] = array(
-		    'command' => 'after_lineitem_delete',
-	  		//'element' => ''	    
-		);
-	}
-	
 }
